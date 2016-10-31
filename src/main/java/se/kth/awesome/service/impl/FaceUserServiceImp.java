@@ -1,18 +1,16 @@
-package se.kth.awsome.service.impl;
+package se.kth.awesome.service.impl;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import se.kth.awsome.model.ApplicationUser;
-import se.kth.awsome.model.UserRepository;
-import se.kth.awsome.service.ApplicationUserService;
+import se.kth.awesome.model.ApplicationUser;
+import se.kth.awesome.model.UserRepository;
+import se.kth.awesome.service.ApplicationUserService;
 
 import java.nio.charset.Charset;
-import java.util.List;
 
 @Service
 public class FaceUserServiceImp implements ApplicationUserService {

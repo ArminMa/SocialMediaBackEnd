@@ -1,4 +1,4 @@
-package se.kth.awsome;
+package se.kth.awesome;
 
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.support.SpringBootServletInitializer;

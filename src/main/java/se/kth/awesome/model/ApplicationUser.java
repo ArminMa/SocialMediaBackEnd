@@ -1,25 +1,18 @@
-package se.kth.awsome.model;
+package se.kth.awesome.model;
 
 
-import javassist.bytecode.ByteArray;
-import org.hibernate.annotations.LazyCollection;
-import org.hibernate.annotations.LazyCollectionOption;
-import org.hibernate.annotations.SortNatural;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
-import org.springframework.core.style.ToStringCreator;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.SortedSet;
-import java.util.TreeSet;
 
 //import org.kth.HI1034.model.validators.ExtendedEmailValidator;
 
 @Entity
 @Table(name = "face_user", uniqueConstraints = {
 		@UniqueConstraint(columnNames = "email"),
-		@UniqueConstraint(columnNames = "username")})
+		@UniqueConstraint(columnNames = "user_name")})
 public class ApplicationUser implements Serializable{
 
 	private Long id;

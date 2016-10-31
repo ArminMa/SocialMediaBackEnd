@@ -1,4 +1,4 @@
-package se.kth.awsome.service;
+package se.kth.awesome.service;
 
 import org.springframework.http.ResponseEntity;
 
