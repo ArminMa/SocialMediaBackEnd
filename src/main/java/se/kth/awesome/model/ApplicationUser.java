@@ -74,7 +74,7 @@ public class ApplicationUser implements Serializable{
 
 	@Column
 	@NotEmpty
-	@Length(min = 255)
+	@Length(max = 255)
 	public String getPassword() {
 		return password;
 	}
