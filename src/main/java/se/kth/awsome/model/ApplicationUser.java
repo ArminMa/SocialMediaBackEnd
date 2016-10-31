@@ -99,83 +99,83 @@ public class ApplicationUser implements Serializable{
 // should be remove. we don't want that
 
 //	CascadeType.REMOVE wants to remove the other side Entity if this is removed, that is not good hear.
-
-	private SortedSet<FriendRequest> friendRequests = new TreeSet<>();
-    @OneToOne( orphanRemoval = true, fetch = FetchType.EAGER)
-//	@BatchSize(size=100)
-	@LazyCollection(LazyCollectionOption.FALSE)
-	@SortNatural
-    public SortedSet<FriendRequest> getFriendRequests() {
-        return friendRequests;
-    }
-    public void setFriendRequests(SortedSet<FriendRequest> friendRequests) {
-        this.friendRequests = friendRequests;
-    }
-
-	private SortedSet<MailMessage> mailMessages = new TreeSet<>();
-	@OneToMany(fetch = FetchType.EAGER)
-	@LazyCollection(LazyCollectionOption.FALSE)
-	@SortNatural
-	public SortedSet<MailMessage> getMailMessages() {
-		return mailMessages;
-	}
-	public void setMailMessages(SortedSet<MailMessage> mailMessages) {
-		this.mailMessages = mailMessages;
-	}
-
-	private SortedSet<ApplicationUser> friends = new TreeSet<>();
-	@OneToOne( fetch = FetchType.LAZY)
-//	@BatchSize(size=25)
+//
+//	private SortedSet<FriendRequest> friendRequests = new TreeSet<>();
+//    @OneToOne( orphanRemoval = true, fetch = FetchType.EAGER)
+////	@BatchSize(size=100)
 //	@LazyCollection(LazyCollectionOption.FALSE)
-	@SortNatural
-	public SortedSet<ApplicationUser> getFriends() {
-		return friends;
-	}
-	public void setFriends(SortedSet<ApplicationUser> friends) {
-		this.friends = friends;
-	}
-
-	private SortedSet<FriendRequest> sentFriendRequests = new TreeSet<>();
-	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-	@SortNatural
-	public SortedSet<FriendRequest> getSentFriendRequests() {
-		return sentFriendRequests;
-	}
-	public void setSentFriendRequests(SortedSet<FriendRequest> sentFriendRequests) {
-		this.sentFriendRequests = sentFriendRequests;
-	}
-
-	private SortedSet<FriendRequest> receivedFriendRequests = new TreeSet<>();
-	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-	@LazyCollection(LazyCollectionOption.FALSE)
-	@SortNatural
-	public SortedSet<FriendRequest> getReceivedFriendRequests() {
-		return receivedFriendRequests;
-	}
-	public void setReceivedFriendRequests(SortedSet<FriendRequest> receivedFriendRequests) {
-		this.receivedFriendRequests = receivedFriendRequests;
-	}
-
-	private SortedSet<Post> log = new TreeSet<>();
-	@OneToMany( cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-	@LazyCollection(LazyCollectionOption.FALSE)
-	@SortNatural
-	public SortedSet<Post> getLog() {
-		return log;
-	}
-	public void setLog(SortedSet<Post> log) {
-		this.log = log;
-	}
-
-	private SortedSet<ChatMessage> chatMessages = new TreeSet<>();
-	@ManyToMany(fetch = FetchType.LAZY)
-	@LazyCollection(LazyCollectionOption.FALSE)
-	@SortNatural
-	public SortedSet<ChatMessage> getChatMessages() {
-		return chatMessages;
-	}
-	public void setChatMessages( SortedSet<ChatMessage> chatMessages) {
-		this.chatMessages = chatMessages;
-	}
+//	@SortNatural
+//    public SortedSet<FriendRequest> getFriendRequests() {
+//        return friendRequests;
+//    }
+//    public void setFriendRequests(SortedSet<FriendRequest> friendRequests) {
+//        this.friendRequests = friendRequests;
+//    }
+//
+//	private SortedSet<MailMessage> mailMessages = new TreeSet<>();
+//	@OneToMany(fetch = FetchType.EAGER)
+//	@LazyCollection(LazyCollectionOption.FALSE)
+//	@SortNatural
+//	public SortedSet<MailMessage> getMailMessages() {
+//		return mailMessages;
+//	}
+//	public void setMailMessages(SortedSet<MailMessage> mailMessages) {
+//		this.mailMessages = mailMessages;
+//	}
+//
+//	private SortedSet<ApplicationUser> friends = new TreeSet<>();
+//	@OneToOne( fetch = FetchType.LAZY)
+////	@BatchSize(size=25)
+////	@LazyCollection(LazyCollectionOption.FALSE)
+//	@SortNatural
+//	public SortedSet<ApplicationUser> getFriends() {
+//		return friends;
+//	}
+//	public void setFriends(SortedSet<ApplicationUser> friends) {
+//		this.friends = friends;
+//	}
+//
+//	private SortedSet<FriendRequest> sentFriendRequests = new TreeSet<>();
+//	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+//	@SortNatural
+//	public SortedSet<FriendRequest> getSentFriendRequests() {
+//		return sentFriendRequests;
+//	}
+//	public void setSentFriendRequests(SortedSet<FriendRequest> sentFriendRequests) {
+//		this.sentFriendRequests = sentFriendRequests;
+//	}
+//
+//	private SortedSet<FriendRequest> receivedFriendRequests = new TreeSet<>();
+//	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+//	@LazyCollection(LazyCollectionOption.FALSE)
+//	@SortNatural
+//	public SortedSet<FriendRequest> getReceivedFriendRequests() {
+//		return receivedFriendRequests;
+//	}
+//	public void setReceivedFriendRequests(SortedSet<FriendRequest> receivedFriendRequests) {
+//		this.receivedFriendRequests = receivedFriendRequests;
+//	}
+//
+//	private SortedSet<Post> log = new TreeSet<>();
+//	@OneToMany( cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+//	@LazyCollection(LazyCollectionOption.FALSE)
+//	@SortNatural
+//	public SortedSet<Post> getLog() {
+//		return log;
+//	}
+//	public void setLog(SortedSet<Post> log) {
+//		this.log = log;
+//	}
+//
+//	private SortedSet<ChatMessage> chatMessages = new TreeSet<>();
+//	@ManyToMany(fetch = FetchType.LAZY)
+//	@LazyCollection(LazyCollectionOption.FALSE)
+//	@SortNatural
+//	public SortedSet<ChatMessage> getChatMessages() {
+//		return chatMessages;
+//	}
+//	public void setChatMessages( SortedSet<ChatMessage> chatMessages) {
+//		this.chatMessages = chatMessages;
+//	}
 
 }
