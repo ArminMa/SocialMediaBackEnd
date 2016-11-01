@@ -17,16 +17,7 @@ public class userController {
     @Autowired
     private ApplicationUserService userService;
 
-    @RequestMapping(value = "/ping", method = RequestMethod.GET)
-    @ResponseBody
-    public String getHelloWorld() {
-        return "Hello  World";
-    }
 
-    @RequestMapping("/ping2")
-    public String greeting(@RequestParam(value="name", defaultValue="World") String name) {
-        return "Hello " + name;
-    }
 
     @RequestMapping(
             value = "/getEmail/{email:.+}",
