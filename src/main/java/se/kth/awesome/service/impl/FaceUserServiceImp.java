@@ -6,9 +6,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import se.kth.awesome.model.ApplicationUser;
+import se.kth.awesome.model.UserEntity;
 import se.kth.awesome.model.UserRepository;
+import se.kth.awesome.pojos.ping.PingPojo;
 import se.kth.awesome.service.ApplicationUserService;
+import se.kth.awesome.util.MediaTypes;
 
 import java.nio.charset.Charset;
 
@@ -32,11 +34,15 @@ public class FaceUserServiceImp implements ApplicationUserService {
 
 	@Override
 	public ResponseEntity<?> findByEmail(String email) {
-		ApplicationUser appUser = userRepository.findByEmail(email);
+		UserEntity appUser = userRepository.findByEmail(email);
 
 		if(appUser == null) ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 
-		return ResponseEntity.ok().build();
+
+
+		return ResponseEntity.status(HttpStatus.OK)
+				.contentType(MediaTypes.JsonUtf8)
+				.body(appUser);
 		
 	}
 }

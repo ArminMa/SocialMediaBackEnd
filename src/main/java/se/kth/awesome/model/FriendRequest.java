@@ -1,4 +1,4 @@
-//package se.kth.awsome.model;
+//package se.kth.awesome.model;
 //
 //import org.hibernate.annotations.LazyCollection;
 //import org.hibernate.annotations.LazyCollectionOption;
@@ -15,35 +15,46 @@
 //    public FriendRequest() {
 //    }
 //
-//    public FriendRequest(ApplicationUser sender, ApplicationUser receiver) {
+//    public FriendRequest(UserEntity sender, UserEntity receiver) {
 //        this.sender = sender;
 //        this.receiver = receiver;
 //    }
 //
-//    private ApplicationUser sender;
+//    private Long id;
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.AUTO)
+//    @Column(name = "id", insertable = false, updatable = false, unique = true, nullable = false)
+//    public Long getId() {
+//        return id;
+//    }
+//    public void setId(Long id) {
+//        this.id = id;
+//    }
+//
+//    private UserEntity sender;
 //    @Column(name = "sender")
-//    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = false/*, mappedBy = "ApplicationUser.friendRequests"*/)
+//    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = false/*, mappedBy = "UserEntity.friendRequests"*/)
 ////	@BatchSize(size=100)
 //    @LazyCollection(LazyCollectionOption.FALSE)
 //    @SortNatural
-//    public ApplicationUser getSender() {
+//    public UserEntity getSender() {
 //        return sender;
 //    }
-//    public void setSender(ApplicationUser sender) {
+//    public void setSender(UserEntity sender) {
 //        this.sender = sender;
 //    }
 //
 //
-//    private ApplicationUser receiver;
+//    private UserEntity receiver;
 //    @Column(name = "receiver")
-//    @OneToOne( /*, mappedBy = "ApplicationUser.friendRequests"*/)
+//    @OneToOne( /*, mappedBy = "UserEntity.friendRequests"*/)
 ////	@BatchSize(size=100)
 //    @LazyCollection(LazyCollectionOption.FALSE)
 //    @SortNatural
-//    public ApplicationUser getReceiver() {
+//    public UserEntity getReceiver() {
 //        return receiver;
 //    }
-//    public void setReceiver(ApplicationUser receiver) {
+//    public void setReceiver(UserEntity receiver) {
 //        this.receiver = receiver;
 //    }
 //

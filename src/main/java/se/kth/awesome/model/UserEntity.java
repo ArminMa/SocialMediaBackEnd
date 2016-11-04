@@ -1,19 +1,29 @@
 package se.kth.awesome.model;
 
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import org.hibernate.annotations.BatchSize;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+import org.hibernate.annotations.SortNatural;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
+import se.kth.awesome.util.GsonX;
 
 import javax.persistence.*;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 //import org.kth.HI1034.model.validators.ExtendedEmailValidator;
-
+@XmlRootElement
+@JsonInclude(JsonInclude.Include.NON_NULL)
 @Entity
 @Table(name = "face_user", uniqueConstraints = {
 		@UniqueConstraint(columnNames = "email"),
 		@UniqueConstraint(columnNames = "user_name")})
-public class ApplicationUser implements Serializable{
+public class UserEntity implements Serializable{
 
 	private Long id;
 	private String userName;
@@ -22,7 +32,7 @@ public class ApplicationUser implements Serializable{
     private byte[] picture; // Todo implement this Armin. low prio
 
 
-	public ApplicationUser() {
+	public UserEntity() {
 	}
 
 	/**
@@ -33,12 +43,11 @@ public class ApplicationUser implements Serializable{
 	 * @param password    3
 	 *
 	 */
-	public ApplicationUser(String email, String username, String password) {
+	public UserEntity(String email, String username, String password) {
 		this.email = email;
 		this.userName = username;
 		this.password = password;
 	}
-
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -95,7 +104,6 @@ public class ApplicationUser implements Serializable{
 //
 //	private SortedSet<FriendRequest> friendRequests = new TreeSet<>();
 //    @OneToOne( orphanRemoval = true, fetch = FetchType.EAGER)
-////	@BatchSize(size=100)
 //	@LazyCollection(LazyCollectionOption.FALSE)
 //	@SortNatural
 //    public SortedSet<FriendRequest> getFriendRequests() {
@@ -116,37 +124,16 @@ public class ApplicationUser implements Serializable{
 //		this.mailMessages = mailMessages;
 //	}
 //
-//	private SortedSet<ApplicationUser> friends = new TreeSet<>();
+//	private SortedSet<UserEntity> friends = new TreeSet<>();
 //	@OneToOne( fetch = FetchType.LAZY)
 ////	@BatchSize(size=25)
 ////	@LazyCollection(LazyCollectionOption.FALSE)
 //	@SortNatural
-//	public SortedSet<ApplicationUser> getFriends() {
+//	public SortedSet<UserEntity> getFriends() {
 //		return friends;
 //	}
-//	public void setFriends(SortedSet<ApplicationUser> friends) {
+//	public void setFriends(SortedSet<UserEntity> friends) {
 //		this.friends = friends;
-//	}
-//
-//	private SortedSet<FriendRequest> sentFriendRequests = new TreeSet<>();
-//	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-//	@SortNatural
-//	public SortedSet<FriendRequest> getSentFriendRequests() {
-//		return sentFriendRequests;
-//	}
-//	public void setSentFriendRequests(SortedSet<FriendRequest> sentFriendRequests) {
-//		this.sentFriendRequests = sentFriendRequests;
-//	}
-//
-//	private SortedSet<FriendRequest> receivedFriendRequests = new TreeSet<>();
-//	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-//	@LazyCollection(LazyCollectionOption.FALSE)
-//	@SortNatural
-//	public SortedSet<FriendRequest> getReceivedFriendRequests() {
-//		return receivedFriendRequests;
-//	}
-//	public void setReceivedFriendRequests(SortedSet<FriendRequest> receivedFriendRequests) {
-//		this.receivedFriendRequests = receivedFriendRequests;
 //	}
 //
 //	private SortedSet<Post> log = new TreeSet<>();
@@ -160,15 +147,66 @@ public class ApplicationUser implements Serializable{
 //		this.log = log;
 //	}
 //
-//	private SortedSet<ChatMessage> chatMessages = new TreeSet<>();
-//	@ManyToMany(fetch = FetchType.LAZY)
-//	@LazyCollection(LazyCollectionOption.FALSE)
-//	@SortNatural
-//	public SortedSet<ChatMessage> getChatMessages() {
-//		return chatMessages;
-//	}
-//	public void setChatMessages( SortedSet<ChatMessage> chatMessages) {
-//		this.chatMessages = chatMessages;
-//	}
+//	private SortedSet<ChatMessage> receivedChatMessages = new TreeSet<>();
+//    @OneToMany(fetch = FetchType.LAZY, mappedBy = "receiver")
+//    @LazyCollection(LazyCollectionOption.FALSE)
+//    @SortNatural
+//    public SortedSet<ChatMessage> getReceivedChatMessages() {
+//        return receivedChatMessages;
+//    }
+//    public void setReceivedChatMessages(SortedSet<ChatMessage> receivedChatMessages) {
+//        this.receivedChatMessages = receivedChatMessages;
+//    }
+//
+//    private SortedSet<ChatMessage> sendentChatMessages = new TreeSet<>();
+//    @OneToMany(fetch = FetchType.LAZY, mappedBy = "sender")
+//    @LazyCollection(LazyCollectionOption.FALSE)
+//    @SortNatural
+//    public SortedSet<ChatMessage> getSendentChatMessages() {
+//        return sendentChatMessages;
+//    }
+//
+//    public void setSendentChatMessages(SortedSet<ChatMessage> sendentChatMessages) {
+//        this.sendentChatMessages = sendentChatMessages;
+//    }
+
+	@Override
+	public String toString() {
+//		if(this.friendRequests != null && this.friendRequests.isEmpty()){
+//			friendRequests = null;
+//		}
+//		if(this.mailMessages != null && this.mailMessages.isEmpty()){
+//			this.mailMessages = null;
+//		}
+//		if(this.friends != null && this.friends.isEmpty()){
+//			this.friends = null;
+//		}
+//		if(this.log != null && this.log.isEmpty()){
+//			this.log = null;
+//		}
+//		if(this.receivedChatMessages != null && this.receivedChatMessages.isEmpty()){
+//			this.receivedChatMessages = null;
+//		}
+
+		String thisJsonString = GsonX.gson.toJson(this);
+
+//		if(this.friendRequests == null){
+//			friendRequests = new TreeSet<>();
+//		}
+//		if(this.mailMessages == null){
+//			this.mailMessages = new TreeSet<>();
+//		}
+//		if(this.friends == null){
+//			this.friends = new TreeSet<>();
+//		}
+//		if(this.log == null){
+//			this.log = new TreeSet<>();
+//		}
+//		if(this.receivedChatMessages == null){
+//			this.receivedChatMessages = new TreeSet<>();
+//		}
+
+		return GsonX.gson.toJson(thisJsonString);
+	}
 
 }

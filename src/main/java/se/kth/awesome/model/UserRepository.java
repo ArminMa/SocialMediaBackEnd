@@ -6,18 +6,18 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 
-public interface UserRepository extends JpaRepository<ApplicationUser, Long>,
-        JpaSpecificationExecutor<ApplicationUser> {
+public interface UserRepository extends JpaRepository<UserEntity, Long>,
+        JpaSpecificationExecutor<UserEntity> {
 
 
-    @Query(value = "select U FROM ApplicationUser U WHERE U.email = :theEmail")
-    ApplicationUser findByEmail(@Param("theEmail") String email);
+    @Query(value = "select U FROM UserEntity U WHERE U.email = :theEmail")
+    UserEntity findByEmail(@Param("theEmail") String email);
 
-    @Query(value = "select U FROM ApplicationUser U WHERE U.id = :userId")
-    ApplicationUser findByUserID (@Param("userId") Long userID);
+    @Query(value = "select U FROM UserEntity U WHERE U.id = :userId")
+    UserEntity findByUserID (@Param("userId") Long userID);
 
-    @Query(value = "select U FROM ApplicationUser U WHERE U.userName = :theUserName")
-    ApplicationUser findByUsername (@Param("theUserName") String userName);
+    @Query(value = "select U FROM UserEntity U WHERE U.userName = :theUserName")
+    UserEntity findByUsername (@Param("theUserName") String userName);
 
 
 }

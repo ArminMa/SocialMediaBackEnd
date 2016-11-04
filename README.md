@@ -10,7 +10,7 @@
     
 #test the App from Postman
 
-    http://localhost:8080/social/getEmail/armin@gmail.com
+    http://localhost:8080/social/getEmail/test
     http://localhost:8080/social/ping
     http://localhost:8080/social/ping2?name=Armin
 

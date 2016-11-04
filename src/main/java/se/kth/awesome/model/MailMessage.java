@@ -1,18 +1,16 @@
-//package se.kth.awsome.model;
+//package se.kth.awesome.model;
 //
 //import org.hibernate.annotations.LazyCollection;
 //import org.hibernate.annotations.LazyCollectionOption;
 //import org.hibernate.annotations.SortNatural;
-//import org.hibernate.validator.constraints.Length;
-//import org.hibernate.validator.constraints.NotEmpty;
 //
 //import javax.persistence.*;
 //import java.util.Date;
 //@Entity
 //public class MailMessage {
 //
-//    private ApplicationUser sender;
-//    private ApplicationUser receiver;
+//    private UserEntity sender;
+//    private UserEntity receiver;
 //    private String messageContent;
 //    private String topic;
 //    private Date sentDate;
@@ -23,27 +21,38 @@
 //
 //    //måste fixa så att sender och receiver är id för dena class // databas class
 //
+//    private Long id;
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.AUTO)
+//    @Column(name = "id", insertable = false, updatable = false, unique = true, nullable = false)
+//    public Long getId() {
+//        return id;
+//    }
+//    public void setId(Long id) {
+//        this.id = id;
+//    }
+//
 //    @Column(name = "sender")
-//    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = false, fetch = FetchType.EAGER/*, mappedBy = "ApplicationUser.friendRequests"*/)
+//    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = false, fetch = FetchType.EAGER/*, mappedBy = "UserEntity.friendRequests"*/)
 ////	@BatchSize(size=100)
 //    @LazyCollection(LazyCollectionOption.FALSE)
 //    @SortNatural
-//    public ApplicationUser getSender() {
+//    public UserEntity getSender() {
 //        return sender;
 //    }
-//    public void setSender(ApplicationUser sender) {
+//    public void setSender(UserEntity sender) {
 //        this.sender = sender;
 //    }
 //
 //    @Column(name = "receiver")
-//    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = false, fetch = FetchType.EAGER/*, mappedBy = "ApplicationUser.friendRequests"*/)
+//    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = false, fetch = FetchType.EAGER/*, mappedBy = "UserEntity.friendRequests"*/)
 ////	@BatchSize(size=100)
 //    @LazyCollection(LazyCollectionOption.FALSE)
 //    @SortNatural
-//    public ApplicationUser getReceiver() {
+//    public UserEntity getReceiver() {
 //        return receiver;
 //    }
-//    public void setReceiver(ApplicationUser receiver) {
+//    public void setReceiver(UserEntity receiver) {
 //        this.receiver = receiver;
 //    }
 //
