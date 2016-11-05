@@ -5,7 +5,12 @@
 ####Run project as war in a tomcat
 #mvn clean install -P tomMySQL
     mvn clean install
-    insert the war file in TomCat
+    java -jar target\tomcatRun.jar --port 8080 target\social.war
+    
+or
+
+    insert the war file /target/social.war in TomCat
+
     
     
 #test the App from Postman
