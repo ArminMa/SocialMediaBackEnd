@@ -1,6 +1,7 @@
 package se.kth.awesome.pojos;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import se.kth.awesome.model.FriendRequest;
 import se.kth.awesome.util.GsonX;
 
 import javax.xml.bind.annotation.XmlRootElement;
@@ -134,9 +135,9 @@ public class UserPojo  implements Serializable,Comparable<UserPojo>{
 
     @Override
     public int compareTo(UserPojo o) {
-        int thisTime = this.hashCode();
-        long anotherEntity = o.hashCode();
-        return (thisTime<anotherEntity ? -1 : (thisTime==anotherEntity ? 0 : 1));
+        int thisObject= this.hashCode();
+        long anotherObject = o.hashCode();
+        return (thisObject<anotherObject ? -1 : (thisObject==anotherObject ? 0 : 1));
     }
 
     @Override
