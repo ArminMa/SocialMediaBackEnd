@@ -2,12 +2,12 @@ package se.kth.awesome.model;
 
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 import org.hibernate.annotations.SortNatural;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
+import se.kth.awesome.model.chatMessage.ChatMessage;
 import se.kth.awesome.util.GsonX;
 
 import javax.persistence.*;
@@ -119,6 +119,22 @@ public class UserEntity implements Serializable{
     }
     public void setFriendRequests(SortedSet<FriendRequest> friendRequests) {
         this.friendRequests = friendRequests;
+    }
+
+	private SortedSet<ChatMessage> chatMessages = new TreeSet<>();
+
+	@ManyToMany(
+			targetEntity=ChatMessage.class,
+			cascade={CascadeType.PERSIST, CascadeType.MERGE},
+					fetch = FetchType.EAGER
+	)
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @SortNatural
+    public SortedSet<ChatMessage> getChatMessages() {
+        return chatMessages;
+    }
+    public void setChatMessages(SortedSet<ChatMessage> receivedChatMessages) {
+        this.chatMessages = receivedChatMessages;
     }
 //
 //	private SortedSet<MailMessage> mailMessages = new TreeSet<>();
