@@ -121,21 +121,21 @@ public class UserEntity implements Serializable{
         this.friendRequests = friendRequests;
     }
 
-	private SortedSet<ChatMessage> chatMessages = new TreeSet<>();
-
-	@ManyToMany(
-			targetEntity=ChatMessage.class,
-			cascade={CascadeType.PERSIST, CascadeType.MERGE},
-					fetch = FetchType.EAGER
-	)
-    @LazyCollection(LazyCollectionOption.FALSE)
-    @SortNatural
-    public SortedSet<ChatMessage> getChatMessages() {
-        return chatMessages;
-    }
-    public void setChatMessages(SortedSet<ChatMessage> receivedChatMessages) {
-        this.chatMessages = receivedChatMessages;
-    }
+//	private SortedSet<ChatMessage> chatMessages = new TreeSet<>();
+//
+//	@ManyToMany(
+//			targetEntity=ChatMessage.class,
+//			/*cascade={CascadeType.PERSIST, CascadeType.MERGE},*/
+//					fetch = FetchType.EAGER
+//	)
+//    @LazyCollection(LazyCollectionOption.FALSE)
+//    @SortNatural
+//    public SortedSet<ChatMessage> getChatMessages() {
+//        return chatMessages;
+//    }
+//    public void setChatMessages(SortedSet<ChatMessage> receivedChatMessages) {
+//        this.chatMessages = receivedChatMessages;
+//    }
 //
 //	private SortedSet<MailMessage> mailMessages = new TreeSet<>();
 //	@OneToMany(fetch = FetchType.EAGER)
