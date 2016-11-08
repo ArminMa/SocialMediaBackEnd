@@ -34,20 +34,20 @@ public class FriendRequestTest {
     @Before
     public void setUp() throws Exception {
         System.out.println("\n\n----------------- FriendRequestTest.setUp-start ----------------------------\n\n");
-        userEntities.add(new UserEntity("testEmail0@gmail.com", "testUser0", "PasswordHashed0"));
-        userEntities.add(new UserEntity("testEmail1@gmail.com", "testUser1", "PasswordHashed1"));
-        userEntities.add(new UserEntity("testEmail2@gmail.com", "testUser2", "PasswordHashed2"));
+        userEntities.add(new UserEntity("testEmail0@gmail.com", "testUser0", "PasswordHashed0")); // userEntities 0
+        userEntities.add(new UserEntity("testEmail1@gmail.com", "testUser1", "PasswordHashed1")); // userEntities 1
+        userEntities.add(new UserEntity("testEmail2@gmail.com", "testUser2", "PasswordHashed2")); // userEntities 2
 
         userEntities = userRepo.save(userEntities);
         userRepo.flush();
         assertThat(userEntities).isNotNull();
         assertThat(userEntities.size()).isEqualTo(3);
 
-        friendRequests.add(new FriendRequest(userEntities.get(0),userEntities.get(1)));
-        friendRequests.add(new FriendRequest(userEntities.get(0),userEntities.get(2)));
-        friendRequests.add(new FriendRequest(userEntities.get(1),userEntities.get(2)));
+        friendRequests.add(new FriendRequest(userEntities.get(0),userEntities.get(1))); // friendRequests 0
+        friendRequests.add(new FriendRequest(userEntities.get(0),userEntities.get(2))); // friendRequests 1
+        friendRequests.add(new FriendRequest(userEntities.get(1),userEntities.get(2))); // friendRequests 2
 
-
+// userEntities 1 får en
 
         friendRequests = friendRequestRepo.save(friendRequests);
         friendRequestRepo.flush();
@@ -55,13 +55,15 @@ public class FriendRequestTest {
         assertThat(friendRequests.size()).isEqualTo(3);
 
 
-        userEntities.get(0).getFriendRequests().add(friendRequests.get(0));
-        userEntities.get(0).getFriendRequests().add(friendRequests.get(1));
-        userRepo.save(userEntities.get(0));
-        userRepo.flush();
-        userEntities.get(1).getFriendRequests().add(friendRequests.get(2));
-        userRepo.save(userEntities.get(1));
-        userRepo.flush();
+//        userEntities.get(1).getFriendRequests().add(friendRequests.get(0));
+        friendRequestRepo.save(friendRequests);
+        friendRequestRepo.flush();
+
+
+//        userEntities.get(2).getFriendRequests().add(friendRequests.get(1));
+//        userEntities.get(2).getFriendRequests().add(friendRequests.get(2));
+        friendRequestRepo.save(friendRequests);
+        friendRequestRepo.flush();
         System.out.println("\n\n----------------- FriendRequestTest.setUp-end ----------------------------\n\n");
     }
 
@@ -95,9 +97,9 @@ public class FriendRequestTest {
         assertThat(userEntities).isNotNull();
         assertThat(userEntities.size()).isGreaterThan(2);
         assertThat(friendRequests).isNotNull();
-        assertThat(friendRequests.size()).isGreaterThan(2);
+        assertThat(friendRequests.size()).isGreaterThan(0);
 
-        UserEntity user0 = userRepo.findByUsername("testUser0");
+        UserEntity user0 = userRepo.findByUsername("testUser1");
 
         FriendRequest user0FriendRequest = user0.getFriendRequests().first();
         UserEntity receivingUser = user0FriendRequest.getReceiver();
