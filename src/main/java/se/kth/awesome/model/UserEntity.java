@@ -91,6 +91,14 @@ public class UserEntity implements Serializable{
 		this.password = password;
 	}
 
+//	@Lob
+//	public byte[] getPicture() {
+//		return picture;
+//	}
+//
+//	public void setPicture(byte[] picture) {
+//		this.picture = picture;
+//	}
 
 	/*
 	 * User Mapping starts Here
@@ -101,20 +109,21 @@ public class UserEntity implements Serializable{
 // should be remove. we don't want that
 
 //	CascadeType.REMOVE wants to remove the other side Entity if this is removed, that is not good hear.
-//
-//	private SortedSet<FriendRequest> friendRequests = new TreeSet<>();
-//    @OneToOne( orphanRemoval = true, fetch = FetchType.EAGER)
-//	@LazyCollection(LazyCollectionOption.FALSE)
-//	@SortNatural
-//    public SortedSet<FriendRequest> getFriendRequests() {
-//        return friendRequests;
-//    }
-//    public void setFriendRequests(SortedSet<FriendRequest> friendRequests) {
-//        this.friendRequests = friendRequests;
-//    }
+
+	private SortedSet<FriendRequest> friendRequests = new TreeSet<>();
+	@ManyToMany(/*cascade = {CascadeType.PERSIST, CascadeType.MERGE},*/ fetch = FetchType.EAGER)
+	@LazyCollection(LazyCollectionOption.FALSE)
+	@SortNatural
+    public SortedSet<FriendRequest> getFriendRequests() {
+        return friendRequests;
+    }
+    public void setFriendRequests(SortedSet<FriendRequest> friendRequests) {
+        this.friendRequests = friendRequests;
+    }
 //
 //	private SortedSet<MailMessage> mailMessages = new TreeSet<>();
 //	@OneToMany(fetch = FetchType.EAGER)
+//	@ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER)
 //	@LazyCollection(LazyCollectionOption.FALSE)
 //	@SortNatural
 //	public SortedSet<MailMessage> getMailMessages() {

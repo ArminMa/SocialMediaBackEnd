@@ -6,8 +6,10 @@ import org.junit.Before;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.junit.runners.MethodSorters;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -16,6 +18,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class UserRepositoryTest {
 
 
@@ -39,7 +42,7 @@ public class UserRepositoryTest {
 
     @Before
     public void setUp() throws Exception {
-
+        System.out.println("\n\n----------------- UserRepositoryTest.setUp-start ----------------------------\n\n");
 
         userEntities.add(new UserEntity("testEmail0@gmail.com", "testUser0", "PasswordHashed0"));
         userEntities.add(new UserEntity("testEmail1@gmail.com", "testUser1", "PasswordHashed1"));
@@ -50,17 +53,17 @@ public class UserRepositoryTest {
 
         assertThat(userEntities).isNotNull();
         assertThat(userEntities.size()).isEqualTo(3);
-
+        System.out.println("\n\n----------------- UserRepositoryTest.setUp-end ----------------------------\n\n");
     }
 
     @After
     public void tearDown() throws Exception {
-
+        System.out.println("\n\n----------------- UserRepositoryTest.tearDown-start ----------------------------\n\n");
         assertThat(userEntities).isNotNull();
 
         userRepository.delete(userEntities);
         userRepository.flush();
-
+        System.out.println("\n\n----------------- UserRepositoryTest.tearDown-end ----------------------------\n\n");
     }
 
 
