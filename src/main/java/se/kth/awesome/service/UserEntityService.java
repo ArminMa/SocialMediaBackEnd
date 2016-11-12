@@ -1,14 +1,17 @@
 package se.kth.awesome.service;
 
 import org.springframework.http.ResponseEntity;
+import se.kth.awesome.model.UserEntity;
+import se.kth.awesome.pojos.UserPojo;
 
 
-public interface ApplicationUserService {
+public interface UserEntityService {
 
 
-    ResponseEntity<?> findByUsername(String userName);
+    UserPojo findByUsername(String userName);
 
 	ResponseEntity<?> findByUserID(Long idValue);
 
     ResponseEntity<?> findByEmail(String email);
+
 }

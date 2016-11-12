@@ -21,25 +21,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class UserRepositoryTest {
 
-
-
     @Test
     public void contextLoads() {
         System.out.println("hello test");
     }
 
-
     @Autowired
     private UserRepository userRepository;
-
-
-
     List<UserEntity> userEntities = new ArrayList<>();
-
-
-
-
-
     @Before
     public void setUp() throws Exception {
         System.out.println("\n\n----------------- UserRepositoryTest.setUp-start ----------------------------\n\n");
@@ -66,17 +55,14 @@ public class UserRepositoryTest {
         System.out.println("\n\n----------------- UserRepositoryTest.tearDown-end ----------------------------\n\n");
     }
 
-
     @Test
     public void userRepositoryTest(){
         System.out.println("\n\n----------------- UserRepositoryTest.userRepositoryTest-start ----------------------------\n\n");
-
         UserEntity userEntity = null;
 
         userEntity = userRepository.findByEmail(userEntities.get(0).getEmail());
         assertThat(userEntity).isNotNull();
         assertThat(userEntity.getEmail()).isEqualTo("testEmail0@gmail.com");
-
 
         userEntity = userRepository.findByUsername(userEntities.get(1).getUserName());
         assertThat(userEntity).isNotNull();

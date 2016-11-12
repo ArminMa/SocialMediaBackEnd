@@ -11,7 +11,6 @@ import org.springframework.transaction.annotation.Transactional;
 public interface UserRepository extends JpaRepository<UserEntity, Long>,
         JpaSpecificationExecutor<UserEntity> {
 
-
     @Query(value = "select U FROM UserEntity U WHERE U.email = :theEmail")
     UserEntity findByEmail(@Param("theEmail") String email);
 
