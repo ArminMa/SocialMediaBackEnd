@@ -60,8 +60,6 @@ public class PingControllerTest {
     }
 
     //TODO writhe test for ping 3,4,5,6
-
-
     @Test
     public void ping8() throws Exception {
         PingPojo pingReturnd = GsonX.gson.fromJson(
