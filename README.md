@@ -12,6 +12,6 @@ or
     insert the war file /target/social.war in TomCat on post 8081
 
 #test the App from Postman
-    http://localhost:8081/social/getEmail/test
-    http://localhost:8081/social/ping
-    http://localhost:8081/social/ping2?name=Armin
+    http://localhost:8081/getEmail/test
+    http://localhost:8081/ping
+    http://localhost:8081/ping2?name=Armin
