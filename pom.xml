@@ -75,6 +75,10 @@
 			<artifactId>spring-boot-starter-tomcat</artifactId>
 			<scope>provided</scope>
 		</dependency>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>javax.servlet-api</artifactId>
+		</dependency>
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -105,7 +109,7 @@
 	<build>
 
 		<outputDirectory>target</outputDirectory>
-		<finalName>social</finalName>
+		<finalName>ROOT</finalName>
 
 		<plugins>
 
@@ -129,7 +133,7 @@
                                 <artifactItem>
                                     <groupId>com.github.jsimone</groupId>
                                     <artifactId>webapp-runner</artifactId>
-                                    <version>8.0.30.2</version>
+									<version>8.5.5.2</version>
                                     <destFileName>tomcatRun.jar</destFileName>
                                     <outputDirectory>target</outputDirectory>
                                 </artifactItem>
