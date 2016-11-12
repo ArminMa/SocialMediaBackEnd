@@ -34,7 +34,7 @@ public class UserRepositoryTest {
 
 
 
-    List<UserEntity> userEntities = new ArrayList<>();
+    private List<UserEntity> userEntities = new ArrayList<>();
 
 
 
@@ -77,14 +77,21 @@ public class UserRepositoryTest {
         assertThat(userEntity).isNotNull();
         assertThat(userEntity.getEmail()).isEqualTo("testEmail0@gmail.com");
 
+        userEntity = userRepository.findOneByUserNameOrEmail("availableUserName", userEntities.get(0).getEmail());
+        assertThat(userEntity).isNotNull();
+        assertThat(userEntity.getEmail()).isEqualTo(userEntities.get(0).getEmail());
+
 
         userEntity = userRepository.findByUsername(userEntities.get(1).getUserName());
         assertThat(userEntity).isNotNull();
-        assertThat(userEntity.getUserName()).isEqualTo("testUser1");
+        assertThat(userEntity.getUserName()).isEqualTo(userEntities.get(1).getUserName());
+
+        userEntity = userRepository.findOneByUserNameOrEmail(userEntities.get(1).getUserName(), "emailNot@in.db");
+        assertThat(userEntity).isNotNull();
+        assertThat(userEntity.getUserName()).isEqualTo(userEntities.get(1).getUserName());
 
         userEntity = userRepository.findByUsername(userEntities.get(2).getUserName());
         assertThat(userEntity).isNotNull();
-        System.out.println("\nUserRepositoryTest.testKey.applicationUser2.id = " + userEntity.getId() + "\n");
         assertThat(userEntity.getId()).isEqualTo(userEntities.get(2).getId());
 
         System.out.println("\n\n----------------- UserRepositoryTest.userRepositoryTest-end ----------------------------\n\n");

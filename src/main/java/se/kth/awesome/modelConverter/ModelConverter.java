@@ -13,9 +13,9 @@ import java.util.TreeSet;
 /**
  * Created by Am on 11/4/2016.
  */
-public class modelConverter {
+public class ModelConverter {
 
-        public modelConverter() {
+        public ModelConverter() {
         }
 
         private static boolean ObjectNotNull(Object o){
@@ -26,6 +26,11 @@ public class modelConverter {
         public static UserPojo convert(UserEntity userEntity){
             if( userEntity == null ) return null;
             return GsonX.gson.fromJson(userEntity.toString(), UserPojo.class );
+        }
+
+        public static UserEntity convert(UserPojo userPojo){
+            if( userPojo == null ) return null;
+            return GsonX.gson.fromJson(userPojo.toString(), UserEntity.class );
         }
 
 //        public static FriendRequestPojo convert(FriendRequest friendRequest){

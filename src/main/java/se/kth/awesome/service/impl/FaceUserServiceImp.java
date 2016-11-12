@@ -33,7 +33,7 @@ public class FaceUserServiceImp implements ApplicationUserService {
 	}
 
 	@Override
-	public ResponseEntity<?> findByEmail(String email) {
+	public ResponseEntity<String> findByEmail(String email) {
 		UserEntity appUser = userRepository.findByEmail(email);
 
 		if(appUser == null) ResponseEntity.status(HttpStatus.NOT_FOUND).build();
@@ -42,7 +42,9 @@ public class FaceUserServiceImp implements ApplicationUserService {
 
 		return ResponseEntity.status(HttpStatus.OK)
 				.contentType(MediaTypes.JsonUtf8)
-				.body(appUser);
+				.body(appUser.toString());
 		
 	}
+
+
 }

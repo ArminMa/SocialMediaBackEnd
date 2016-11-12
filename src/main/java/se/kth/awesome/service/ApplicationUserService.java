@@ -11,4 +11,5 @@ public interface ApplicationUserService {
 	ResponseEntity<?> findByUserID(Long idValue);
 
     ResponseEntity<?> findByEmail(String email);
+
 }

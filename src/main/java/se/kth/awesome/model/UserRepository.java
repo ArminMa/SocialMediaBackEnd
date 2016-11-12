@@ -24,8 +24,10 @@ public interface UserRepository extends JpaRepository<UserEntity, Long>,
     @Modifying
     @Transactional
     @Query(value = "delete from FriendRequest FR " +
-            "where FR.receiver.id = :senderId and FR.receiver.id = :receiverId" )
+            "where FR.sender.id = :senderId and FR.receiver.id = :receiverId" )
     void deleteFriendsByReceiverAndSenderID(@Param("senderId") Long senderID, @Param("receiverId") Long receiverID);
 
 
+    UserEntity  findOneByUserNameOrEmail(String userName, String email);
+//    UserEntity findOneUserByEmailOrUsername(String email, String userName);
 }
