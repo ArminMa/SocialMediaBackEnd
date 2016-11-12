@@ -126,7 +126,6 @@ public class UserPojo  implements Serializable,Comparable<UserPojo>{
         if (email != null ? !email.equals(userPojo.email) : userPojo.email != null) return false;
         if (password != null ? !password.equals(userPojo.password) : userPojo.password != null) return false;
         return Arrays.equals(picture, userPojo.picture);
-
     }
 
     @Override

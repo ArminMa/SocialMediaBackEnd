@@ -12,8 +12,6 @@ import se.kth.awesome.pojos.UserPojo;
 @Table(name = "friend_request")
 public class FriendRequest implements Serializable,Comparable<FriendRequest>{
 
-
-
     public FriendRequest() {
     }
 
@@ -35,7 +33,6 @@ public class FriendRequest implements Serializable,Comparable<FriendRequest>{
 
     private UserEntity sender;
 /*    @Column(name = "sender")*/
-
     @OneToOne(orphanRemoval = false, fetch = FetchType.EAGER)
     @LazyCollection(LazyCollectionOption.FALSE)
     @JoinColumn(name = "sender_id")
@@ -45,7 +42,6 @@ public class FriendRequest implements Serializable,Comparable<FriendRequest>{
     public void setSender(UserEntity sender) {
         this.sender = sender;
     }
-
 
     private UserEntity receiver;
     @OneToOne(orphanRemoval = false, fetch = FetchType.EAGER)
@@ -64,16 +60,13 @@ public class FriendRequest implements Serializable,Comparable<FriendRequest>{
         if (o == null || getClass() != o.getClass()) return false;
 
         FriendRequest that = (FriendRequest) o;
-
         return id != null ? id.equals(that.id) : that.id == null;
-
     }
 
     @Override
     public int hashCode() {
         return id != null ? id.hashCode() : 0;
     }
-
 
     @Override
     public int compareTo(FriendRequest o) {
