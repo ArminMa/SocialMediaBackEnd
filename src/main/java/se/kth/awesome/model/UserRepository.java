@@ -7,6 +7,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collection;
+
 
 public interface UserRepository extends JpaRepository<UserEntity, Long>,
         JpaSpecificationExecutor<UserEntity> {
@@ -19,6 +21,9 @@ public interface UserRepository extends JpaRepository<UserEntity, Long>,
 
     @Query(value = "select U FROM UserEntity U WHERE U.userName = :theUserName")
     UserEntity findByUsername (@Param("theUserName") String userName);
+
+    @Query(value = "select U FROM UserEntity U WHERE U.userName LIKE CONCAT('%',:searchString,'%') ORDER BY U.userName DESC")
+    Collection<UserEntity> searchUsersByName (@Param("searchString") String searchString);
 
     @Modifying
     @Transactional

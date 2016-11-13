@@ -13,6 +13,8 @@ import se.kth.awesome.service.UserEntityService;
 import se.kth.awesome.util.MediaTypes;
 
 import java.nio.charset.Charset;
+import java.util.ArrayList;
+import java.util.Collection;
 
 @Service
 public class UserEntityEntityServiceImp implements UserEntityService {
@@ -30,11 +32,7 @@ public class UserEntityEntityServiceImp implements UserEntityService {
 		}
 		System.out.println("---------------------------------------appUserBeforeConvert--------------------------------------------------------");
 		System.out.println(appUser.toString());
-		UserPojo userPojo = new UserPojo();
-		userPojo.setPassword(appUser.getPassword());
-		userPojo.setEmail(appUser.getEmail());
-		userPojo.setUserName(appUser.getUserName());
-		userPojo.setId(appUser.getId());
+		UserPojo userPojo = userEntityToUserPojo(appUser);
 
 		return userPojo;
 	}
@@ -51,5 +49,29 @@ public class UserEntityEntityServiceImp implements UserEntityService {
 		return ResponseEntity.status(HttpStatus.OK)
 				.contentType(MediaTypes.JsonUtf8)
 				.body(appUser);
+	}
+
+	@Override
+	public Collection<UserPojo> searchUsersByName(String name) {
+		Collection<UserEntity> matchingUsers = userRepository.searchUsersByName(name);
+		Collection<UserPojo> users = userEntitiesToUserPojos(matchingUsers);
+		return users;
+	}
+
+	private Collection<UserPojo>  userEntitiesToUserPojos(Collection<UserEntity> users){
+		Collection<UserPojo> userPojos = new ArrayList<>();
+		for (UserEntity user : users) {
+			userPojos.add(userEntityToUserPojo(user));
+		}
+		return userPojos;
+	}
+
+	private UserPojo userEntityToUserPojo(UserEntity appUser) {
+		UserPojo userPojo = new UserPojo();
+		userPojo.setPassword(appUser.getPassword());
+		userPojo.setEmail(appUser.getEmail());
+		userPojo.setUserName(appUser.getUserName());
+		userPojo.setId(appUser.getId());
+		return userPojo;
 	}
 }
