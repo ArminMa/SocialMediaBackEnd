@@ -27,8 +27,8 @@ public class userController {
     private ApplicationUserService userService;
 
 
-//    @Autowired
-//    private RegisterService registerService;
+    @Autowired
+    private RegisterService registerService;
 
     @RequestMapping(
             value = "/getEmail/{email:.+}",
@@ -49,13 +49,10 @@ public class userController {
             HttpServletResponse response) throws Exception {
 
 
-        System.out.println("\nuserController.registerUser.userPojo = \n" + userPojo.toString());
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .contentType(MediaTypes.JsonUtf8)
-                .body(userPojo);
 
-//
-//        return registerService.registerNewUser(userPojo);
+
+
+        return registerService.registerNewUser(userPojo);
     }
 
 

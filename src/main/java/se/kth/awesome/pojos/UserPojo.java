@@ -1,6 +1,8 @@
 package se.kth.awesome.pojos;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import se.kth.awesome.model.FriendRequest;
 import se.kth.awesome.util.GsonX;
 
@@ -11,7 +13,9 @@ import java.util.Arrays;
 import java.util.Collection;
 
 @XmlRootElement
-@JsonInclude(JsonInclude.Include.NON_NULL)
+@XmlAccessorType(XmlAccessType.PUBLIC_MEMBER)
+@JsonInclude(JsonInclude.Include.NON_NULL )
+
 public class UserPojo  implements Serializable,Comparable<UserPojo>{
 
     private Long id;
@@ -19,10 +23,15 @@ public class UserPojo  implements Serializable,Comparable<UserPojo>{
     private String email;
     private String password;
     private byte[] picture; // Todo implement this Armin. low prio
+    @JsonInclude(JsonInclude.Include.NON_EMPTY )
     private Collection<FriendRequestPojo> friendRequests = new ArrayList<>();
+    @JsonInclude(JsonInclude.Include.NON_EMPTY )
     private Collection<MailMessagePojo> mailMessages = new ArrayList<>();
+    @JsonInclude(JsonInclude.Include.NON_EMPTY )
     private Collection<UserPojo> friends = new ArrayList<>();
+    @JsonInclude(JsonInclude.Include.NON_EMPTY )
     private Collection<PostPojo> log = new ArrayList<>();
+    @JsonInclude(JsonInclude.Include.NON_EMPTY )
     private Collection<ChatMessagePojo> chatMessages = new ArrayList<>();
 
 
@@ -181,6 +190,6 @@ public class UserPojo  implements Serializable,Comparable<UserPojo>{
             this.chatMessages = new ArrayList<>();
         }
 
-        return GsonX.gson.toJson(thisJsonString);
+        return thisJsonString;
     }
 }

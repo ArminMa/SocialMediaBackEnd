@@ -77,6 +77,7 @@ public class userControllerTest {
     public void registerTest() throws Exception {
         System.out.println("----------------- userControllerTest.registerTest-start ----------------------------");
         userPojos.add(new UserPojo("TestUserController0@gmail.com", "TestUserController0", "PasswordHashed0"));
+        System.out.println("\nGsonX.gson.toJson(userPojos.get(0)) = " + GsonX.gson.toJson(userPojos.get(0)) + "\n");
         HttpServletRequest httpServletRequest = null;
         HttpServletResponse httpServletResponse = null;
         MockHttpServletResponse theResponse =  this.mockMvc.perform
