@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import se.kth.awesome.pojos.UserPojo;
 import se.kth.awesome.service.ApplicationUserService;
 import se.kth.awesome.service.RegisterService;
+import se.kth.awesome.util.MediaTypes;
 
 @RestController
 public class userController {
@@ -39,17 +40,21 @@ public class userController {
     }
 
     @RequestMapping(value = "/register",
-            method = RequestMethod.POST,
-            consumes = MediaType.APPLICATION_JSON_UTF8_VALUE,
-            produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+            method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
-    public @ResponseBody
-    ResponseEntity<?> registerUser(
+    public @ResponseBody ResponseEntity<?> registerUser(
             @RequestBody UserPojo userPojo,
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
 
-        return registerService.registerNewUser(userPojo);
+
+        System.out.println("\nuserController.registerUser.userPojo = \n" + userPojo.toString());
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .contentType(MediaTypes.JsonUtf8)
+                .body(userPojo);
+
+//
+//        return registerService.registerNewUser(userPojo);
     }
 
 

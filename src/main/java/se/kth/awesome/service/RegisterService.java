@@ -7,7 +7,7 @@ import se.kth.awesome.pojos.UserPojo;
 public interface RegisterService {
 
 
-	ResponseEntity<?> registerNewUser(UserPojo userPojo) throws Exception;
+	ResponseEntity<?> registerNewUser(UserPojo userPojo);
 
 
 

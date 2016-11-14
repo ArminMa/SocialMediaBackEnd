@@ -29,11 +29,12 @@ public class RegisterServiceImpl implements RegisterService {
 	private UserRepository userRepository;
 
 	@Override
-	public ResponseEntity<?> registerNewUser(UserPojo userPojo) throws GeneralSecurityException {
+	public ResponseEntity<?> registerNewUser(UserPojo userPojo)  {
 
 
-		if(!startRegistration(userPojo))
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+		if(!startRegistration(userPojo)) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+		}
 
 
         UserEntity faceUserAvailability = userRepository.findOneUserByEmailOrUsername(userPojo.getEmail(), userPojo.getUserName());
@@ -66,12 +67,20 @@ public class RegisterServiceImpl implements RegisterService {
 
 
 
-		UserEntity faceUserEntity =  userRepository.save( modelConverter.convert(userPojo) );
+		UserEntity userEntity =  userRepository.save( modelConverter.convert(userPojo) );
 		userRepository.flush();
-		userPojo = modelConverter.convert(faceUserEntity);
-		return ResponseEntity.ok()
-                .contentType(MediaTypes.JsonUtf8)
-                .body(userPojo);
+
+
+
+        if(userEntity == null){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+        else{
+            userPojo = modelConverter.convert(userEntity);
+            return ResponseEntity.status(HttpStatus.CREATED)
+                    .contentType(MediaTypes.JsonUtf8)
+                    .body(userPojo);
+        }
 
 	}
 

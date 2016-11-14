@@ -18,7 +18,9 @@ import se.kth.awesome.util.MediaTypes;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
@@ -59,6 +61,28 @@ public class PingControllerTest {
         assertThat(valuReturnd).isEqualTo("Hello " + textInserted);
     }
 
+    @Test
+    public void ping7() throws Exception {
+        System.out.println("----------------- PingControllerTest.ping7-start ----------------------------");
+        PingPojo ping = new PingPojo("Ping Armin", "ignore me", "keyUserServer = my token should be here");
+        PingPojo pingReturnd = GsonX.gson.fromJson(
+                this.mockMvc.perform
+                        (
+                                post("/ping7/testName")
+                                        .contentType(MediaTypes.JsonUtf8)
+                                        .content(GsonX.gson.toJson(ping))
+                                        .header("keyUserServer","my token should be here")
+                        )
+                        .andExpect(status().isOk())
+                        .andExpect(content().contentType(MediaTypes.JsonUtf8))
+                        .andExpect(header().string("keyUserServer","some random token"))
+                        .andExpect(header().string("info", "mor header info"))
+                        .andReturn().getResponse().getContentAsString()
+                , PingPojo.class);
+        assertThat(pingReturnd).isNotNull();
+        assertThat(pingReturnd.equals(ping));
+        System.out.println("----------------- PingControllerTest.ping7-end ----------------------------");
+    }
     //TODO writhe test for ping 3,4,5,6
     @Test
     public void ping8() throws Exception {
