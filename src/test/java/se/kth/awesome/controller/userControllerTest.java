@@ -30,9 +30,13 @@ import se.kth.awesome.model.UserRepository;
 
 import se.kth.awesome.pojos.UserPojo;
 
+import se.kth.awesome.util.GsonX;
 import se.kth.awesome.util.MediaTypes;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
@@ -75,15 +79,15 @@ public class userControllerTest {
         userPojos.add(new UserPojo("TestUserController0@gmail.com", "TestUserController0", "PasswordHashed0"));
         HttpServletRequest httpServletRequest = null;
         HttpServletResponse httpServletResponse = null;
-
-        MockHttpServletResponse theResponse = this.mockMvc.perform
+        MockHttpServletResponse theResponse =  this.mockMvc.perform
                 (
-                        MockMvcRequestBuilders.post("/register")
+                        post("/register")
                                 .contentType(MediaTypes.JsonUtf8)
-                                .content(userPojos.get(0).toString())
+                                .content(GsonX.gson.toJson(userPojos.get(0)))
+                                .header("keyUserServer","my token should be here")
                 )
-
-//                .andExpect(status().is(HttpStatus.CREATED.value()))
+                .andExpect(status().is(HttpStatus.CREATED.value()))
+                .andExpect(content().contentType(MediaTypes.JsonUtf8))
                 .andReturn().getResponse();
 
         assertThat(theResponse).isNotNull();

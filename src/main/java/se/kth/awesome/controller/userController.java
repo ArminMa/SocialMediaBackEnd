@@ -27,8 +27,8 @@ public class userController {
     private ApplicationUserService userService;
 
 
-    @Autowired
-    private RegisterService registerService;
+//    @Autowired
+//    private RegisterService registerService;
 
     @RequestMapping(
             value = "/getEmail/{email:.+}",
@@ -40,8 +40,9 @@ public class userController {
     }
 
     @RequestMapping(value = "/register",
-            method = RequestMethod.POST)
-    @ResponseStatus(HttpStatus.CREATED)
+            method = RequestMethod.POST,
+            consumes = MediaType.ALL_VALUE,
+            produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public @ResponseBody ResponseEntity<?> registerUser(
             @RequestBody UserPojo userPojo,
             HttpServletRequest request,
