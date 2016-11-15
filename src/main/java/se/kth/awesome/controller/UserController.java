@@ -20,7 +20,7 @@ import se.kth.awesome.service.RegisterService;
 import se.kth.awesome.util.MediaTypes;
 
 @RestController
-public class userController {
+public class UserController {
 
 
     @Autowired
@@ -47,10 +47,6 @@ public class userController {
             @RequestBody UserPojo userPojo,
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
-
-
-
-
 
         return registerService.registerNewUser(userPojo);
     }
