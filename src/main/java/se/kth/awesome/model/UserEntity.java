@@ -200,6 +200,9 @@ public class UserEntity implements Serializable{
 //		if(this.friendRequests != null && this.friendRequests.isEmpty()){
 //			friendRequests = null;
 //		}
+		if(this.friendRequests != null && this.friendRequests.isEmpty()){
+			friendRequests = null;
+		}
 //		if(this.mailMessages != null && this.mailMessages.isEmpty()){
 //			this.mailMessages = null;
 //		}
@@ -218,6 +221,9 @@ public class UserEntity implements Serializable{
 //		if(this.friendRequests == null){
 //			friendRequests = new TreeSet<>();
 //		}
+		if(this.friendRequests == null){
+			friendRequests = new TreeSet<>();
+		}
 //		if(this.mailMessages == null){
 //			this.mailMessages = new TreeSet<>();
 //		}
@@ -232,6 +238,7 @@ public class UserEntity implements Serializable{
 //		}
 
 		return GsonX.gson.toJson(thisJsonString);
+		return thisJsonString;
 	}
 
 }
