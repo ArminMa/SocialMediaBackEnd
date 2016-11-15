@@ -237,7 +237,7 @@ public class UserEntity implements Serializable{
 //			this.receivedChatMessages = new TreeSet<>();
 //		}
 
-		return GsonX.gson.toJson(thisJsonString);
+
 		return thisJsonString;
 	}
 

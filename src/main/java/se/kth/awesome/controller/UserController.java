@@ -1,6 +1,7 @@
 package se.kth.awesome.controller;
 
 
+import java.util.Collection;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +38,28 @@ public class UserController {
     public ResponseEntity<?> getUserByEmail(@PathVariable("email") String userEmail) {
 
         return userService.findByEmail(userEmail);
+    }
 
+    @RequestMapping(
+            value = "/login/{userName}/{password}",
+            method = RequestMethod.GET)
+    public ResponseEntity<?> login(@PathVariable("userName") String userName, @PathVariable("password") String password) {
+        UserPojo userPojo = userService.findByUsername(userName);
+        if(userPojo == null){
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+//        if(userPojo == null || !userPojo.getUserName().equals(userName) || !userPojo.getPassword().equals(password)) {
+//            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+//        }
+        return ResponseEntity.status(HttpStatus.OK).contentType(MediaTypes.JsonUtf8).body("success");
+    }
+
+    @RequestMapping(
+            value = "/userSearch/{userName}",
+            method = RequestMethod.GET)
+    public ResponseEntity<?> userSearch(@PathVariable("userName") String userName) {
+        Collection<UserPojo> matchingUsers = userService.searchUsersByName(userName);
+        return  ResponseEntity.status(HttpStatus.OK).contentType(MediaTypes.JsonUtf8).body(matchingUsers);
     }
 
     @RequestMapping(value = "/register",

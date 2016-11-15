@@ -189,7 +189,6 @@ public class UserPojo  implements Serializable,Comparable<UserPojo>{
             this.chatMessages = new ArrayList<>();
         }
 
-        return GsonX.gson.toJson(thisJsonString);
         return thisJsonString;
     }
 }
