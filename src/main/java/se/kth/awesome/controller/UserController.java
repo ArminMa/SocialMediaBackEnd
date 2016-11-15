@@ -15,16 +15,16 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import se.kth.awesome.pojos.UserPojo;
-import se.kth.awesome.service.ApplicationUserService;
+import se.kth.awesome.service.UserEntityService;
 import se.kth.awesome.service.RegisterService;
 import se.kth.awesome.util.MediaTypes;
 
 @RestController
-public class userController {
+public class UserController {
 
 
     @Autowired
-    private ApplicationUserService userService;
+    private UserEntityService userService;
 
 
     @Autowired

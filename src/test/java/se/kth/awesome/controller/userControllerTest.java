@@ -44,7 +44,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @WebAppConfiguration
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
-public class userControllerTest {
+public class UserControllerTest {
 
 
     @Autowired
@@ -65,17 +65,17 @@ public class userControllerTest {
 
     @After
     public void tearDown() throws Exception {
-        System.out.println("\n\n----------------- userControllerTest.tearDown-start ----------------------------\n\n");
+        System.out.println("\n\n----------------- UserControllerTest.tearDown-start ----------------------------\n\n");
         assertThat(userEntities).isNotNull();
 
         userRepository.delete(userEntities);
         userRepository.flush();
-        System.out.println("\n\n----------------- userControllerTest.tearDown-end ----------------------------\n\n");
+        System.out.println("\n\n----------------- UserControllerTest.tearDown-end ----------------------------\n\n");
     }
 
     @Test
     public void registerTest() throws Exception {
-        System.out.println("----------------- userControllerTest.registerTest-start ----------------------------");
+        System.out.println("----------------- UserControllerTest.registerTest-start ----------------------------");
         userPojos.add(new UserPojo("TestUserController0@gmail.com", "TestUserController0", "PasswordHashed0"));
         System.out.println("\nGsonX.gson.toJson(userPojos.get(0)) = " + GsonX.gson.toJson(userPojos.get(0)) + "\n");
         HttpServletRequest httpServletRequest = null;
@@ -94,7 +94,7 @@ public class userControllerTest {
         assertThat(theResponse).isNotNull();
         System.out.println("\ntheResponse.getStatus = " + theResponse.getStatus() + "\n");
 
-        System.out.println("----------------- userControllerTest.registerTest-end ----------------------------");
+        System.out.println("----------------- UserControllerTest.registerTest-end ----------------------------");
 
     }
 
