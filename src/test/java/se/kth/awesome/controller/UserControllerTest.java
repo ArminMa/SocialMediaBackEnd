@@ -75,6 +75,7 @@ public class UserControllerTest {
     public void tearDown() throws Exception {
         System.out.println("\n\n----------------- UserControllerTest.tearDown-start ----------------------------\n\n");
         assertThat(userEntities).isNotNull();
+
         userRepository.delete(userEntities);
         userRepository.flush();
         System.out.println("\n\n----------------- UserControllerTest.tearDown-end ----------------------------\n\n");
@@ -94,6 +95,7 @@ public class UserControllerTest {
         System.out.println("this is how userpojo looks like "+ System.lineSeparator() + userPojo.toString());
         System.out.println("\n\n----------------- UserControllerTest.testGetUser.end ----------------------------\n\n");
     }
+
 
     /**
      * Assumes there is a user named test@test.test name test pass test in database
@@ -131,6 +133,7 @@ public class UserControllerTest {
 
         System.out.println("\n\n----------------- UserControllerTest.searchUsersByString.end ----------------------------\n\n");
     }
+
 
     @Test
     public void registerTest() throws Exception {
