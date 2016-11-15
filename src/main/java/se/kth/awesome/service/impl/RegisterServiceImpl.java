@@ -1,24 +1,14 @@
 package se.kth.awesome.service.impl;
 
 
-import java.security.GeneralSecurityException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.stream.Collectors;
-import javax.crypto.SecretKey;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.util.Assert;
 import se.kth.awesome.model.UserEntity;
 import se.kth.awesome.model.UserRepository;
-import se.kth.awesome.modelConverter.modelConverter;
+import se.kth.awesome.modelConverter.ModelConverter;
 import se.kth.awesome.pojos.UserPojo;
 import se.kth.awesome.service.RegisterService;
 import se.kth.awesome.util.MediaTypes;
@@ -68,7 +58,7 @@ public class RegisterServiceImpl implements RegisterService {
 
 
 
-		UserEntity userEntity =  userRepository.save( modelConverter.convert(userPojo) );
+		UserEntity userEntity =  userRepository.save( ModelConverter.convert(userPojo) );
 		userRepository.flush();
 
 
@@ -77,7 +67,7 @@ public class RegisterServiceImpl implements RegisterService {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
         else{
-            userPojo = modelConverter.convert(userEntity);
+            userPojo = ModelConverter.convert(userEntity);
             return ResponseEntity.status(HttpStatus.CREATED)
                     .contentType(MediaType.APPLICATION_JSON_UTF8)
                     .body(userPojo);
