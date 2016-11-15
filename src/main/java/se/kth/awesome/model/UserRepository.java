@@ -31,5 +31,9 @@ public interface UserRepository extends JpaRepository<UserEntity, Long>,
             "where FR.receiver.id = :senderId and FR.receiver.id = :receiverId" )
     void deleteFriendsByReceiverAndSenderID(@Param("senderId") Long senderID, @Param("receiverId") Long receiverID);
 
-
+    @Query(value = "select distinct UE FROM UserEntity UE " +
+            "where UE.email = :eMmail or UE.userName = :userNName" )
+    UserEntity findOneUserByEmailOrUsername(
+            @Param("eMmail") String email,
+            @Param("userNName") String userName);
 }

@@ -28,6 +28,11 @@ public class modelConverter {
             return GsonX.gson.fromJson(userEntity.toString(), UserPojo.class );
         }
 
+        public static UserEntity convert(UserPojo userPojo){
+            if( userPojo == null ) return null;
+            return GsonX.gson.fromJson(userPojo.toString(), UserEntity.class );
+        }
+
 //        public static FriendRequestPojo convert(FriendRequest friendRequest){
 //            if( friendRequest == null ) return null;
 //            return GsonX.gson.fromJson(friendRequest.toString(), FriendRequestPojo.class );

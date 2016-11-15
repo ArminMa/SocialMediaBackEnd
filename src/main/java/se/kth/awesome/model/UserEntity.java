@@ -197,9 +197,9 @@ public class UserEntity implements Serializable{
 
 	@Override
 	public String toString() {
-//		if(this.friendRequests != null && this.friendRequests.isEmpty()){
-//			friendRequests = null;
-//		}
+		if(this.friendRequests != null && this.friendRequests.isEmpty()){
+			friendRequests = null;
+		}
 //		if(this.mailMessages != null && this.mailMessages.isEmpty()){
 //			this.mailMessages = null;
 //		}
@@ -215,9 +215,9 @@ public class UserEntity implements Serializable{
 
 		String thisJsonString = GsonX.gson.toJson(this);
 
-//		if(this.friendRequests == null){
-//			friendRequests = new TreeSet<>();
-//		}
+		if(this.friendRequests == null){
+			friendRequests = new TreeSet<>();
+		}
 //		if(this.mailMessages == null){
 //			this.mailMessages = new TreeSet<>();
 //		}
@@ -231,7 +231,7 @@ public class UserEntity implements Serializable{
 //			this.receivedChatMessages = new TreeSet<>();
 //		}
 
-		return GsonX.gson.toJson(thisJsonString);
+		return thisJsonString;
 	}
 
 }
