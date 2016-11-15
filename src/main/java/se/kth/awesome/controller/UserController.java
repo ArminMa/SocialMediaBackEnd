@@ -12,9 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import se.kth.awesome.pojos.UserPojo;
 import se.kth.awesome.service.UserEntityService;
@@ -41,16 +39,18 @@ public class UserController {
 
     }
 
-    @RequestMapping(value = "/register",
-            method = RequestMethod.POST,
-            consumes = MediaType.ALL_VALUE,
-            produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public @ResponseBody ResponseEntity<?> registerUser(
-            @RequestBody UserPojo userPojo,
-            HttpServletRequest request,
-            HttpServletResponse response) throws Exception {
-
-        return registerService.registerNewUser(userPojo);
+    @RequestMapping(
+            value = "/login/{userName}/{password}",
+            method = RequestMethod.GET)
+    public ResponseEntity<?> login(@PathVariable("userName") String userName, @PathVariable("password") String password) {
+        UserPojo userPojo = userService.findByUsername(userName);
+        if(userPojo == null){
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+//        if(userPojo == null || !userPojo.getUserName().equals(userName) || !userPojo.getPassword().equals(password)) {
+//            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+//        }
+        return ResponseEntity.status(HttpStatus.OK).contentType(MediaTypes.JsonUtf8).body("success");
     }
 
     @RequestMapping(
