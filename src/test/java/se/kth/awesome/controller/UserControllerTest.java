@@ -16,12 +16,15 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import se.kth.awesome.model.UserEntity;
+import se.kth.awesome.model.UserRepository;
 import se.kth.awesome.pojos.UserPojo;
 import se.kth.awesome.pojos.ping.PingPojo;
 import se.kth.awesome.util.GsonX;
 import se.kth.awesome.util.MediaTypes;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.*;
@@ -43,15 +46,34 @@ public class UserControllerTest {
 
     private MockMvc mockMvc ;
     //	private MockRestServiceServer mockServer;
+    @Autowired
+    private UserRepository userRepository;
+    List<UserEntity> userEntities = new ArrayList<>();
     @Before
     public void setUp() throws Exception {
         this.mockMvc = MockMvcBuilders.webAppContextSetup(this.context).build();
+        UserEntity user = new UserEntity();
+        user.setUserName("test");
+        user.setPassword("test");
+        user.setEmail("test@test.test");
+        userEntities.add(user);
+        userEntities = userRepository.save(userEntities);
+        userRepository.flush();
     }
 
 //    @After
 //    public void tearDown() throws Exception {
 //
 //    }
+
+    @After
+    public void tearDown() throws Exception {
+        System.out.println("\n\n----------------- UserRepositoryTest.tearDown-start ----------------------------\n\n");
+        assertThat(userEntities).isNotNull();
+        userRepository.delete(userEntities);
+        userRepository.flush();
+        System.out.println("\n\n----------------- UserRepositoryTest.tearDown-end ----------------------------\n\n");
+    }
 
     @Test
     public void getUserByEmail() throws Exception {
@@ -90,7 +112,7 @@ public class UserControllerTest {
     }
 
     /**
-     * Assumes there is a user with a name containing test in the database
+     * Assumes there is a user with a name containing e in the database
      * @throws Exception
      **/
     @Test
@@ -104,6 +126,7 @@ public class UserControllerTest {
                 , Collection.class);
         assertThat(result).isNotNull();
         assertThat(!result.isEmpty());
+
         System.out.println("\n\n----------------- UserControllerTest.searchUsersByString.end ----------------------------\n\n");
     }
 
