@@ -13,7 +13,6 @@ import java.util.Collection;
 @XmlRootElement
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class UserPojo  implements Serializable,Comparable<UserPojo>{
-
     private Long id;
     private String userName;
     private String email;
