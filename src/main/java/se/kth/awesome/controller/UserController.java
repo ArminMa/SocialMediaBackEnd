@@ -48,10 +48,6 @@ public class UserController {
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
 
-
-
-
-
         return registerService.registerNewUser(userPojo);
     }
 
