@@ -1,6 +1,7 @@
 package se.kth.awesome.controller;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.catalina.servlet4preview.http.HttpServletRequest;
@@ -36,7 +37,7 @@ import se.kth.awesome.util.MediaTypes;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
@@ -61,16 +62,74 @@ public class UserControllerTest {
     @Before
     public void setUp() throws Exception {
         this.mockMvc = MockMvcBuilders.webAppContextSetup(this.context).build();
+                UserEntity user = new UserEntity();
+                user.setUserName("test");
+                user.setPassword("test");
+                user.setEmail("test@test.test");
+                userEntities.add(user);
+                userEntities = userRepository.save(userEntities);
+                userRepository.flush();
     }
 
     @After
     public void tearDown() throws Exception {
         System.out.println("\n\n----------------- UserControllerTest.tearDown-start ----------------------------\n\n");
         assertThat(userEntities).isNotNull();
-
         userRepository.delete(userEntities);
         userRepository.flush();
         System.out.println("\n\n----------------- UserControllerTest.tearDown-end ----------------------------\n\n");
+    }
+
+    @Test
+    public void getUserByEmail() throws Exception {
+        System.out.println("\n\n----------------- UserControllerTest.testGetUser.start ----------------------------\n\n");
+        UserPojo userPojo = GsonX.gson.fromJson(
+                this.mockMvc.perform(get("/getEmail/test@test.test").accept(MediaTypes.JsonUtf8))
+                        .andExpect(status().isOk())
+                        .andExpect(content().contentType(MediaTypes.JsonUtf8))
+                        .andReturn().getResponse().getContentAsString()
+                , UserPojo.class);
+        assertThat(userPojo).isNotNull();
+        assertThat(userPojo.getEmail()).isEqualTo("test@test.test");
+        System.out.println("this is how userpojo looks like "+ System.lineSeparator() + userPojo.toString());
+        System.out.println("\n\n----------------- UserControllerTest.testGetUser.end ----------------------------\n\n");
+    }
+
+    /**
+     * Assumes there is a user named test@test.test name test pass test in database
+     * @throws Exception
+     */
+    @Test
+    public void login() throws Exception {
+        System.out.println("\n\n----------------- UserControllerTest.login.start ----------------------------\n\n");
+        String result = GsonX.gson.fromJson(
+                this.mockMvc.perform(get("/login/test/test").accept(MediaTypes.JsonUtf8))
+                        .andExpect(status().isOk())
+                        .andExpect(content().contentType(MediaTypes.JsonUtf8))
+                        .andReturn().getResponse().getContentAsString()
+                , String.class);
+        assertThat(result).isNotNull();
+        assertThat(result.equals("success"));
+        System.out.println("\n\n----------------- UserControllerTest.login.end ----------------------------\n\n");
+    }
+
+    /**
+     * Assumes there is a user with a name containing e in the database
+     * @throws Exception
+     **/
+    @Test
+    public void searchUsersByString() throws Exception {
+        System.out.println("\n\n----------------- UserControllerTest.searchUsersByString.start ----------------------------\n\n");
+        Collection<UserEntity> result = (Collection<UserEntity>)GsonX.gson.fromJson(
+                this.mockMvc.perform(get("/userSearch/e").accept(MediaTypes.JsonUtf8))
+                        .andExpect(status().isOk())
+                        .andExpect(content().contentType(MediaTypes.JsonUtf8))
+                        .andReturn().getResponse().getContentAsString()
+                , Collection.class);
+        assertThat(result).isNotNull();
+        assertThat(!result.isEmpty());
+
+        System.out.println("\n\n----------------- UserControllerTest.searchUsersByString.end ----------------------------\n\n");
     }
 
     @Test
