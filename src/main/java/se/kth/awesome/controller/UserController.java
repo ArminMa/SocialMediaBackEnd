@@ -1,5 +1,7 @@
 package se.kth.awesome.controller;
 
+
+import java.util.Collection;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +39,26 @@ public class UserController {
 
         return userService.findByEmail(userEmail);
 
+    }
+
+    @RequestMapping(value = "/register",
+            method = RequestMethod.POST,
+            consumes = MediaType.ALL_VALUE,
+            produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public @ResponseBody ResponseEntity<?> registerUser(
+            @RequestBody UserPojo userPojo,
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+
+        return registerService.registerNewUser(userPojo);
+    }
+
+    @RequestMapping(
+            value = "/userSearch/{userName}",
+            method = RequestMethod.GET)
+    public ResponseEntity<?> userSearch(@PathVariable("userName") String userName) {
+        Collection<UserPojo> matchingUsers = userService.searchUsersByName(userName);
+        return  ResponseEntity.status(HttpStatus.OK).contentType(MediaTypes.JsonUtf8).body(matchingUsers);
     }
 
     @RequestMapping(value = "/register",
