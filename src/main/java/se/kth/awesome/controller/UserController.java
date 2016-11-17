@@ -20,6 +20,7 @@ import se.kth.awesome.service.RegisterService;
 import se.kth.awesome.util.MediaTypes;
 
 @RestController
+@RequestMapping("/social")
 public class UserController {
 
 
@@ -69,6 +70,7 @@ public class UserController {
             @RequestBody UserPojo userPojo,
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
+
 
         return registerService.registerNewUser(userPojo);
     }

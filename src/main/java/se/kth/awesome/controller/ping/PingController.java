@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @RestController
+@RequestMapping("/test")
 public class PingController {
 
     @RequestMapping(value = "/ping1", method = RequestMethod.GET)

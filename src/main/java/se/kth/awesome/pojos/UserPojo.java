@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import se.kth.awesome.model.FriendRequest;
+import se.kth.awesome.model.security.UserRole;
 import se.kth.awesome.util.GsonX;
 
 import javax.xml.bind.annotation.XmlRootElement;
@@ -32,7 +33,8 @@ public class UserPojo  implements Serializable,Comparable<UserPojo>{
     private Collection<PostPojo> log = new ArrayList<>();
     @JsonInclude(JsonInclude.Include.NON_EMPTY )
     private Collection<ChatMessagePojo> chatMessages = new ArrayList<>();
-
+    @JsonInclude(JsonInclude.Include.NON_EMPTY )
+    private Collection<UserRolePojo> roles = new ArrayList<>();
 
     public UserPojo() {}
 
@@ -121,6 +123,14 @@ public class UserPojo  implements Serializable,Comparable<UserPojo>{
     public void setChatMessages(Collection<ChatMessagePojo> chatMessages) {
         this.chatMessages = chatMessages;
     }
+    public Collection<UserRolePojo> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Collection<UserRolePojo> roles) {
+        this.roles = roles;
+    }
+
 
     @Override
     public boolean equals(Object o) {
@@ -155,6 +165,7 @@ public class UserPojo  implements Serializable,Comparable<UserPojo>{
 
     @Override
     public String toString() {
+        //to ensure that json wont send empty lists/arrays when using tostring set empty arrays to null
         if(this.friendRequests != null && this.friendRequests.isEmpty()){
             friendRequests = null;
         }
@@ -171,8 +182,13 @@ public class UserPojo  implements Serializable,Comparable<UserPojo>{
             this.chatMessages = null;
         }
 
+        if(this.roles != null && this.roles.isEmpty()){
+            this.roles = null;
+        }
+
         String thisJsonString = GsonX.gson.toJson(this);
 
+        //reconstruct empty arrays
         if(this.friendRequests == null){
             friendRequests = new ArrayList<>();
         }
@@ -187,6 +203,10 @@ public class UserPojo  implements Serializable,Comparable<UserPojo>{
         }
         if(this.chatMessages == null){
             this.chatMessages = new ArrayList<>();
+        }
+
+        if(this.roles == null){
+            this.roles = new ArrayList<>();
         }
 
         return thisJsonString;

@@ -42,7 +42,7 @@ public class PingControllerTest {
     @Test
     public void ping1() throws Exception {
         String pingReturnd =
-                this.mockMvc.perform(get("/ping1").accept(MediaTypes.textPlain))
+                this.mockMvc.perform(get("/test/ping1").accept(MediaTypes.textPlain))
                         .andExpect(status().isOk())
                         .andReturn().getResponse().getContentAsString();
 
@@ -54,7 +54,7 @@ public class PingControllerTest {
     public void ping2() throws Exception {
         String textInserted = "stringValue";
         String valuReturnd =
-                this.mockMvc.perform(get("/ping2?name="+ textInserted).accept(MediaTypes.textPlain))
+                this.mockMvc.perform(get("/test/ping2?name="+ textInserted).accept(MediaTypes.textPlain))
                         .andExpect(status().isOk())
                         .andReturn().getResponse().getContentAsString();
         assertThat(valuReturnd).isNotNull();
@@ -68,7 +68,7 @@ public class PingControllerTest {
         PingPojo pingReturnd = GsonX.gson.fromJson(
                 this.mockMvc.perform
                         (
-                                post("/ping7/testName")
+                                post("/test/ping7/testName")
                                         .contentType(MediaTypes.JsonUtf8)
                                         .content(GsonX.gson.toJson(ping))
                                         .header("keyUserServer","my token should be here")
@@ -87,7 +87,7 @@ public class PingControllerTest {
     @Test
     public void ping8() throws Exception {
         PingPojo pingReturnd = GsonX.gson.fromJson(
-                this.mockMvc.perform(get("/ping8/test@gmail.com").accept(MediaTypes.JsonUtf8))
+                this.mockMvc.perform(get("/test/ping8/test@gmail.com").accept(MediaTypes.JsonUtf8))
                         .andExpect(status().isOk())
                         .andExpect(content().contentType(MediaTypes.JsonUtf8))
                         .andReturn().getResponse().getContentAsString()

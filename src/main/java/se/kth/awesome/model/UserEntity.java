@@ -2,12 +2,15 @@ package se.kth.awesome.model;
 
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 import org.hibernate.annotations.SortNatural;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
-import se.kth.awesome.model.chatMessage.ChatMessage;
+import se.kth.awesome.model.security.UserRole;
 import se.kth.awesome.util.GsonX;
 
 import javax.persistence.*;
@@ -59,7 +62,12 @@ public class UserEntity implements Serializable{
 		this.id = id;
 	}
 
-    @Column(name = "user_name")
+
+
+
+
+
+	@Column(name = "user_name")
 //	@NotEmpty
     @Length(max = 100)
     public String getUserName() {
@@ -120,6 +128,19 @@ public class UserEntity implements Serializable{
     public void setFriendRequests(SortedSet<FriendRequest> friendRequests) {
         this.friendRequests = friendRequests;
     }
+
+	// TODO change column name from app_user_id to Role_id
+	private SortedSet<UserRole> roles = new TreeSet<>();
+	@OneToMany(/*cascade = {CascadeType.PERSIST, CascadeType.MERGE},*/ fetch = FetchType.EAGER)
+	@LazyCollection(LazyCollectionOption.FALSE)
+	@SortNatural
+	@JoinColumn(name="app_user_id", referencedColumnName="id")
+	public SortedSet<UserRole> getRoles() {
+		return roles;
+	}
+	public void setRoles(SortedSet<UserRole> roles) {
+		this.roles = roles;
+	}
 
 //	private SortedSet<ChatMessage> chatMessages = new TreeSet<>();
 //
@@ -200,6 +221,10 @@ public class UserEntity implements Serializable{
 		if(this.friendRequests != null && this.friendRequests.isEmpty()){
 			friendRequests = null;
 		}
+		if(this.roles != null && this.roles.isEmpty()){
+			this.roles = null;
+		}
+
 //		if(this.mailMessages != null && this.mailMessages.isEmpty()){
 //			this.mailMessages = null;
 //		}
@@ -216,7 +241,11 @@ public class UserEntity implements Serializable{
 		String thisJsonString = GsonX.gson.toJson(this);
 
 		if(this.friendRequests == null){
-			friendRequests = new TreeSet<>();
+			this.friendRequests = new TreeSet<>();
+		}
+
+		if(this.roles == null){
+			this.roles = new TreeSet<>();
 		}
 //		if(this.mailMessages == null){
 //			this.mailMessages = new TreeSet<>();

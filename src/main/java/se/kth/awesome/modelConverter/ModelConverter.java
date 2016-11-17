@@ -1,6 +1,7 @@
 package se.kth.awesome.modelConverter;
 
 
+import java.util.Collection;
 import se.kth.awesome.model.*;
 import se.kth.awesome.pojos.*;
 import se.kth.awesome.util.GsonX;
@@ -48,7 +49,7 @@ public class ModelConverter {
 //            return GsonX.gson.fromJson(post.toString(), PostPojo.class );
 //        }
 
-/*        @SuppressWarnings("unchecked")
+        @SuppressWarnings("unchecked")
         public static Iterable<?> convert (Iterable<?> genericList){
 
             if( genericList == null ) return null;
@@ -62,15 +63,21 @@ public class ModelConverter {
 //       else if (x instanceof Collection<?>) {
 //             }
 
-            if(genericList.iterator().next() instanceof AuthorityPojo){
-                List<Authority> authorities = new ArrayList<>();
-                genericList.forEach( S -> authorities.add( convert( (AuthorityPojo) S) ) );
-                return authorities;
+            if(genericList.iterator().next() instanceof UserEntity){
+                Collection<UserPojo> userPojos = new ArrayList<>();
+                genericList.forEach( S -> userPojos.add( convert( (UserEntity) S) ) );
+                return userPojos;
+            }
+
+            if(genericList.iterator().next() instanceof UserPojo){
+                Collection<UserEntity> userPojos = new ArrayList<>();
+                genericList.forEach( S -> userPojos.add( convert( (UserPojo) S) ) );
+                return userPojos;
             }
 
             return null;
 
-        }*/
+        }
 
 
 }
