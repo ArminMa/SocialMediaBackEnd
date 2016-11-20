@@ -2,62 +2,72 @@ package se.kth.awesome.pojos;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import java.io.Serializable;
-import javax.persistence.Column;
-import javax.persistence.Embeddable;
-import javax.persistence.EmbeddedId;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
-import se.kth.awesome.model.security.Role;
-import se.kth.awesome.model.security.UserRole;
+import se.kth.awesome.model.role.Role;
+import se.kth.awesome.util.GsonX;
+
 
 @XmlRootElement
-@XmlAccessorType(XmlAccessType.PUBLIC_MEMBER)
 @JsonInclude(JsonInclude.Include.NON_NULL )
-public class UserRolePojo {
+public class UserRolePojo  implements Serializable,Comparable<UserRolePojo>{
 
+    public UserRolePojo() {
+    }
 
-    Id id = new Id();
+    public UserRolePojo(Role role) {
+        this.id = (long) (role.ordinal()+1);
+        this.role = role;
+    }
 
-    protected Role role;
+    private Long id;
+    public Long getId() {
+        return id;
+    }
+    public void setId(Long id) {
+        this.id = id;
+    }
 
+    public Role role;
     public Role getRole() {
         return role;
     }
 
-    @XmlRootElement
-    @XmlAccessorType(XmlAccessType.PUBLIC_MEMBER)
-    @JsonInclude(JsonInclude.Include.NON_NULL )
-    public static class Id implements Serializable {
-        protected Role role;
-        protected Long userId;
-
-        public Id() {
-
-        }
-        public Id(Long userId, Role role) {
-            this.userId = userId;
-            this.role = role;
-        }
-
-        public Long getUserId() {
-            return userId;
-        }
-
-        public void setUserId(Long userId) {
-            this.userId = userId;
-        }
-
-
-        public Role getRole() {
-            return role;
-        }
-
-        public void setRole(Role role) {
-            this.role = role;
-        }
+    public void setRole(Role role) {
+        this.role = role;
     }
+
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        UserRolePojo thatUserRolePojo = (UserRolePojo) o;
+
+        if (id != null ? !id.equals(thatUserRolePojo.id) : thatUserRolePojo.id != null) return false;
+        return role == thatUserRolePojo.role;
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (role != null ? role.hashCode() : 0);
+        return result;
+    }
+
+    @Override
+    public int compareTo(UserRolePojo o) {
+        int thisObject= this.hashCode();
+        long anotherObject = o.hashCode();
+        return (thisObject<anotherObject ? -1 : (thisObject==anotherObject ? 0 : 1));
+    }
+
+    @Override
+    public String toString() {
+        return  GsonX.gson.toJson(this);
+    }
+
 
 }

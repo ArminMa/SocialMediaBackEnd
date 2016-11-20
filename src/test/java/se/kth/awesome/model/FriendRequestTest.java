@@ -1,4 +1,4 @@
-//package se.kth.awesome.model;
+package se.kth.awesome.model;//package se.kth.awesome.model;
 //
 //import java.util.ArrayList;
 //import java.util.List;
@@ -33,7 +33,7 @@
 //
 //    @Before
 //    public void setUp() throws Exception {
-//        System.out.println("\n\n----------------- FriendRequestTest.setUp-start ----------------------------\n\n");
+//        System.out.println("\n\n----------------- FriendRequestTest.setUp-start ----------------------------"+nLin+nLin);
 //        userEntities.add(new UserEntity("testEmail0@gmail.com", "testUser0", "PasswordHashed0")); // userEntities 0
 //        userEntities.add(new UserEntity("testEmail1@gmail.com", "testUser1", "PasswordHashed1")); // userEntities 1
 //        userEntities.add(new UserEntity("testEmail2@gmail.com", "testUser2", "PasswordHashed2")); // userEntities 2
@@ -64,12 +64,12 @@
 ////        userEntities.get(2).getFriendRequests().add(friendRequests.get(2));
 //        friendRequestRepo.save(friendRequests);
 //        friendRequestRepo.flush();
-//        System.out.println("\n\n----------------- FriendRequestTest.setUp-end ----------------------------\n\n");
+//        System.out.println("\n\n----------------- FriendRequestTest.setUp-end ----------------------------"+nLin+nLin);
 //    }
 //
 //    @After // TODO remove a friendRequest without removing all the users first
 //    public void tearDown() throws Exception {
-//        System.out.println("\n\n----------------- FriendRequestTest.tearDown-start ----------------------------\n\n");
+//        System.out.println("\n\n----------------- FriendRequestTest.tearDown-start ----------------------------"+nLin+nLin);
 //        FriendRequest friendRequestFromUser0ToUser1 =
 //                friendRequestRepo.findBySenderAndReceiver(userEntities.get(0), userEntities.get(1));
 //        assertThat(friendRequestFromUser0ToUser1).isNotNull();
@@ -87,12 +87,12 @@
 //        userRepo.delete(userEntities);
 //        userRepo.flush();
 //
-//        System.out.println("\n\n----------------- FriendRequestTest.tearDown-end ----------------------------\n\n");
+//        System.out.println("\n\n----------------- FriendRequestTest.tearDown-end ----------------------------"+nLin+nLin);
 //    }
 //
 //    @Test
 //    public void A_friendRequestTest(){
-//        System.out.println("\n\n----------------- FriendRequestTest.friendRequestTest-start ----------------------------\n\n");
+//        System.out.println("\n\n----------------- FriendRequestTest.friendRequestTest-start ----------------------------"+nLin+nLin);
 //
 //        assertThat(userEntities).isNotNull();
 //        assertThat(userEntities.size()).isGreaterThan(2);
@@ -111,7 +111,7 @@
 //
 //
 //
-//        System.out.println("\n\n----------------- FriendRequestTest.friendRequestTest-end ----------------------------\n\n");
+//        System.out.println("\n\n----------------- FriendRequestTest.friendRequestTest-end ----------------------------"+nLin+nLin);
 //    }
 //
 //

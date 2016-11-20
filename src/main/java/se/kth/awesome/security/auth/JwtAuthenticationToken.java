@@ -1,6 +1,8 @@
 package se.kth.awesome.security.auth;
 
 import java.util.Collection;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import se.kth.awesome.security.model.UserContext;
@@ -19,6 +21,8 @@ public class JwtAuthenticationToken extends AbstractAuthenticationToken {
 
     private RawAccessJwtToken rawAccessToken;
     private UserContext userContext;
+    public Logger logger2 = LoggerFactory.getLogger(getClass());
+
 
     public JwtAuthenticationToken(RawAccessJwtToken unsafeToken) {
         super(null);

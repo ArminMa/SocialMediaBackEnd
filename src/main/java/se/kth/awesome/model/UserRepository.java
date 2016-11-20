@@ -1,13 +1,12 @@
 package se.kth.awesome.model;
 
+import java.util.Collection;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Collection;
 
 
 public interface UserRepository extends JpaRepository<UserEntity, Long>,
@@ -17,13 +16,13 @@ public interface UserRepository extends JpaRepository<UserEntity, Long>,
     UserEntity findByEmail(@Param("theEmail") String email);
 
     @Query(value = "select U FROM UserEntity U WHERE U.id = :userId")
-    UserEntity findByUserID (@Param("userId") Long userID);
+    UserEntity findByUserID(@Param("userId") Long userID);
 
-    @Query(value = "select U FROM UserEntity U WHERE U.userName = :theUserName")
-    UserEntity findByUsername (@Param("theUserName") String userName);
+    @Query(value = "select U FROM UserEntity U WHERE U.username = :theUserName")
+    UserEntity findByUsername(@Param("theUserName") String userName);
 
-    @Query(value = "select U FROM UserEntity U WHERE U.userName LIKE CONCAT('%',:searchString,'%') ORDER BY U.userName DESC")
-    Collection<UserEntity> searchUsersByName (@Param("searchString") String searchString);
+    @Query(value = "select U FROM UserEntity U WHERE U.username LIKE CONCAT('%',:searchString,'%') ORDER BY U.username DESC")
+    Collection<UserEntity> searchUsersResemblingByUsername(@Param("searchString") String searchString);
 
     @Modifying
     @Transactional
@@ -33,8 +32,8 @@ public interface UserRepository extends JpaRepository<UserEntity, Long>,
 
 
     @Query(value = "select distinct UE FROM UserEntity UE " +
-            "where UE.email = :eMmail or UE.userName = :userNName" )
+            "where UE.email = :eMmail or UE.username = :userNName" )
     UserEntity findOneUserByEmailOrUsername(
-            @Param("eMmail") String email,
-            @Param("userNName") String userName);
+		    @Param("eMmail") String email,
+		    @Param("userNName") String userName);
 }

@@ -1,6 +1,8 @@
 package se.kth.awesome.service.impl;
 
 
+import java.nio.charset.Charset;
+import java.util.Collection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -8,13 +10,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import se.kth.awesome.model.UserEntity;
 import se.kth.awesome.model.UserRepository;
-import se.kth.awesome.modelConverter.ModelConverter;
+import se.kth.awesome.model.modelConverter.ModelConverter;
 import se.kth.awesome.pojos.UserPojo;
 import se.kth.awesome.service.UserEntityService;
 import se.kth.awesome.util.MediaTypes;
 
-import java.nio.charset.Charset;
-import java.util.Collection;
 
 @Service
 public class UserEntityServiceImp implements UserEntityService {
@@ -30,11 +30,7 @@ public class UserEntityServiceImp implements UserEntityService {
 		if(appUser == null){
 			return null;
 		}
-		System.out.println("---------------------------------------appUserBeforeConvert--------------------------------------------------------");
-		System.out.println(appUser.toString());
-		UserPojo userPojo = ModelConverter.convert(appUser);
-
-		return userPojo;
+		return ModelConverter.convert(appUser);
 	}
 
 	@Override
@@ -52,8 +48,8 @@ public class UserEntityServiceImp implements UserEntityService {
 	}
 
 	@Override
-	public Collection<UserPojo> searchUsersByName(String name) {
-		Collection<UserEntity> matchingUsers = userRepository.searchUsersByName(name);
+	public Collection<UserPojo> searchUsersResemblingByUsername(String name) {
+		Collection<UserEntity> matchingUsers = userRepository.searchUsersResemblingByUsername(name);
 		@SuppressWarnings("unchecked")
 		Collection<UserPojo> users = (Collection<UserPojo>)ModelConverter.convert(matchingUsers);
 		return users;

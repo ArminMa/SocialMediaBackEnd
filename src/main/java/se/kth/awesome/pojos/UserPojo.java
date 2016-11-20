@@ -1,17 +1,14 @@
 package se.kth.awesome.pojos;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import se.kth.awesome.model.FriendRequest;
-import se.kth.awesome.model.security.UserRole;
-import se.kth.awesome.util.GsonX;
-
-import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
+import se.kth.awesome.util.GsonX;
 
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.PUBLIC_MEMBER)
@@ -19,7 +16,7 @@ import java.util.Collection;
 
 public class UserPojo  implements Serializable,Comparable<UserPojo>{
     private Long id;
-    private String userName;
+    private String username;
     private String email;
     private String password;
     private byte[] picture; // Todo implement this Armin. low prio
@@ -38,8 +35,8 @@ public class UserPojo  implements Serializable,Comparable<UserPojo>{
 
     public UserPojo() {}
 
-    public UserPojo(String userName, String email, String password) {
-        this.userName = userName;
+    public UserPojo(String username, String email, String password) {
+        this.username = username;
         this.email = email;
         this.password = password;
     }
@@ -52,12 +49,12 @@ public class UserPojo  implements Serializable,Comparable<UserPojo>{
         this.id = id;
     }
 
-    public String getUserName() {
-        return userName;
+    public String getUsername() {
+        return username;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getEmail() {
@@ -140,7 +137,7 @@ public class UserPojo  implements Serializable,Comparable<UserPojo>{
         UserPojo userPojo = (UserPojo) o;
 
         if (id != null ? !id.equals(userPojo.id) : userPojo.id != null) return false;
-        if (userName != null ? !userName.equals(userPojo.userName) : userPojo.userName != null) return false;
+        if (username != null ? !username.equals(userPojo.username) : userPojo.username != null) return false;
         if (email != null ? !email.equals(userPojo.email) : userPojo.email != null) return false;
         if (password != null ? !password.equals(userPojo.password) : userPojo.password != null) return false;
         return Arrays.equals(picture, userPojo.picture);
@@ -149,7 +146,7 @@ public class UserPojo  implements Serializable,Comparable<UserPojo>{
     @Override
     public int hashCode() {
         int result = id != null ? id.hashCode() : 0;
-        result = 31 * result + (userName != null ? userName.hashCode() : 0);
+        result = 31 * result + (username != null ? username.hashCode() : 0);
         result = 31 * result + (email != null ? email.hashCode() : 0);
         result = 31 * result + (password != null ? password.hashCode() : 0);
         result = 31 * result + Arrays.hashCode(picture);

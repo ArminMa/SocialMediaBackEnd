@@ -3,11 +3,10 @@ package se.kth.awesome.pojos.ping;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.google.gson.annotations.Expose;
+import java.io.Serializable;
+import javax.xml.bind.annotation.XmlRootElement;
 import se.kth.awesome.util.GsonX;
 
-
-import javax.xml.bind.annotation.XmlRootElement;
-import java.io.Serializable;
 
 @XmlRootElement
 @JsonInclude(JsonInclude.Include.NON_NULL)

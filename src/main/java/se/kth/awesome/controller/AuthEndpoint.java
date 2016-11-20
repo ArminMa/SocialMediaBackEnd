@@ -1,6 +1,5 @@
 package se.kth.awesome.controller;
 
-
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -16,10 +15,11 @@ import se.kth.awesome.security.model.UserContext;
  * Aug 4, 2016
  */
 @RestController
-public class ProfileEndpoint {
+public class AuthEndpoint {
+
     @RequestMapping(value="/api/me", method=RequestMethod.GET)
-    public @ResponseBody
-    UserContext get(JwtAuthenticationToken token) {
+    public @ResponseBody UserContext get(JwtAuthenticationToken token) {
         return (UserContext) token.getPrincipal();
     }
+
 }

@@ -1,6 +1,5 @@
 package se.kth.awesome.security.model.token;
 
-
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;

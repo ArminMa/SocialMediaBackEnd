@@ -1,25 +1,20 @@
 package se.kth.awesome.model.chatMessage;
 
+import java.io.Serializable;
+import java.util.Date;
+import javax.persistence.Column;
+import javax.persistence.Embedded;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.format.annotation.DateTimeFormat;
 import se.kth.awesome.model.UserEntity;
 
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Embedded;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import javax.persistence.Transient;
-import java.io.Serializable;
-import java.util.Date;
 
 @Entity
 public class ChatMessage implements Serializable,Comparable<ChatMessage>{
@@ -32,14 +27,11 @@ public class ChatMessage implements Serializable,Comparable<ChatMessage>{
         pk = new ChatPK();
     }
 
-    public ChatMessage(String chatContent,Date postedDate, UserEntity sender, UserEntity receiver) {
+    public ChatMessage(String chatContent, Date postedDate, UserEntity sender, UserEntity receiver) {
         this.pk = new ChatPK( receiver, sender);
         this.chatContent = chatContent;
         this.sentDate = postedDate;
     }
-
-
-
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

@@ -1,6 +1,5 @@
 package se.kth.awesome.security.auth.jwt;
 
-
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import java.util.List;
@@ -15,12 +14,12 @@ import org.springframework.stereotype.Component;
 import se.kth.awesome.security.auth.JwtAuthenticationToken;
 import se.kth.awesome.security.config.JwtSettings;
 import se.kth.awesome.security.model.UserContext;
-
+import se.kth.awesome.security.model.token.JwtToken;
 import se.kth.awesome.security.model.token.RawAccessJwtToken;
 
 /**
  * An {@link AuthenticationProvider} implementation that will use provided
- * instance of {@link se.kth.awesome.security.model.token.JwtToken} to perform authentication.
+ * instance of {@link JwtToken} to perform authentication.
  * 
  * @author vladimir.stankovic
  *

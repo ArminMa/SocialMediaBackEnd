@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-import se.kth.awesome.model.UserEntity;
 import se.kth.awesome.pojos.UserPojo;
 import se.kth.awesome.security.auth.jwt.extractor.TokenExtractor;
 import se.kth.awesome.security.auth.jwt.verifier.TokenVerifier;
@@ -46,9 +45,8 @@ public class RefreshTokenEndpoint {
     @Autowired private TokenVerifier tokenVerifier;
     @Autowired @Qualifier("jwtHeaderTokenExtractor") private TokenExtractor tokenExtractor;
     
-    @RequestMapping(value="/authorization/token", method=RequestMethod.GET, produces={ MediaType.APPLICATION_JSON_VALUE })
-    public @ResponseBody
-    JwtToken refreshToken(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+    @RequestMapping(value="/api/auth/token", method=RequestMethod.GET, produces={ MediaType.APPLICATION_JSON_VALUE })
+    public @ResponseBody JwtToken refreshToken(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         String tokenPayload = tokenExtractor.extract(request.getHeader(WebSecurityConfig.JWT_TOKEN_HEADER_PARAM));
         
         RawAccessJwtToken rawToken = new RawAccessJwtToken(tokenPayload);
@@ -61,16 +59,15 @@ public class RefreshTokenEndpoint {
 
         String subject = refreshToken.getSubject();
         UserPojo user = userService.findByUsername(subject);
-        if (user == null){
-            throw new UsernameNotFoundException("User not found: " + subject);
-        }
+        if(user== null)
+            throw  new UsernameNotFoundException("User not found: " + subject);
 
         if (user.getRoles() == null) throw new InsufficientAuthenticationException("User has no roles assigned");
         List<GrantedAuthority> authorities = user.getRoles().stream()
                 .map(authority -> new SimpleGrantedAuthority(authority.getRole().authority()))
                 .collect(Collectors.toList());
 
-        UserContext userContext = UserContext.create(user.getUserName(), authorities);
+        UserContext userContext = UserContext.create(user.getUsername(), authorities);
 
         return tokenFactory.createAccessJwtToken(userContext);
     }
