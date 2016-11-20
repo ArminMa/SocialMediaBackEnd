@@ -1,15 +1,12 @@
-package se.kth.awesome.modelConverter;
+package se.kth.awesome.model.modelConverter;
 
-
-import java.util.Collection;
-import se.kth.awesome.model.*;
-import se.kth.awesome.pojos.*;
-import se.kth.awesome.util.GsonX;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.SortedSet;
-import java.util.TreeSet;
+import java.util.Collection;
+import se.kth.awesome.model.UserEntity;
+import se.kth.awesome.pojos.UserPojo;
+import se.kth.awesome.util.GsonX;
+
 
 /**
  * Created by Am on 11/4/2016.

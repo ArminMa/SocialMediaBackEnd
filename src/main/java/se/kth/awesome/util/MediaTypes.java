@@ -1,8 +1,7 @@
 package se.kth.awesome.util;
 
-import org.springframework.http.MediaType;
-
 import java.nio.charset.Charset;
+import org.springframework.http.MediaType;
 
 
 public class MediaTypes {

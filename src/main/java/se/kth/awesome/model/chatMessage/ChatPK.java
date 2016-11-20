@@ -1,12 +1,12 @@
 package se.kth.awesome.model.chatMessage;
 
 
-import se.kth.awesome.model.UserEntity;
-
 import javax.persistence.Embeddable;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import se.kth.awesome.model.UserEntity;
+
 
 @Embeddable
 public class ChatPK implements java.io.Serializable, Comparable<ChatPK> {

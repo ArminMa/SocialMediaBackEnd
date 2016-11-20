@@ -8,6 +8,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -15,6 +17,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.web.WebAttributes;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
+import se.kth.awesome.SpringbootSecurityJwtApplication;
 import se.kth.awesome.security.model.UserContext;
 import se.kth.awesome.security.model.token.JwtToken;
 import se.kth.awesome.security.model.token.JwtTokenFactory;
@@ -30,6 +33,7 @@ import se.kth.awesome.security.model.token.JwtTokenFactory;
 public class AjaxAwareAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
     private final ObjectMapper mapper;
     private final JwtTokenFactory tokenFactory;
+    private final Logger logger2 = LoggerFactory.getLogger(getClass());
 
     @Autowired
     public AjaxAwareAuthenticationSuccessHandler(final ObjectMapper mapper, final JwtTokenFactory tokenFactory) {
@@ -40,6 +44,7 @@ public class AjaxAwareAuthenticationSuccessHandler implements AuthenticationSucc
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
             Authentication authentication) throws IOException, ServletException {
+        logger2.error("\n\n   "+ SpringbootSecurityJwtApplication.steps++ +" ---------- AjaxAwareAuthenticationSuccessHandler.onAuthenticationSuccess debug start ----------\n" );
         UserContext userContext = (UserContext) authentication.getPrincipal();
         
         JwtToken accessToken = tokenFactory.createAccessJwtToken(userContext);

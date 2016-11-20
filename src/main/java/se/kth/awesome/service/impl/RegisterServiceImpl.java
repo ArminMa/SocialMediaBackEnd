@@ -1,23 +1,40 @@
 package se.kth.awesome.service.impl;
 
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import se.kth.awesome.model.UserEntity;
 import se.kth.awesome.model.UserRepository;
-import se.kth.awesome.modelConverter.ModelConverter;
+import se.kth.awesome.model.modelConverter.ModelConverter;
+import se.kth.awesome.model.role.Role;
+import se.kth.awesome.model.role.UserRole;
+import se.kth.awesome.model.role.UserRoleRepository;
 import se.kth.awesome.pojos.UserPojo;
+import se.kth.awesome.security.util.PasswordSaltUtil;
 import se.kth.awesome.service.RegisterService;
 import se.kth.awesome.util.MediaTypes;
+
 
 @Service
 public class RegisterServiceImpl implements RegisterService {
 
+	public Logger logger2 = LoggerFactory.getLogger(getClass());
+	private static final PasswordSaltUtil passwordSaltUtil = new PasswordSaltUtil();
+
 	@Autowired
 	private UserRepository userRepository;
+
+	@Autowired
+	private UserRoleRepository userRoleRepo;
+
+	@Value("${shared.secretKey}")
+	String hashPasswordKey;
 
 	@Override
 	public ResponseEntity<?> registerNewUser(UserPojo userPojo)  {
@@ -28,10 +45,10 @@ public class RegisterServiceImpl implements RegisterService {
 		}
 
 
-        UserEntity faceUserAvailability = userRepository.findOneUserByEmailOrUsername(userPojo.getEmail(), userPojo.getUserName());
+        UserEntity faceUserAvailability = userRepository.findOneUserByEmailOrUsername(userPojo.getEmail(), userPojo.getUsername());
 
         if( faceUserAvailability!= null){
-            if(faceUserAvailability.getEmail().equals(userPojo.getEmail()) && faceUserAvailability.getUserName().equals(userPojo.getUserName()) ){
+            if(faceUserAvailability.getEmail().equals(userPojo.getEmail()) && faceUserAvailability.getUsername().equals(userPojo.getUsername()) ){
                 return ResponseEntity.status(HttpStatus.IM_USED)
                         .contentType(MediaTypes.JsonUtf8)
                         .body("{email: im_used, userName: im: im_used}");
@@ -41,7 +58,7 @@ public class RegisterServiceImpl implements RegisterService {
                         .contentType(MediaTypes.JsonUtf8)
                         .body("{ email: im_used }");
             }
-            else if(  faceUserAvailability.getUserName().equals(userPojo.getUserName()) ){
+            else if(  faceUserAvailability.getUsername().equals(userPojo.getUsername()) ){
                 return ResponseEntity.status(HttpStatus.IM_USED)
                         .contentType(MediaTypes.JsonUtf8)
                         .body("{ userName: im: im_used }");
@@ -53,14 +70,16 @@ public class RegisterServiceImpl implements RegisterService {
         }
 
 
-		// TODO salt the password with servers secret key or some other salt method then save it in database
-		String password = null;
-
-
-
+		String password = passwordSaltUtil.encodePassword(userPojo.getPassword(), hashPasswordKey);
+		userPojo.setPassword(password);
 		UserEntity userEntity =  userRepository.save( ModelConverter.convert(userPojo) );
 		userRepository.flush();
-
+		userEntity.getRoles().add(new UserRole(Role.MEMBER));
+		userEntity =  userRepository.save( userEntity );
+		userRepository.flush();
+//		logger2.error("\n\n ---------- RegisterServiceImpl.registerNewUser userEntity after save Role ----------\n");
+//		logger2.error( "\n"+ userEntity.toString() +"\n");
+//		logger2.error("\n\n ---------- RegisterServiceImpl.registerNewUser userEntity after save Role ----------\n");
 
 
         if(userEntity == null){
@@ -79,11 +98,11 @@ public class RegisterServiceImpl implements RegisterService {
 	public Boolean startRegistration(UserPojo userPojo) {
 		if( userPojo == null )
 			return false ;
-		else if (userPojo.getUserName() == null || userPojo.getEmail() == null)
+		else if (userPojo.getUsername() == null || userPojo.getEmail() == null)
 			return false;
 
 		UserEntity userEntity = this.userRepository.findOneUserByEmailOrUsername(
-				userPojo.getUserName(), userPojo.getEmail());
+				userPojo.getUsername(), userPojo.getEmail());
 		return userEntity == null;
 
 	}

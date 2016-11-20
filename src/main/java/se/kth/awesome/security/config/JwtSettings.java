@@ -1,14 +1,14 @@
 package se.kth.awesome.security.config;
 
-
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
+import se.kth.awesome.security.model.token.JwtToken;
 
 @Configuration
 @ConfigurationProperties(prefix = "demo.security.jwt")
 public class JwtSettings {
     /**
-     * {@link se.kth.awesome.security.model.token.JwtToken} will expire after this time.
+     * {@link JwtToken} will expire after this time.
      */
     private Integer tokenExpirationTime;
 
@@ -18,12 +18,12 @@ public class JwtSettings {
     private String tokenIssuer;
     
     /**
-     * Key is used to sign {@link se.kth.awesome.security.model.token.JwtToken}.
+     * Key is used to sign {@link JwtToken}.
      */
     private String tokenSigningKey;
     
     /**
-     * {@link se.kth.awesome.security.model.token.JwtToken} can be refreshed during this timeframe.
+     * {@link JwtToken} can be refreshed during this timeframe.
      */
     private Integer refreshTokenExpTime;
     

@@ -1,4 +1,4 @@
-//package se.kth.awesome.model;
+package se.kth.awesome.model;//package se.kth.awesome.model;
 //
 //import org.hibernate.annotations.LazyCollection;
 //import org.hibernate.annotations.LazyCollectionOption;

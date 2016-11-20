@@ -18,7 +18,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
-import se.kth.awesome.common.WebUtil;
+import se.kth.awesome.SpringbootSecurityJwtApplication;
+import se.kth.awesome.pojos.UserPojo;
 import se.kth.awesome.security.exceptions.AuthMethodNotSupportedException;
 
 /**
@@ -30,6 +31,7 @@ import se.kth.awesome.security.exceptions.AuthMethodNotSupportedException;
  */
 public class AjaxLoginProcessingFilter extends AbstractAuthenticationProcessingFilter {
     private static Logger logger = LoggerFactory.getLogger(AjaxLoginProcessingFilter.class);
+	private final Logger logger2 = LoggerFactory.getLogger(getClass());
 
     private final AuthenticationSuccessHandler successHandler;
     private final AuthenticationFailureHandler failureHandler;
@@ -47,18 +49,30 @@ public class AjaxLoginProcessingFilter extends AbstractAuthenticationProcessingF
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
             throws AuthenticationException, IOException, ServletException {
-        if (!HttpMethod.POST.name().equals(request.getMethod()) || !WebUtil.isAjax(request)) {
+        logger2.error("\n\n"+ SpringbootSecurityJwtApplication.steps++ +" ---------- AjaxLoginProcessingFilter.attemptAuthentication ----------\n");
+//        logger2.error( "\n"+token +"\n");
+//        logger2.error("\n\n ---------- AjaxAuthenticationProvider.attemptAuthentication  ----------\n");
+
+        if (!HttpMethod.POST.name().equals(request.getMethod()) /*|| !WebUtil.isAjax(request)*/) {
             if(logger.isDebugEnabled()) {
                 logger.debug("Authentication method not supported. Request method: " + request.getMethod());
             }
             throw new AuthMethodNotSupportedException("Authentication method not supported");
         }
 
-        LoginRequest loginRequest = objectMapper.readValue(request.getReader(), LoginRequest.class);
-        
+
+//        String body = request.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
+
+        UserPojo loginRequest = objectMapper.readValue(request.getReader(), UserPojo.class);
+	    logger2.error("\n\n---------- AjaxLoginProcessingFilter.attemptAuthentication debug start ----------\n" +
+			    "\n"+ loginRequest.toString() +"\n" +
+			    "\n ---------- AjaxLoginProcessingFilter.attemptAuthentication debug end ----------\n\n");
+
         if (StringUtils.isBlank(loginRequest.getUsername()) || StringUtils.isBlank(loginRequest.getPassword())) {
             throw new AuthenticationServiceException("Username or Password not provided");
         }
+
+
 
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword());
 

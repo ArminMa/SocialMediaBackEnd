@@ -2,6 +2,7 @@ package se.kth.awesome.security.util;
 
 import java.io.UnsupportedEncodingException;
 import java.security.GeneralSecurityException;
+import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.security.spec.InvalidKeySpecException;
@@ -20,13 +21,15 @@ import org.springframework.stereotype.Component;
 @Component
 public class PasswordSaltUtil extends ShaPasswordEncoder {
 
+	private static final BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+
 	public PasswordSaltUtil() {
 		super();
 	}
 
 	@Bean
 	public BCryptPasswordEncoder passwordEncoder() {
-		return new BCryptPasswordEncoder();
+		return bCryptPasswordEncoder;
 	}
 
 	@Override
@@ -135,7 +138,7 @@ public class PasswordSaltUtil extends ShaPasswordEncoder {
 	 * @return String which is the salted data
 	 * @throws GeneralSecurityException
 	 */
-	public static String generateHmacSHA256Signature(String data, String key)   throws GeneralSecurityException {
+	public static String generateHmacSHA256Signature(String data, String key)    {
 		byte[] hmacData = null;
 
 		try {
@@ -144,10 +147,11 @@ public class PasswordSaltUtil extends ShaPasswordEncoder {
 			mac.init(secretKey);
 			hmacData = mac.doFinal(data.getBytes("UTF-8"));
 			return Base64.encodeBase64String(hmacData);
-		} catch (UnsupportedEncodingException e) {
+		} catch (UnsupportedEncodingException | NoSuchAlgorithmException | InvalidKeyException e) {
 			e.printStackTrace();
-			throw new GeneralSecurityException(e);
+//			throw new GeneralSecurityException(e);
 		}
+		return null;
 	}
 
 }

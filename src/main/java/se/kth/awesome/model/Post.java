@@ -1,4 +1,4 @@
-//package se.kth.awesome.model;
+package se.kth.awesome.model;//package se.kth.awesome.model;
 //
 //import org.springframework.data.annotation.CreatedDate;
 //import org.springframework.format.annotation.DateTimeFormat;

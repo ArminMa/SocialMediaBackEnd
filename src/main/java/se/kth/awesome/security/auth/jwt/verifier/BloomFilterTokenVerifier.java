@@ -9,6 +9,8 @@ import org.springframework.stereotype.Component;
  *
  * Aug 17, 2016
  */
+
+//TODO verify token
 @Component
 public class BloomFilterTokenVerifier implements TokenVerifier {
     @Override

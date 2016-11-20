@@ -1,10 +1,8 @@
 package se.kth.awesome.service;
 
-import org.springframework.http.ResponseEntity;
-import se.kth.awesome.model.UserEntity;
-import se.kth.awesome.pojos.UserPojo;
-
 import java.util.Collection;
+import org.springframework.http.ResponseEntity;
+import se.kth.awesome.pojos.UserPojo;
 
 
 public interface UserEntityService {
@@ -16,6 +14,6 @@ public interface UserEntityService {
 
     ResponseEntity<?> findByEmail(String email);
 
-    Collection<UserPojo> searchUsersByName(String name);
+    Collection<UserPojo> searchUsersResemblingByUsername(String name);
 
 }

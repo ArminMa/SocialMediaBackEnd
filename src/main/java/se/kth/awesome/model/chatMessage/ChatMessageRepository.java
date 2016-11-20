@@ -1,16 +1,13 @@
 package se.kth.awesome.model.chatMessage;
 
+import java.util.List;
+import java.util.SortedSet;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
-import se.kth.awesome.model.UserEntity;
-import se.kth.awesome.model.chatMessage.ChatMessage;
-
-import java.util.List;
-import java.util.SortedSet;
 
 /**
  * Created by Sys on 2016-11-07.

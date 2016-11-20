@@ -4,6 +4,8 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import java.util.List;
 import java.util.Optional;
+import org.springframework.security.authentication.BadCredentialsException;
+import se.kth.awesome.security.exceptions.JwtExpiredTokenException;
 import se.kth.awesome.security.model.Scopes;
 
 /**
@@ -27,8 +29,8 @@ public class RefreshToken implements JwtToken {
      * @param token
      * @param signingKey
      * 
-     * @throws org.springframework.security.authentication.BadCredentialsException
-     * @throws se.kth.awesome.security.exceptions.JwtExpiredTokenException
+     * @throws BadCredentialsException
+     * @throws JwtExpiredTokenException
      * 
      * @return
      */

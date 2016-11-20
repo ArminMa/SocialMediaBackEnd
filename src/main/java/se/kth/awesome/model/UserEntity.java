@@ -2,22 +2,28 @@ package se.kth.awesome.model;
 
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import java.util.ArrayList;
+import java.io.Serializable;
 import java.util.Collection;
-import java.util.List;
+import java.util.TreeSet;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
+import javax.xml.bind.annotation.XmlRootElement;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 import org.hibernate.annotations.SortNatural;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
-import se.kth.awesome.model.security.UserRole;
+import se.kth.awesome.model.role.UserRole;
 import se.kth.awesome.util.GsonX;
 
-import javax.persistence.*;
-import javax.xml.bind.annotation.XmlRootElement;
-import java.io.Serializable;
-import java.util.SortedSet;
-import java.util.TreeSet;
 
 //import org.kth.HI1034.model.validators.ExtendedEmailValidator;
 @XmlRootElement
@@ -25,11 +31,11 @@ import java.util.TreeSet;
 @Entity
 @Table(name = "face_user", uniqueConstraints = {
 		@UniqueConstraint(columnNames = "email"),
-		@UniqueConstraint(columnNames = "user_name")})
-public class UserEntity implements Serializable{
+		@UniqueConstraint(columnNames = "username")})
+public class UserEntity implements Serializable,Comparable<UserEntity>{
 
 	private Long id;
-	private String userName;
+	private String username;
 	private String email;
 	private String password;
     private byte[] picture; // Todo implement this Armin. low prio
@@ -48,7 +54,7 @@ public class UserEntity implements Serializable{
 	 */
 	public UserEntity(String email, String username, String password) {
 		this.email = email;
-		this.userName = username;
+		this.username = username;
 		this.password = password;
 	}
 
@@ -67,14 +73,14 @@ public class UserEntity implements Serializable{
 
 
 
-	@Column(name = "user_name")
+	@Column(name = "username")
 //	@NotEmpty
     @Length(max = 100)
-    public String getUserName() {
-        return userName;
+    public String getUsername() {
+        return username;
     }
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setUsername(String userName) {
+        this.username = userName;
     }
 
 	//	@Basic
@@ -118,27 +124,27 @@ public class UserEntity implements Serializable{
 
 //	CascadeType.REMOVE wants to remove the other side Entity if this is removed, that is not good hear.
 
-	private SortedSet<FriendRequest> friendRequests = new TreeSet<>();
-	@ManyToMany(/*cascade = {CascadeType.PERSIST, CascadeType.MERGE},*/ fetch = FetchType.EAGER)
+	private Collection<FriendRequest> friendRequests = new TreeSet<>();
+	@ManyToMany(/*cascade = {CascadeType.PERSIST, CascadeType.MERGE},*/)
 	@LazyCollection(LazyCollectionOption.FALSE)
 	@SortNatural
-    public SortedSet<FriendRequest> getFriendRequests() {
+    public Collection<FriendRequest> getFriendRequests() {
         return friendRequests;
     }
-    public void setFriendRequests(SortedSet<FriendRequest> friendRequests) {
+    public void setFriendRequests(Collection<FriendRequest> friendRequests) {
         this.friendRequests = friendRequests;
     }
 
-	// TODO change column name from app_user_id to Role_id
-	private SortedSet<UserRole> roles = new TreeSet<>();
-	@OneToMany(/*cascade = {CascadeType.PERSIST, CascadeType.MERGE},*/ fetch = FetchType.EAGER)
+
+	private Collection<UserRole> roles =  new TreeSet<>();
+	@OneToMany( /*fetch = FetchType.EAGER*/ )
 	@LazyCollection(LazyCollectionOption.FALSE)
 	@SortNatural
-	@JoinColumn(name="app_user_id", referencedColumnName="id")
-	public SortedSet<UserRole> getRoles() {
+	@JoinColumn(name="user_id")
+	public Collection<UserRole> getRoles() {
 		return roles;
 	}
-	public void setRoles(SortedSet<UserRole> roles) {
+	public void setRoles(Collection<UserRole> roles) {
 		this.roles = roles;
 	}
 
@@ -263,4 +269,33 @@ public class UserEntity implements Serializable{
 		return thisJsonString;
 	}
 
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+
+		UserEntity that = (UserEntity) o;
+
+		if (id != null ? !id.equals(that.id) : that.id != null) return false;
+		if (username != null ? !username.equals(that.username) : that.username != null) return false;
+		if (email != null ? !email.equals(that.email) : that.email != null) return false;
+		return password != null ? password.equals(that.password) : that.password == null;
+
+	}
+
+	@Override
+	public int hashCode() {
+		int result = id != null ? id.hashCode() : 0;
+		result = 31 * result + (username != null ? username.hashCode() : 0);
+		result = 31 * result + (email != null ? email.hashCode() : 0);
+		result = 31 * result + (password != null ? password.hashCode() : 0);
+		return result;
+	}
+
+	@Override
+	public int compareTo(UserEntity o) {
+		int thisObject= this.hashCode();
+		long anotherObject = o.hashCode();
+		return (thisObject<anotherObject ? -1 : (thisObject==anotherObject ? 0 : 1));
+	}
 }
