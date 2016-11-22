@@ -68,11 +68,6 @@ public class UserEntity implements Serializable,Comparable<UserEntity>{
 		this.id = id;
 	}
 
-
-
-
-
-
 	@Column(name = "username")
 //	@NotEmpty
     @Length(max = 100)
@@ -148,6 +143,17 @@ public class UserEntity implements Serializable,Comparable<UserEntity>{
 		this.roles = roles;
 	}
 
+//	private Collection<MailMessage> mailMessages = new TreeSet<>();
+//	@ManyToMany(/*cascade = {CascadeType.PERSIST, CascadeType.MERGE},*/)
+//	@LazyCollection(LazyCollectionOption.TRUE)
+//	@SortNatural
+//	public Collection<MailMessage> getMailMessages() {
+//		return mailMessages;
+//	}
+//	public void setMailMessages(Collection<MailMessage> mailMessages) {
+//		this.mailMessages = mailMessages;
+//	}
+
 //	private SortedSet<ChatMessage> chatMessages = new TreeSet<>();
 //
 //	@ManyToMany(
@@ -164,17 +170,7 @@ public class UserEntity implements Serializable,Comparable<UserEntity>{
 //        this.chatMessages = receivedChatMessages;
 //    }
 //
-//	private SortedSet<MailMessage> mailMessages = new TreeSet<>();
-//	@OneToMany(fetch = FetchType.EAGER)
-//	@ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER)
-//	@LazyCollection(LazyCollectionOption.FALSE)
-//	@SortNatural
-//	public SortedSet<MailMessage> getMailMessages() {
-//		return mailMessages;
-//	}
-//	public void setMailMessages(SortedSet<MailMessage> mailMessages) {
-//		this.mailMessages = mailMessages;
-//	}
+
 //
 //	private SortedSet<UserEntity> friends = new TreeSet<>();
 //	@OneToOne( fetch = FetchType.LAZY)

@@ -55,13 +55,6 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).contentType(MediaTypes.JsonUtf8).body("success");
     }
 
-    @RequestMapping(
-            value = "/userSearch/{userName}",
-            method = RequestMethod.GET)
-    public ResponseEntity<?> userSearch(@PathVariable("userName") String userName) {
-        Collection<UserPojo> matchingUsers = userService.searchUsersResemblingByUsername(userName);
-        return  ResponseEntity.status(HttpStatus.OK).contentType(MediaTypes.JsonUtf8).body(matchingUsers);
-    }
 
     @RequestMapping(value = "/register",
             method = RequestMethod.POST,

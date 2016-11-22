@@ -83,27 +83,4 @@ public class UserControllerTest {
 
 
 
-    /**
-     * Assumes there is a user with a name containing e in the database
-     * @throws Exception
-     **/
-    @SuppressWarnings("unchecked")
-    @Test
-    public void searchUsersByString() throws Exception {
-        System.out.println(nLin+nLin+"----------------- UserControllerTest.searchUsersByString.start ----------------------------"+nLin+nLin);
-        Collection<UserEntity> result = (Collection<UserEntity>) GsonX.gson.fromJson(
-                this.mockMvc.perform(get("/social/userSearch/e").accept(MediaTypes.JsonUtf8))
-                        .andExpect(status().isOk())
-                        .andExpect(content().contentType(MediaTypes.JsonUtf8))
-                        .andReturn().getResponse().getContentAsString()
-                , Collection.class);
-        assertThat(result).isNotNull();
-        assertThat(!result.isEmpty());
-
-        System.out.println(nLin+nLin+"----------------- UserControllerTest.searchUsersByString.end ----------------------------"+nLin+nLin);
-    }
-
-
-
-
 }

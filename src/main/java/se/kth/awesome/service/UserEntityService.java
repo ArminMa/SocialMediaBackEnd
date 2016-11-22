@@ -2,6 +2,7 @@ package se.kth.awesome.service;
 
 import java.util.Collection;
 import org.springframework.http.ResponseEntity;
+import se.kth.awesome.pojos.MailMessagePojo.MailMessagePojo;
 import se.kth.awesome.pojos.UserPojo;
 
 
@@ -16,4 +17,5 @@ public interface UserEntityService {
 
     Collection<UserPojo> searchUsersResemblingByUsername(String name);
 
+    ResponseEntity<?> sendMailMessage(MailMessagePojo messagePojo);
 }

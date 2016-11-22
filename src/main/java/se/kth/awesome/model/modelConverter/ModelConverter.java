@@ -4,6 +4,8 @@ package se.kth.awesome.model.modelConverter;
 import java.util.ArrayList;
 import java.util.Collection;
 import se.kth.awesome.model.UserEntity;
+import se.kth.awesome.model.mailMessage.MailMessage;
+import se.kth.awesome.pojos.MailMessagePojo.MailMessagePojo;
 import se.kth.awesome.pojos.UserPojo;
 import se.kth.awesome.util.GsonX;
 
@@ -30,6 +32,16 @@ public class ModelConverter {
             if( userPojo == null ) return null;
             return GsonX.gson.fromJson(userPojo.toString(), UserEntity.class );
         }
+
+    public static MailMessagePojo convert(MailMessage mailMessage){
+        if( mailMessage == null ) return null;
+        return GsonX.gson.fromJson(mailMessage.toString(), MailMessagePojo.class );
+    }
+
+    public static MailMessage convert(MailMessagePojo mailMessagePojo){
+        if( mailMessagePojo == null ) return null;
+        return GsonX.gson.fromJson(mailMessagePojo.toString(), MailMessage.class );
+    }
 
 //        public static FriendRequestPojo convert(FriendRequest friendRequest){
 //            if( friendRequest == null ) return null;

@@ -93,7 +93,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/console/*").permitAll() // H2 Console Dash-board - only for testing
                 .antMatchers("/ping/*").permitAll() // test if the server works in Tomcat WTF
                 .antMatchers("/social/register").permitAll()
-                .antMatchers("/somthing").hasRole("MEMBER")
+//                .antMatchers("/api/searchUsersResemblingByUsername").hasRole("MEMBER")
 
         .and()
             .authorizeRequests()

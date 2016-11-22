@@ -9,26 +9,24 @@ import se.kth.awesome.model.UserEntity;
 
 
 @Embeddable
-public class ChatPK implements java.io.Serializable, Comparable<ChatPK> {
+public class ChatFK implements java.io.Serializable, Comparable<ChatFK> {
 
 	private UserEntity receivingUser;
 	private UserEntity author;
 
-	public ChatPK() {}
-
+	public ChatFK() {}
 
 	/**
 	 * @param receivingUser     2
 	 * @param author            3
 	 */
-	public ChatPK(UserEntity receivingUser, UserEntity author) {
+	public ChatFK(UserEntity receivingUser, UserEntity author) {
 		this.receivingUser = receivingUser;
 		this.author = author;
 	}
 
-
 	@ManyToOne(fetch = FetchType.LAZY,  targetEntity = UserEntity.class)
-	@JoinColumn(name = "receiver_id")
+	@JoinColumn(name = "chat_message_receiver_id")
 	public UserEntity getReceivingUser() {
 		return receivingUser;
 	}
@@ -36,9 +34,8 @@ public class ChatPK implements java.io.Serializable, Comparable<ChatPK> {
 		this.receivingUser = receivingUser;
 	}
 
-
 	@ManyToOne(fetch = FetchType.LAZY, targetEntity = UserEntity.class)
-	@JoinColumn(name = "sender_id")
+	@JoinColumn(name = "chat_message_sender_id")
 	public UserEntity getAuthor() {
 		return author;
 	}
@@ -46,9 +43,8 @@ public class ChatPK implements java.io.Serializable, Comparable<ChatPK> {
 		this.author = author;
 	}
 
-
 	@Override
-	public int compareTo(ChatPK o) {
+	public int compareTo(ChatFK o) {
 		int thisTime = this.hashCode();
 		long anotherEntity = o.hashCode();
 		return (thisTime<anotherEntity ? -1 : (thisTime==anotherEntity ? 0 : 1));

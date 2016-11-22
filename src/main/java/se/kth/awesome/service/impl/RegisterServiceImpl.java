@@ -73,7 +73,6 @@ public class RegisterServiceImpl implements RegisterService {
 		String password = passwordSaltUtil.encodePassword(userPojo.getPassword(), hashPasswordKey);
 		userPojo.setPassword(password);
 		UserEntity userEntity =  userRepository.save( ModelConverter.convert(userPojo) );
-		userRepository.flush();
 		userEntity.getRoles().add(new UserRole(Role.MEMBER));
 		userEntity =  userRepository.save( userEntity );
 		userRepository.flush();

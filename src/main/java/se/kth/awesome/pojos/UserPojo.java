@@ -8,6 +8,9 @@ import java.util.Collection;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
+
+import se.kth.awesome.pojos.MailMessagePojo.MailMessagePojo;
+import se.kth.awesome.security.auth.JwtAuthenticationToken;
 import se.kth.awesome.util.GsonX;
 
 @XmlRootElement
@@ -19,6 +22,7 @@ public class UserPojo  implements Serializable,Comparable<UserPojo>{
     private String username;
     private String email;
     private String password;
+    private JwtAuthenticationToken token;
     private byte[] picture; // Todo implement this Armin. low prio
     @JsonInclude(JsonInclude.Include.NON_EMPTY )
     private Collection<FriendRequestPojo> friendRequests = new ArrayList<>();
@@ -47,6 +51,14 @@ public class UserPojo  implements Serializable,Comparable<UserPojo>{
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public JwtAuthenticationToken getToken() {
+        return token;
+    }
+
+    public void setToken(JwtAuthenticationToken token) {
+        this.token = token;
     }
 
     public String getUsername() {

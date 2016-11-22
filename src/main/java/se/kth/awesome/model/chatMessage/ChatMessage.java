@@ -24,11 +24,11 @@ public class ChatMessage implements Serializable,Comparable<ChatMessage>{
     private Date sentDate;
 
     public ChatMessage() {
-        pk = new ChatPK();
+        pk = new ChatFK();
     }
 
     public ChatMessage(String chatContent, Date postedDate, UserEntity sender, UserEntity receiver) {
-        this.pk = new ChatPK( receiver, sender);
+        this.pk = new ChatFK( receiver, sender);
         this.chatContent = chatContent;
         this.sentDate = postedDate;
     }
@@ -66,12 +66,12 @@ public class ChatMessage implements Serializable,Comparable<ChatMessage>{
         this.sentDate = sentDate;
     }
 
-    public ChatPK pk;
+    public ChatFK pk;
     @Embedded
-    public ChatPK getPk() {
+    public ChatFK getPk() {
         return pk;
     }
-    public void setPk(ChatPK chatMessageID) {
+    public void setPk(ChatFK chatMessageID) {
         this.pk = chatMessageID;
     }
 

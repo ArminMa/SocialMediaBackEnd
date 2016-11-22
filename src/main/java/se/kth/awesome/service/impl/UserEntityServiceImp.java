@@ -3,6 +3,8 @@ package se.kth.awesome.service.impl;
 
 import java.nio.charset.Charset;
 import java.util.Collection;
+import java.util.Date;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -10,7 +12,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import se.kth.awesome.model.UserEntity;
 import se.kth.awesome.model.UserRepository;
+import se.kth.awesome.model.mailMessage.MailMessage;
+import se.kth.awesome.model.mailMessage.MailMessageRepository;
 import se.kth.awesome.model.modelConverter.ModelConverter;
+import se.kth.awesome.pojos.MailMessagePojo.MailMessagePojo;
 import se.kth.awesome.pojos.UserPojo;
 import se.kth.awesome.service.UserEntityService;
 import se.kth.awesome.util.MediaTypes;
@@ -21,6 +26,9 @@ public class UserEntityServiceImp implements UserEntityService {
 
 	@Autowired
 	private UserRepository userRepository;
+
+	@Autowired
+	private MailMessageRepository mailMessageRepository;
 
 	MediaType mediaType = new MediaType(MediaType.APPLICATION_JSON.getType(), MediaType.APPLICATION_JSON.getSubtype(), Charset.forName("utf8"));
 
@@ -53,6 +61,25 @@ public class UserEntityServiceImp implements UserEntityService {
 		@SuppressWarnings("unchecked")
 		Collection<UserPojo> users = (Collection<UserPojo>)ModelConverter.convert(matchingUsers);
 		return users;
+	}
+
+	@Override
+	public ResponseEntity<?> sendMailMessage(MailMessagePojo messagePojo) {
+        if(messagePojo == null) ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        if(messagePojo.getPk() == null) ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        if(messagePojo.getSender() == null) ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        if(messagePojo.getReceiver() == null) ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        if(messagePojo.getTopic() == null) ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        messagePojo.setSentDate(new Date());
+
+        //TODO check that the correct sender is sending from the token;
+//        JwtAuthenticationToken token = messagePojo.getSender().getToken();
+
+        MailMessage mailMessage = ModelConverter.convert(messagePojo);
+
+        mailMessageRepository.save(mailMessage);
+        mailMessageRepository.flush();
+        return ResponseEntity.ok().build();
 	}
 
 }
