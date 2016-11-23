@@ -1,9 +1,10 @@
 package se.kth.awesome.pojos.MailMessagePojo;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import se.kth.awesome.model.UserEntity;
+import org.springframework.format.annotation.DateTimeFormat;
 import se.kth.awesome.pojos.UserPojo;
-import se.kth.awesome.util.GsonX;
+import se.kth.awesome.util.gson.GsonX;
+
 import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
 import java.util.Date;
@@ -72,7 +73,7 @@ public class MailMessagePojo implements Serializable,Comparable<MailMessagePojo>
         this.topic = topic;
     }
 
-
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSS")
     public Date getSentDate() {
         return sentDate;
     }
@@ -94,6 +95,8 @@ public class MailMessagePojo implements Serializable,Comparable<MailMessagePojo>
 
     @Override
     public String toString() {
+
+
         return GsonX.gson.toJson(this);
     }
 

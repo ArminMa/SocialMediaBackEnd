@@ -1,8 +1,10 @@
 package se.kth.awesome.model.mailMessage;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.format.annotation.DateTimeFormat;
 import se.kth.awesome.model.UserEntity;
-import se.kth.awesome.util.GsonX;
+import se.kth.awesome.util.gson.GsonX;
 
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -68,6 +70,9 @@ public class MailMessage implements Serializable,Comparable<MailMessage>{
         this.pk = mailMessageId;
     }
 
+    @Temporal(TemporalType.TIMESTAMP)
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSS")
+    @CreatedDate
     @Column(name = "sent_date")
     public Date getSentDate() {
         return sentDate;
@@ -91,10 +96,7 @@ public class MailMessage implements Serializable,Comparable<MailMessage>{
         getPk().setSender(sender);
     }
 
-    @Override
-    public String toString() {
-        return GsonX.gson.toJson(this);
-    }
+
 
     @Override
     public boolean equals(Object o) {
@@ -122,4 +124,9 @@ public class MailMessage implements Serializable,Comparable<MailMessage>{
         return (thisObject<anotherObject ? -1 : (thisObject==anotherObject ? 0 : 1));
     }
 
+
+    @Override
+    public String toString() {
+        return GsonX.gson.toJson(this);
+    }
 }

@@ -18,4 +18,6 @@ public interface UserEntityService {
     Collection<UserPojo> searchUsersResemblingByUsername(String name);
 
     ResponseEntity<?> sendMailMessage(MailMessagePojo messagePojo);
+
+    ResponseEntity<?> getMyMails(String username);
 }

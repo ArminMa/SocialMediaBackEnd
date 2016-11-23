@@ -24,6 +24,8 @@ import se.kth.awesome.security.model.UserContext;
 import se.kth.awesome.security.util.PasswordSaltUtil;
 import se.kth.awesome.service.UserEntityService;
 
+import static se.kth.awesome.util.Util.nLin;
+
 
 /**
  * 
@@ -46,7 +48,7 @@ public class AjaxAuthenticationProvider implements AuthenticationProvider {
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-	    logger2.error("\n\n   "+ SpringbootSecurityJwtApplication.steps++ +" ---------- AjaxAuthenticationProvider.authenticate debug start ----------\n" );
+	    logger2.error(nLin+nLin+"   "+ SpringbootSecurityJwtApplication.steps++ +" ---------- AjaxAuthenticationProvider.authenticate debug start ----------\n" );
 
         Assert.notNull(authentication, "No authentication data provided");
 
@@ -65,7 +67,7 @@ public class AjaxAuthenticationProvider implements AuthenticationProvider {
 
 	    String password2 = passwordSaltUtil.encodePassword( password, serverSecretKey );
 
-	    logger2.error("\n\n---------- AjaxAuthenticationProvider.authenticate debug start ----------\n" +
+	    logger2.error(nLin+nLin+"---------- AjaxAuthenticationProvider.authenticate debug start ----------\n" +
 			    "\n"+ user.toString() +"\n" +
 			    "\npassword = "+ password +"\n" +
 			    "\npassword2 = "+ password2 +"\n" +

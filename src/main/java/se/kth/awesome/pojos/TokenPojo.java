@@ -3,7 +3,7 @@ package se.kth.awesome.pojos;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import java.io.Serializable;
 import javax.xml.bind.annotation.XmlRootElement;
-import se.kth.awesome.util.GsonX;
+import se.kth.awesome.util.gson.GsonX;
 
 @XmlRootElement
 @JsonInclude(JsonInclude.Include.NON_NULL )

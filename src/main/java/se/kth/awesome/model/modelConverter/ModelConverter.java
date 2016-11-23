@@ -7,7 +7,7 @@ import se.kth.awesome.model.UserEntity;
 import se.kth.awesome.model.mailMessage.MailMessage;
 import se.kth.awesome.pojos.MailMessagePojo.MailMessagePojo;
 import se.kth.awesome.pojos.UserPojo;
-import se.kth.awesome.util.GsonX;
+import se.kth.awesome.util.gson.GsonX;
 
 
 /**
@@ -82,6 +82,18 @@ public class ModelConverter {
                 Collection<UserEntity> userPojos = new ArrayList<>();
                 genericList.forEach( S -> userPojos.add( convert( (UserPojo) S) ) );
                 return userPojos;
+            }
+
+            if(genericList.iterator().next() instanceof MailMessage){
+                Collection<MailMessagePojo> mailMessagePojos = new ArrayList<>();
+                genericList.forEach( S -> mailMessagePojos.add( convert( (MailMessage) S) ) );
+                return mailMessagePojos;
+            }
+
+            if(genericList.iterator().next() instanceof MailMessagePojo){
+                Collection<MailMessage> mailMessages = new ArrayList<>();
+                genericList.forEach( S -> mailMessages.add( convert( (MailMessagePojo) S) ) );
+                return mailMessages;
             }
 
             return null;

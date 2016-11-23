@@ -22,6 +22,8 @@ import se.kth.awesome.security.model.UserContext;
 import se.kth.awesome.security.model.token.JwtToken;
 import se.kth.awesome.security.model.token.JwtTokenFactory;
 
+import static se.kth.awesome.util.Util.nLin;
+
 /**
  * AjaxAwareAuthenticationSuccessHandler
  * 
@@ -44,7 +46,7 @@ public class AjaxAwareAuthenticationSuccessHandler implements AuthenticationSucc
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
             Authentication authentication) throws IOException, ServletException {
-        logger2.error("\n\n   "+ SpringbootSecurityJwtApplication.steps++ +" ---------- AjaxAwareAuthenticationSuccessHandler.onAuthenticationSuccess debug start ----------\n" );
+        logger2.error(nLin+nLin+"   "+ SpringbootSecurityJwtApplication.steps++ +" ---------- AjaxAwareAuthenticationSuccessHandler.onAuthenticationSuccess debug start ----------\n" );
         UserContext userContext = (UserContext) authentication.getPrincipal();
         
         JwtToken accessToken = tokenFactory.createAccessJwtToken(userContext);

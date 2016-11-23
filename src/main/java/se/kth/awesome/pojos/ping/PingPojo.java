@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.google.gson.annotations.Expose;
 import java.io.Serializable;
 import javax.xml.bind.annotation.XmlRootElement;
-import se.kth.awesome.util.GsonX;
+import se.kth.awesome.util.gson.GsonX;
 
 
 @XmlRootElement

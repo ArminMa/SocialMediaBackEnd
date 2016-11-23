@@ -18,7 +18,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import se.kth.awesome.model.UserRepository;
 import se.kth.awesome.pojos.UserPojo;
-import se.kth.awesome.util.GsonX;
+import se.kth.awesome.util.gson.GsonX;
 import se.kth.awesome.util.MediaTypes;
 
 import static org.assertj.core.api.Assertions.assertThat;

@@ -20,6 +20,8 @@ import se.kth.awesome.pojos.UserPojo;
 import se.kth.awesome.service.UserEntityService;
 import se.kth.awesome.util.MediaTypes;
 
+import static se.kth.awesome.util.Util.nLin;
+
 
 @Service
 public class UserEntityServiceImp implements UserEntityService {
@@ -81,5 +83,27 @@ public class UserEntityServiceImp implements UserEntityService {
         mailMessageRepository.flush();
         return ResponseEntity.ok().build();
 	}
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public ResponseEntity<?> getMyMails(String username) {
+        if(username == null) ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+
+		System.out.println(nLin+"1.UserEntityServiceImp.getMyMails");
+
+        Collection<MailMessage> mailMessages = mailMessageRepository.getAllSentAndReceivedMailByUserName(username);
+        System.out.println(nLin+"2.UserEntityServiceImp.getMyMails");
+        if(mailMessages == null ||  mailMessages.isEmpty()) return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        System.out.println(nLin+"3.UserEntityServiceImp.getMyMails");
+		Collection<MailMessagePojo> mailMessagePojos = (Collection<MailMessagePojo>) ModelConverter.convert(mailMessages);
+        System.out.println(nLin+"4.UserEntityServiceImp.getMyMails");
+        if(mailMessagePojos == null ||  mailMessagePojos.isEmpty()) return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        System.out.println(nLin+"5.UserEntityServiceImp.getMyMails");
+
+        return ResponseEntity.status(HttpStatus.OK)
+                .contentType(MediaTypes.JsonUtf8)
+                .body(mailMessages);
+    }
+
 
 }

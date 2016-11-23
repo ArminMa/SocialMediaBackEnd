@@ -22,6 +22,8 @@ import se.kth.awesome.security.auth.jwt.extractor.TokenExtractor;
 import se.kth.awesome.security.config.WebSecurityConfig;
 import se.kth.awesome.security.model.token.RawAccessJwtToken;
 
+import static se.kth.awesome.util.Util.nLin;
+
 /**
  * Performs validation of provided JWT Token.
  * 
@@ -45,7 +47,7 @@ public class JwtTokenAuthenticationProcessingFilter extends AbstractAuthenticati
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
             throws AuthenticationException, IOException, ServletException {
-        logger2.error("\n\n"+ SpringbootSecurityJwtApplication.steps++ +" ---------- JwtTokenAuthenticationProcessingFilter.attemptAuthentication ----------\n");
+        logger2.error(nLin+nLin+""+ SpringbootSecurityJwtApplication.steps++ +" ---------- JwtTokenAuthenticationProcessingFilter.attemptAuthentication ----------\n");
 
         String tokenPayload = request.getHeader(WebSecurityConfig.JWT_TOKEN_HEADER_PARAM);
         RawAccessJwtToken token = new RawAccessJwtToken(tokenExtractor.extract(tokenPayload));

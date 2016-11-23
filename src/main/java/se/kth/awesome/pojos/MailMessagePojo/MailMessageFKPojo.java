@@ -2,6 +2,7 @@ package se.kth.awesome.pojos.MailMessagePojo;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import se.kth.awesome.pojos.UserPojo;
+import se.kth.awesome.util.gson.GsonX;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -57,5 +58,10 @@ public class MailMessageFKPojo implements java.io.Serializable, Comparable<MailM
         int thisTime = this.hashCode();
         long anotherEntity = o.hashCode();
         return (thisTime<anotherEntity ? -1 : (thisTime==anotherEntity ? 0 : 1));
+    }
+
+    @Override
+    public String toString() {
+        return GsonX.gson.toJson(this);
     }
 }

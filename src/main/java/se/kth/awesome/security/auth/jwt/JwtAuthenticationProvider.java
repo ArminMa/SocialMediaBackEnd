@@ -21,6 +21,8 @@ import se.kth.awesome.security.model.UserContext;
 import se.kth.awesome.security.model.token.JwtToken;
 import se.kth.awesome.security.model.token.RawAccessJwtToken;
 
+import static se.kth.awesome.util.Util.nLin;
+
 /**
  * An {@link AuthenticationProvider} implementation that will use provided
  * instance of {@link JwtToken} to perform authentication.
@@ -41,7 +43,7 @@ public class JwtAuthenticationProvider implements AuthenticationProvider {
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-        logger2.error("\n\n"+ SpringbootSecurityJwtApplication.steps++ +" ---------- JwtAuthenticationProvider.authenticate ----------\n");
+        logger2.error(nLin+nLin+""+ SpringbootSecurityJwtApplication.steps++ +" ---------- JwtAuthenticationProvider.authenticate ----------\n");
         RawAccessJwtToken rawAccessToken = (RawAccessJwtToken) authentication.getCredentials();
 
         Jws<Claims> jwsClaims = rawAccessToken.parseClaims(jwtSettings.getTokenSigningKey());

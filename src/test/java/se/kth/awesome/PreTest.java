@@ -12,12 +12,13 @@ import se.kth.awesome.model.UserRepository;
 import se.kth.awesome.model.chatMessage.ChatMessageRepository;
 import se.kth.awesome.model.role.UserRoleRepository;
 import se.kth.awesome.pojos.UserPojo;
-import se.kth.awesome.util.GsonX;
+import se.kth.awesome.util.gson.GsonX;
 import se.kth.awesome.util.MediaTypes;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static se.kth.awesome.util.Util.nLin;
 
 @Component
 public class PreTest {
@@ -62,7 +63,7 @@ public class PreTest {
 
 	public void registerUser(List<UserPojo> userPojos) throws Exception {
 
-		System.out.println("\n\n----------------- PreTest.registerUser-start ----------------------------\n\n");
+		System.out.println(nLin+nLin+"----------------- PreTest.registerUser-start ----------------------------\n\n");
 		for(UserPojo U: userPojos){
 			this.mockMvc.perform
 					(
@@ -74,7 +75,7 @@ public class PreTest {
 					.andExpect(content().contentType(MediaTypes.JsonUtf8));
 		}
 
-		System.out.println("\n\n----------------- PreTest.registerUser-end ----------------------------\n\n");
+		System.out.println(nLin+nLin+"----------------- PreTest.registerUser-end ----------------------------\n\n");
 	}
 
 }

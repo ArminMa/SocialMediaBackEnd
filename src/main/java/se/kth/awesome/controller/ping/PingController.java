@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import se.kth.awesome.pojos.ping.PingPojo;
-import se.kth.awesome.util.GsonX;
+import se.kth.awesome.util.gson.GsonX;
 import se.kth.awesome.util.MediaTypes;
 
 
@@ -83,9 +83,7 @@ public class PingController {
     public @ResponseBody PingPojo ping7(
             @RequestHeader(name = "jwt", defaultValue = "where is the Token?") String jwt,
             @PathVariable("name") String name,
-            @RequestBody PingPojo pingPojo,
-            HttpServletRequest request,
-            HttpServletResponse response) {
+            @RequestBody PingPojo pingPojo, HttpServletRequest request, HttpServletResponse response) {
 
         response.addHeader("keyUserServer", "some random token");
         response.addHeader("info", "mor header info");

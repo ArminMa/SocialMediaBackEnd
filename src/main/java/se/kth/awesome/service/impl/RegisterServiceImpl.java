@@ -76,9 +76,9 @@ public class RegisterServiceImpl implements RegisterService {
 		userEntity.getRoles().add(new UserRole(Role.MEMBER));
 		userEntity =  userRepository.save( userEntity );
 		userRepository.flush();
-//		logger2.error("\n\n ---------- RegisterServiceImpl.registerNewUser userEntity after save Role ----------\n");
+//		logger2.error(nLin+nLin+" ---------- RegisterServiceImpl.registerNewUser userEntity after save Role ----------\n");
 //		logger2.error( "\n"+ userEntity.toString() +"\n");
-//		logger2.error("\n\n ---------- RegisterServiceImpl.registerNewUser userEntity after save Role ----------\n");
+//		logger2.error(nLin+nLin+" ---------- RegisterServiceImpl.registerNewUser userEntity after save Role ----------\n");
 
 
         if(userEntity == null){

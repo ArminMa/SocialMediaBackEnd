@@ -31,7 +31,7 @@ public class MailMessageTest {
     private List<MailMessage> mailMessages = new ArrayList<>();
     @Before
     public void setUp() throws Exception {
-        System.out.println("\n\n----------------- MailMessageTest.setUp-start ----------------------------"+nLin+nLin);
+        System.out.println(nLin+nLin+"----------------- MailMessageTest.setUp-start ----------------------------"+nLin+nLin);
         userEntities.add(new UserEntity("testMailEmail0@gmail.com", "testMailUser0", "PasswordHashed0"));
         userEntities.add(new UserEntity("testMailEmail1@gmail.com", "testMailUser2", "PasswordHashed1"));
         userEntities.add(new UserEntity("testMailEmail2@gmail.com", "testMailUser3", "PasswordHashed2"));
@@ -49,12 +49,12 @@ public class MailMessageTest {
         mailMessages = mailMessageRepository.save(mailMessages);
         mailMessageRepository.flush();
 
-        System.out.println("\n\n----------------- MailMessageTest.setUp-end ----------------------------"+nLin+nLin);
+        System.out.println(nLin+nLin+"----------------- MailMessageTest.setUp-end ----------------------------"+nLin+nLin);
     }
 
     @After
     public void tearDown() throws Exception {
-        System.out.println("\n\n----------------- MailMessageTest.tearDown-start ----------------------------"+nLin+nLin);
+        System.out.println(nLin+nLin+"----------------- MailMessageTest.tearDown-start ----------------------------"+nLin+nLin);
         assertThat(mailMessages).isNotNull();
         mailMessageRepository.delete(mailMessages);
         mailMessageRepository.flush();
@@ -65,13 +65,13 @@ public class MailMessageTest {
         assertThat(userEntity.getEmail()).isEqualTo("testMailEmail0@gmail.com");
         userRepo.delete(userEntities);
         userRepo.flush();
-        System.out.println("\n\n----------------- MailMessageTest.tearDown-end ----------------------------"+nLin+nLin);
+        System.out.println(nLin+nLin+"----------------- MailMessageTest.tearDown-end ----------------------------"+nLin+nLin);
     }
 
 
     @Test
     public void A_mailMessageTest(){
-        System.out.println("\n\n----------------- MailMessageTest.MailMessageTest-start ----------------------------"+nLin+nLin);
+        System.out.println(nLin+nLin+"----------------- MailMessageTest.MailMessageTest-start ----------------------------"+nLin+nLin);
         UserEntity userEntity = null;
         userEntity = userRepo.findByEmail(userEntities.get(0).getEmail());
         assertThat(userEntity).isNotNull();
@@ -80,7 +80,7 @@ public class MailMessageTest {
                 mailMessageRepository.findBySenderAndReceiver(userEntities.get(0).getId(), userEntities.get(1).getId());
         assertThat(chatMessagesFromUser0ToUser1).isNotNull();
         assertThat(chatMessagesFromUser0ToUser1).isNotEmpty();
-        System.out.println("\n\n----------------- MailMessageTest.MailMessageTest-end ----------------------------"+nLin+nLin);
+        System.out.println(nLin+nLin+"----------------- MailMessageTest.MailMessageTest-end ----------------------------"+nLin+nLin);
     }
 
 }

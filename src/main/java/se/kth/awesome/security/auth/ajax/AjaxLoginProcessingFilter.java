@@ -22,6 +22,8 @@ import se.kth.awesome.SpringbootSecurityJwtApplication;
 import se.kth.awesome.pojos.UserPojo;
 import se.kth.awesome.security.exceptions.AuthMethodNotSupportedException;
 
+import static se.kth.awesome.util.Util.nLin;
+
 /**
  * AjaxLoginProcessingFilter
  * 
@@ -49,9 +51,9 @@ public class AjaxLoginProcessingFilter extends AbstractAuthenticationProcessingF
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
             throws AuthenticationException, IOException, ServletException {
-        logger2.error("\n\n"+ SpringbootSecurityJwtApplication.steps++ +" ---------- AjaxLoginProcessingFilter.attemptAuthentication ----------\n");
+        logger2.error(nLin+nLin+""+ SpringbootSecurityJwtApplication.steps++ +" ---------- AjaxLoginProcessingFilter.attemptAuthentication ----------\n");
 //        logger2.error( "\n"+token +"\n");
-//        logger2.error("\n\n ---------- AjaxAuthenticationProvider.attemptAuthentication  ----------\n");
+//        logger2.error(nLin+nLin+" ---------- AjaxAuthenticationProvider.attemptAuthentication  ----------\n");
 
         if (!HttpMethod.POST.name().equals(request.getMethod()) /*|| !WebUtil.isAjax(request)*/) {
             if(logger.isDebugEnabled()) {
@@ -64,7 +66,7 @@ public class AjaxLoginProcessingFilter extends AbstractAuthenticationProcessingF
 //        String body = request.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
 
         UserPojo loginRequest = objectMapper.readValue(request.getReader(), UserPojo.class);
-	    logger2.error("\n\n---------- AjaxLoginProcessingFilter.attemptAuthentication debug start ----------\n" +
+	    logger2.error(nLin+nLin+"---------- AjaxLoginProcessingFilter.attemptAuthentication debug start ----------\n" +
 			    "\n"+ loginRequest.toString() +"\n" +
 			    "\n ---------- AjaxLoginProcessingFilter.attemptAuthentication debug end ----------\n\n");
 

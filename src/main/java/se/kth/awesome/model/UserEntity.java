@@ -22,7 +22,7 @@ import org.hibernate.annotations.SortNatural;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 import se.kth.awesome.model.role.UserRole;
-import se.kth.awesome.util.GsonX;
+import se.kth.awesome.util.gson.GsonX;
 
 
 //import org.kth.HI1034.model.validators.ExtendedEmailValidator;
@@ -254,6 +254,7 @@ public class UserEntity implements Serializable,Comparable<UserEntity>{
 //		}
 //		if(this.friends == null){
 //			this.friends = new TreeSet<>();
+
 //		}
 //		if(this.log == null){
 //			this.log = new TreeSet<>();

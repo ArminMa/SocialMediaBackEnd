@@ -11,7 +11,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import se.kth.awesome.pojos.MailMessagePojo.MailMessagePojo;
 import se.kth.awesome.security.auth.JwtAuthenticationToken;
-import se.kth.awesome.util.GsonX;
+import se.kth.awesome.util.gson.GsonX;
 
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.PUBLIC_MEMBER)

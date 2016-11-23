@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -16,4 +17,6 @@ public interface MailMessageRepository extends JpaRepository<MailMessage, Long>,
     @Query(value = "select MM from MailMessage MM where MM.pk.sender.id = :senderId and MM.pk.receiver.id = :receiverId")
     List<MailMessage> findBySenderAndReceiver(@Param("senderId") Long senderID, @Param("receiverId") Long receiverID);
 
+    @Query(value = "select MM from MailMessage MM where MM.pk.sender.username = :userName or MM.pk.receiver.username = :userName")
+    List<MailMessage> getAllSentAndReceivedMailByUserName(@Param("userName")String username);
 }

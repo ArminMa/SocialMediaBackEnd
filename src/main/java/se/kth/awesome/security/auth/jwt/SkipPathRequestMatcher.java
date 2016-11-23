@@ -12,6 +12,8 @@ import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.util.Assert;
 import se.kth.awesome.SpringbootSecurityJwtApplication;
 
+import static se.kth.awesome.util.Util.nLin;
+
 /**
  * SkipPathRequestMatcher
  * 
@@ -32,7 +34,7 @@ public class SkipPathRequestMatcher implements RequestMatcher {
 
     @Override
     public boolean matches(HttpServletRequest request) {
-        logger2.error("\n\n"+ SpringbootSecurityJwtApplication.steps++ +" ---------- SkipPathRequestMatcher.matches ----------\n");
+        logger2.error(nLin+nLin+""+ SpringbootSecurityJwtApplication.steps++ +" ---------- SkipPathRequestMatcher.matches ----------\n");
 
         if (matchers.matches(request)) {
             return false;

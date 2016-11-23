@@ -30,7 +30,7 @@ public class UserRepositoryTest {
     List<UserEntity> userEntities = new ArrayList<>();
     @Before
     public void setUp() throws Exception {
-        System.out.println("\n\n----------------- UserRepositoryTest.setUp-start ----------------------------"+nLin+nLin);
+        System.out.println(nLin+nLin+"----------------- UserRepositoryTest.setUp-start ----------------------------"+nLin+nLin);
 
         userEntities.add(new UserEntity("testEmail0@gmail.com", "testUser0", "PasswordHashed0"));
         userEntities.add(new UserEntity("testEmail1@gmail.com", "testUser1", "PasswordHashed1"));
@@ -41,22 +41,22 @@ public class UserRepositoryTest {
 
         Assertions.assertThat(userEntities).isNotNull();
         assertThat(userEntities.size()).isEqualTo(3);
-        System.out.println("\n\n----------------- UserRepositoryTest.setUp-end ----------------------------"+nLin+nLin);
+        System.out.println(nLin+nLin+"----------------- UserRepositoryTest.setUp-end ----------------------------"+nLin+nLin);
     }
 
     @After
     public void tearDown() throws Exception {
-        System.out.println("\n\n----------------- UserRepositoryTest.tearDown-start ----------------------------"+nLin+nLin);
+        System.out.println(nLin+nLin+"----------------- UserRepositoryTest.tearDown-start ----------------------------"+nLin+nLin);
         Assertions.assertThat(userEntities).isNotNull();
 
         userRepository.delete(userEntities);
         userRepository.flush();
-        System.out.println("\n\n----------------- UserRepositoryTest.tearDown-end ----------------------------"+nLin+nLin);
+        System.out.println(nLin+nLin+"----------------- UserRepositoryTest.tearDown-end ----------------------------"+nLin+nLin);
     }
 
     @Test
     public void userRepositoryTest(){
-        System.out.println("\n\n----------------- UserRepositoryTest.userRepositoryTest-start ----------------------------"+nLin+nLin);
+        System.out.println(nLin+nLin+"----------------- UserRepositoryTest.userRepositoryTest-start ----------------------------"+nLin+nLin);
         UserEntity userEntity = null;
 
         userEntity = userRepository.findByEmail(userEntities.get(0).getEmail());
@@ -71,7 +71,7 @@ public class UserRepositoryTest {
         assertThat(userEntity).isNotNull();
         assertThat(userEntity.getId()).isEqualTo(userEntities.get(2).getId());
 
-        System.out.println("\n\n----------------- UserRepositoryTest.userRepositoryTest-end ----------------------------"+nLin+nLin);
+        System.out.println(nLin+nLin+"----------------- UserRepositoryTest.userRepositoryTest-end ----------------------------"+nLin+nLin);
 
 
     }

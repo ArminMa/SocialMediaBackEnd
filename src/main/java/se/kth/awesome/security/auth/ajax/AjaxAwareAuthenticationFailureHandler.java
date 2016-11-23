@@ -20,6 +20,8 @@ import se.kth.awesome.common.ErrorResponse;
 import se.kth.awesome.security.exceptions.AuthMethodNotSupportedException;
 import se.kth.awesome.security.exceptions.JwtExpiredTokenException;
 
+import static se.kth.awesome.util.Util.nLin;
+
 /**
  * 
  * @author vladimir.stankovic
@@ -39,7 +41,7 @@ public class AjaxAwareAuthenticationFailureHandler implements AuthenticationFail
 	@Override
 	public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
 			AuthenticationException e) throws IOException, ServletException {
-		logger2.error("\n\n   "+ SpringbootSecurityJwtApplication.steps++ +" ---------- AjaxAwareAuthenticationFailureHandler.onAuthenticationFailure debug start ----------\n" );
+		logger2.error(nLin+nLin+"   "+ SpringbootSecurityJwtApplication.steps++ +" ---------- AjaxAwareAuthenticationFailureHandler.onAuthenticationFailure debug start ----------\n" );
 		response.setStatus(HttpStatus.UNAUTHORIZED.value());
 		response.setContentType(MediaType.APPLICATION_JSON_VALUE);
 		

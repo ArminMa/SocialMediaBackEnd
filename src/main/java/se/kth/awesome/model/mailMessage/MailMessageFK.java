@@ -1,14 +1,18 @@
 package se.kth.awesome.model.mailMessage;
 
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import se.kth.awesome.model.UserEntity;
-import se.kth.awesome.model.chatMessage.ChatFK;
+import se.kth.awesome.util.gson.GsonX;
 
 import javax.persistence.Embeddable;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.xml.bind.annotation.XmlRootElement;
 
+@XmlRootElement
+@JsonInclude(JsonInclude.Include.NON_NULL)
 @Embeddable
 public class MailMessageFK implements java.io.Serializable, Comparable<MailMessageFK>{
     private UserEntity sender;
@@ -22,7 +26,7 @@ public class MailMessageFK implements java.io.Serializable, Comparable<MailMessa
         this.receiver = receiver;
     }
 
-    @ManyToOne(fetch = FetchType.LAZY,  targetEntity = UserEntity.class)
+    @ManyToOne(fetch = FetchType.EAGER,  targetEntity = UserEntity.class)
     @JoinColumn(name = "mail_message_receiver_id")
     public UserEntity getReceiver() {
         return receiver;
@@ -32,7 +36,7 @@ public class MailMessageFK implements java.io.Serializable, Comparable<MailMessa
         this.receiver = receiver;
     }
 
-    @ManyToOne(fetch = FetchType.LAZY, targetEntity = UserEntity.class)
+    @ManyToOne(fetch = FetchType.EAGER, targetEntity = UserEntity.class)
     @JoinColumn(name = "mail_message_sender_id")
     public UserEntity getSender() {
         return sender;
@@ -46,6 +50,11 @@ public class MailMessageFK implements java.io.Serializable, Comparable<MailMessa
         int thisTime = this.hashCode();
         long anotherEntity = o.hashCode();
         return (thisTime<anotherEntity ? -1 : (thisTime==anotherEntity ? 0 : 1));
+    }
+
+    @Override
+    public String toString() {
+        return GsonX.gson.toJson(this);
     }
 
 }

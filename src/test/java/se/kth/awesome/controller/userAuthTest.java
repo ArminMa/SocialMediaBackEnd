@@ -14,20 +14,17 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import se.kth.awesome.model.UserEntity;
 import se.kth.awesome.model.UserRepository;
-import se.kth.awesome.model.mailMessage.MailMessage;
 import se.kth.awesome.model.mailMessage.MailMessageRepository;
 import se.kth.awesome.model.modelConverter.ModelConverter;
 import se.kth.awesome.model.role.Role;
-import se.kth.awesome.pojos.MailMessagePojo.MailMessagePojo;
 import se.kth.awesome.pojos.TokenPojo;
 import se.kth.awesome.pojos.UserPojo;
 import se.kth.awesome.pojos.UserRolePojo;
-import se.kth.awesome.util.GsonX;
+import se.kth.awesome.util.gson.GsonX;
 import se.kth.awesome.util.MediaTypes;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -90,10 +87,10 @@ public class userAuthTest {
 
     @After
     public void tearDown() throws Exception {
-        System.out.println("\n\n----------------- userAuthTest.tearDown-start ----------------------------"+nLin+nLin);
+        System.out.println(nLin+nLin+"----------------- userAuthTest.tearDown-start ----------------------------"+nLin+nLin);
         userRepository.deleteAll();
         userRepository.flush();
-        System.out.println("\n\n----------------- userAuthTest.tearDown-end ----------------------------"+nLin+nLin);
+        System.out.println(nLin+nLin+"----------------- userAuthTest.tearDown-end ----------------------------"+nLin+nLin);
     }
 
     @Test
@@ -102,7 +99,7 @@ public class userAuthTest {
 //		X-Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJzdmxhZGFAZ21haWwuY29tIiwic2NvcGVzIjpbIlJPTEVfQURNSU4iLCJST0xFX1BSRU1JVU1fTUVNQkVSIl0sImlzcyI6Imh0dHA6Ly9zdmxhZGEuY29tIiwiaWF0IjoxNDcyMzkwMDY1LCJleHAiOjE0NzIzOTA5NjV9.Y9BR7q3f1npsSEYubz-u8tQ8dDOdBcVPFN7AIfWwO37KyhRugVzEbWVPO1obQlHNJWA0Nx1KrEqHqMEjuNWo5w
 //		Cache-Control: no-cache
         assertThat(tokenPojo).isNotNull();
-        System.out.println("\n\n----------------- userAuthTest.testGetUser.start ----------------------------"+nLin+nLin);
+        System.out.println(nLin+nLin+"----------------- userAuthTest.testGetUser.start ----------------------------"+nLin+nLin);
 
         System.out.println(nLin+ "token = " + tokenPojo.toString() + nLin);
 
@@ -115,7 +112,7 @@ public class userAuthTest {
                 .andExpect(content().contentType(MediaTypes.JsonUtf8))
                 .andReturn().getResponse().getContentAsString();
 
-        System.out.println("\n\n----------------- userAuthTest.testGetUser.end ----------------------------"+nLin+nLin);
+        System.out.println(nLin+nLin+"----------------- userAuthTest.testGetUser.end ----------------------------"+nLin+nLin);
     }
 
     @Test
@@ -136,7 +133,7 @@ public class userAuthTest {
 //
 //		assertThat(something).isNotNull();
 //		assertThat(something).isEqualTo("{success: ok}");
-        System.out.println("\n\n----------------- userAuthTest.verifyUserRoleAuth.start ----------------------------"+nLin+nLin);
+        System.out.println(nLin+nLin+"----------------- userAuthTest.verifyUserRoleAuth.start ----------------------------"+nLin+nLin);
     }
 
 
@@ -167,30 +164,7 @@ public class userAuthTest {
         System.out.println(nLin+nLin+"----------------- UserControllerTest.searchUsersByString.end ----------------------------"+nLin+nLin);
     }
 
-    @SuppressWarnings("unchecked")
-    @Test
-    public void sendMessageToUser() throws Exception {
-        System.out.println(nLin+nLin+"----------------- UserControllerTest.sendMessageToUser.start ----------------------------"+nLin+nLin);
-        MailMessagePojo mailMessagePojo = new MailMessagePojo("P1", "topic1", userPojos.get(0),userPojos.get(1));
-        assertThat(tokenPojo).isNotNull();
-        assertThat(userPojos).isNotNull();
-        MockHttpServletResponse theResponse =  this.mockMvc.perform
-                (
-                        post("/api/sendMail")
-                                .contentType(MediaType.APPLICATION_JSON)
-                                .content(GsonX.gson.toJson( mailMessagePojo.toString() ))
-                                .header("X-Authorization", "Bearer " + tokenPojo.getToken())
-                                .header("Cache-Control", "no-cache")
-                )
-                .andExpect(status().is(HttpStatus.OK.value()))
-                .andReturn().getResponse();
-        assertThat(theResponse).isNotNull();
 
-        List<MailMessage> mailMessageReturnFromRepo = mailMessageRepo.findBySenderAndReceiver(userPojos.get(0).getId(), userPojos.get(1).getId());
-        assertThat(mailMessageReturnFromRepo).isNotNull();
-//        assertThat(mailMessageReturnFromRepo).isNotEmpty();
-        System.out.println(nLin+nLin+"----------------- UserControllerTest.searchUsersByString.end ----------------------------"+nLin+nLin);
-    }
 
 
 }

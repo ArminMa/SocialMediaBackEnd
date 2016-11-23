@@ -53,7 +53,7 @@ public class ChatMessage implements Serializable,Comparable<ChatMessage>{
 
 
     @Temporal(TemporalType.TIMESTAMP)
-    @DateTimeFormat(pattern = "yyyy-MM-dd.hh:mm:ss.SSS")
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
     @CreatedDate
     @Column(name = "sent_date",
             nullable = false,
