@@ -38,7 +38,7 @@ import static se.kth.awesome.util.Util.nLin;
 @SpringBootTest
 @AutoConfigureMockMvc
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
-public class userAuthTest {
+public class UserAuthTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -56,7 +56,7 @@ public class userAuthTest {
     @SuppressWarnings("unchecked")
     @Before
     public void setUp() throws Exception {
-        System.out.println(nLin+nLin+"----------------- userAuthTest.setUp-start ----------------------------"+nLin+nLin);
+        System.out.println(nLin+nLin+"----------------- UserAuthTest.setUp-start ----------------------------"+nLin+nLin);
 		/*"password:793148fd08f39ee62a84474fce8e0a544c5f1fc8," +*/ /*PasswordHashed0*/
         userPojos.add(new UserPojo("testUser", "test@test.test", "793148fd08f39ee62a84474fce8e0a544c5f1fc8"));
         userPojos.add(new UserPojo("testUser2", "test2@test2.test2", "793148fd08f39ee62a84474fce8e0a544c5f1fc8"));
@@ -82,15 +82,15 @@ public class userAuthTest {
         assertThat(tokenJson).isNotNull();
 
         tokenPojo = GsonX.gson.fromJson(tokenJson, TokenPojo.class);
-        System.out.println(nLin+nLin+"----------------- userAuthTest.setUp-end ----------------------------"+nLin+nLin);
+        System.out.println(nLin+nLin+"----------------- UserAuthTest.setUp-end ----------------------------"+nLin+nLin);
     }
 
     @After
     public void tearDown() throws Exception {
-        System.out.println(nLin+nLin+"----------------- userAuthTest.tearDown-start ----------------------------"+nLin+nLin);
+        System.out.println(nLin+nLin+"----------------- UserAuthTest.tearDown-start ----------------------------"+nLin+nLin);
         userRepository.deleteAll();
         userRepository.flush();
-        System.out.println(nLin+nLin+"----------------- userAuthTest.tearDown-end ----------------------------"+nLin+nLin);
+        System.out.println(nLin+nLin+"----------------- UserAuthTest.tearDown-end ----------------------------"+nLin+nLin);
     }
 
     @Test
@@ -99,7 +99,7 @@ public class userAuthTest {
 //		X-Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJzdmxhZGFAZ21haWwuY29tIiwic2NvcGVzIjpbIlJPTEVfQURNSU4iLCJST0xFX1BSRU1JVU1fTUVNQkVSIl0sImlzcyI6Imh0dHA6Ly9zdmxhZGEuY29tIiwiaWF0IjoxNDcyMzkwMDY1LCJleHAiOjE0NzIzOTA5NjV9.Y9BR7q3f1npsSEYubz-u8tQ8dDOdBcVPFN7AIfWwO37KyhRugVzEbWVPO1obQlHNJWA0Nx1KrEqHqMEjuNWo5w
 //		Cache-Control: no-cache
         assertThat(tokenPojo).isNotNull();
-        System.out.println(nLin+nLin+"----------------- userAuthTest.testGetUser.start ----------------------------"+nLin+nLin);
+        System.out.println(nLin+nLin+"----------------- UserAuthTest.testGetUser.start ----------------------------"+nLin+nLin);
 
         System.out.println(nLin+ "token = " + tokenPojo.toString() + nLin);
 
@@ -112,13 +112,13 @@ public class userAuthTest {
                 .andExpect(content().contentType(MediaTypes.JsonUtf8))
                 .andReturn().getResponse().getContentAsString();
 
-        System.out.println(nLin+nLin+"----------------- userAuthTest.testGetUser.end ----------------------------"+nLin+nLin);
+        System.out.println(nLin+nLin+"----------------- UserAuthTest.testGetUser.end ----------------------------"+nLin+nLin);
     }
 
     @Test
     public void b_verifyUserRoleAuth() throws Exception {
 
-        System.out.println(nLin+nLin+"----------------- userAuthTest.verifyUserRoleAuth.start ----------------------------"+nLin+nLin);
+        System.out.println(nLin+nLin+"----------------- UserAuthTest.verifyUserRoleAuth.start ----------------------------"+nLin+nLin);
         assertThat(tokenPojo).isNotNull();
 //		//test role auth
 //		System.out.println(nLin+nLin+"token valid. trying auth with role"+ nLin+ nLin);
@@ -133,7 +133,7 @@ public class userAuthTest {
 //
 //		assertThat(something).isNotNull();
 //		assertThat(something).isEqualTo("{success: ok}");
-        System.out.println(nLin+nLin+"----------------- userAuthTest.verifyUserRoleAuth.start ----------------------------"+nLin+nLin);
+        System.out.println(nLin+nLin+"----------------- UserAuthTest.verifyUserRoleAuth.start ----------------------------"+nLin+nLin);
     }
 
 

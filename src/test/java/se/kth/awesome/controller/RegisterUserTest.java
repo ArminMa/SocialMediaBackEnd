@@ -30,7 +30,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
-public class registerUserTest {
+public class RegisterUserTest {
 	private static String nLin = System.lineSeparator();
 
 	@Autowired
@@ -42,18 +42,18 @@ public class registerUserTest {
 
 	@After
 	public void tearDown() throws Exception {
-		System.out.println(nLin+nLin+"----------------- registerUserTest.tearDown-start ----------------------------"+nLin+nLin);
+		System.out.println(nLin+nLin+"----------------- RegisterUserTest.tearDown-start ----------------------------"+nLin+nLin);
 		userRepository.deleteAll();
 		userRepository.flush();
-		System.out.println(nLin+nLin+"----------------- registerUserTest.tearDown-end ----------------------------"+nLin+nLin);
+		System.out.println(nLin+nLin+"----------------- RegisterUserTest.tearDown-end ----------------------------"+nLin+nLin);
 	}
 
 
 
 	@Test
 	public void registerTest() throws Exception {
-		System.out.println("----------------- registerUserTest.registerTest-start ----------------------------");
-		userPojos.add(new UserPojo("loginUser", "loginUserTest@gmail.com", "PasswordHashed0"));
+		System.out.println("----------------- RegisterUserTest.registerTest-start ----------------------------");
+		userPojos.add(new UserPojo("loginUser", "LoginUserTest@gmail.com", "PasswordHashed0"));
 		System.out.println("\nGsonX.gson.toJson(userPojos.get(0)) = " + GsonX.gson.toJson(userPojos.get(0)) + nLin);
 		HttpServletRequest httpServletRequest = null;
 		HttpServletResponse httpServletResponse = null;
@@ -71,6 +71,6 @@ public class registerUserTest {
 		assertThat(theResponse).isNotNull();
 		System.out.println("\ntheResponse.getStatus = " + theResponse.getStatus() + nLin);
 
-		System.out.println("----------------- registerUserTest.registerTest-end ----------------------------");
+		System.out.println("----------------- RegisterUserTest.registerTest-end ----------------------------");
 	}
 }

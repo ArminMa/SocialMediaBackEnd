@@ -34,7 +34,7 @@ import static se.kth.awesome.util.Util.nLin;
 @SpringBootTest
 @AutoConfigureMockMvc
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
-public class loginUserTest {
+public class LoginUserTest {
 
 	@Autowired
 	private MockMvc mockMvc;
@@ -48,32 +48,32 @@ public class loginUserTest {
 	@SuppressWarnings("unchecked")
 	@Before
 	public void setUp() throws Exception {
-		System.out.println(nLin+nLin+"----------------- loginUserTest.setUp-start ----------------------------"+nLin+nLin);
+		System.out.println(nLin+nLin+"----------------- LoginUserTest.setUp-start ----------------------------"+nLin+nLin);
 
 		/*"password:793148fd08f39ee62a84474fce8e0a544c5f1fc8," +*/ /*PasswordHashed0*/
-		userPojos.add(new UserPojo("loginUser", "loginUserTest@gmail.com", "793148fd08f39ee62a84474fce8e0a544c5f1fc8"));
+		userPojos.add(new UserPojo("loginUser", "LoginUserTest@gmail.com", "793148fd08f39ee62a84474fce8e0a544c5f1fc8"));
 		userPojos.get(0).getRoles().add(new UserRolePojo(Role.MEMBER));
 		userRepository.save((Collection<UserEntity>) ModelConverter.convert(userPojos));
 		userRepository.flush();
-		System.out.println(nLin+nLin+"----------------- loginUserTest.setUp-end ----------------------------"+nLin+nLin);
+		System.out.println(nLin+nLin+"----------------- LoginUserTest.setUp-end ----------------------------"+nLin+nLin);
 	}
 
 	@After
 	public void tearDown() throws Exception {
-		System.out.println(nLin+nLin+"----------------- loginUserTest.tearDown-start ----------------------------"+nLin+nLin);
+		System.out.println(nLin+nLin+"----------------- LoginUserTest.tearDown-start ----------------------------"+nLin+nLin);
 		assertThat(userEntities).isNotNull();
 		userRepository.delete(userEntities);
 		userRepository.flush();
-		System.out.println(nLin+nLin+"----------------- loginUserTest.tearDown-end ----------------------------"+nLin+nLin);
+		System.out.println(nLin+nLin+"----------------- LoginUserTest.tearDown-end ----------------------------"+nLin+nLin);
 	}
 
 
 	@Test
 	public void login() throws Exception {
 
-		System.out.println(nLin+nLin+"----------------- loginUserTest.login.start ----------------------------"+nLin+nLin);
+		System.out.println(nLin+nLin+"----------------- LoginUserTest.login.start ----------------------------"+nLin+nLin);
 
-		UserEntity entitySaved = userRepository.findByEmail("loginUserTest@gmail.com");
+		UserEntity entitySaved = userRepository.findByEmail("LoginUserTest@gmail.com");
 		System.out.println(nLin+nLin+"------------------------ userSaved? -------------------------"+nLin);
 		System.out.println(nLin+entitySaved.toString() + nLin);
 
@@ -96,7 +96,7 @@ public class loginUserTest {
 		System.out.println(nLin+nLin+"------------------------ TOKEN -------------------------");
 		System.out.println(theResponse.getContentAsString() + nLin+nLin);
 
-		System.out.println(nLin+nLin+"----------------- loginUserTest.login.end ----------------------------"+nLin+nLin);
+		System.out.println(nLin+nLin+"----------------- LoginUserTest.login.end ----------------------------"+nLin+nLin);
 
 	}
 }
