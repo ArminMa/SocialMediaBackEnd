@@ -9,8 +9,6 @@ import org.springframework.format.annotation.DateTimeFormat;
 import javax.persistence.*;
 import java.util.Date;
 import se.kth.awesome.model.User.UserEntity;
-import se.kth.awesome.model.mailMessage.MailMessage;
-import se.kth.awesome.model.mailMessage.MailMessageFK;
 import se.kth.awesome.util.gson.GsonX;
 
 @XmlRootElement
@@ -27,7 +25,7 @@ public class Post implements Serializable,Comparable<Post>{
 		    pk = new PostFK();
     }
 
-    public Post(UserEntity sender, UserEntity receiver, String postContent, Date postedDate) {
+    public Post( String postContent, Date postedDate, UserEntity sender, UserEntity receiver) {
 	    this.pk = new PostFK(sender, receiver);
         this.postContent = postContent;
         this.postedDate = postedDate;

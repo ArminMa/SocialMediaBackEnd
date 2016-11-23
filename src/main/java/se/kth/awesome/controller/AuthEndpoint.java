@@ -70,10 +70,21 @@ public class AuthEndpoint {
         TokenPojo tokenPojo = new TokenPojo();
         tokenPojo.setToken(token);
 
-
-
-
         return userService.getMyMails(username);
+    }
+
+    @RequestMapping(
+            value = "/api/getPostsByUserName/{username}",
+            method = RequestMethod.GET)
+    public ResponseEntity<?> getPosts(@PathVariable("username") String username,
+                                        @RequestHeader(name = "X-Authorization", defaultValue = "") String jwt) {
+
+        String token = jwt.substring(jwt.indexOf("Bearer "), jwt.length());
+        System.out.println(nLin+"AuthEndpoint.getMyMails token = " + token +nLin);
+        TokenPojo tokenPojo = new TokenPojo();
+        tokenPojo.setToken(token);
+
+        return userService.getPosts(username);
     }
 
 }

@@ -7,6 +7,8 @@ import se.kth.awesome.model.User.UserEntity;
 import se.kth.awesome.model.mailMessage.MailMessage;
 import se.kth.awesome.model.mailMessage.MailMessagePojo;
 import se.kth.awesome.model.User.UserPojo;
+import se.kth.awesome.model.post.Post;
+import se.kth.awesome.model.post.PostPojo;
 import se.kth.awesome.util.gson.GsonX;
 
 
@@ -53,10 +55,15 @@ public class ModelConverter {
 //            return GsonX.gson.fromJson(mailMessage.toString(), MailMessagePojo.class );
 //        }
 //
-//        public static PostPojo convert (Post post){
-//            if( post == null ) return null;
-//            return GsonX.gson.fromJson(post.toString(), PostPojo.class );
-//        }
+        public static PostPojo convert (Post post){
+            if( post == null ) return null;
+            return GsonX.gson.fromJson(post.toString(), PostPojo.class );
+        }
+
+        public static Post convert (PostPojo postPojo){
+            if( postPojo == null ) return null;
+            return GsonX.gson.fromJson(postPojo.toString(), Post.class );
+        }
 
         @SuppressWarnings("unchecked")
         public static Iterable<?> convert (Iterable<?> genericList){
@@ -94,6 +101,18 @@ public class ModelConverter {
                 Collection<MailMessage> mailMessages = new ArrayList<>();
                 genericList.forEach( S -> mailMessages.add( convert( (MailMessagePojo) S) ) );
                 return mailMessages;
+            }
+
+            if(genericList.iterator().next() instanceof Post){
+                Collection<PostPojo> postPojos = new ArrayList<>();
+                genericList.forEach( S -> postPojos.add( convert( (Post) S) ) );
+                return postPojos;
+            }
+
+            if(genericList.iterator().next() instanceof PostPojo){
+                Collection<Post> posts = new ArrayList<>();
+                genericList.forEach( S -> posts.add( convert( (PostPojo) S) ) );
+                return posts;
             }
 
             return null;

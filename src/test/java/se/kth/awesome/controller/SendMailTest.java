@@ -110,7 +110,7 @@ public class SendMailTest {
                                 .header("X-Authorization", "Bearer " + tokenPojo.getToken())
                                 .header("Cache-Control", "no-cache")
                 )
-                .andExpect(status().is(HttpStatus.OK.value()))
+                .andExpect(status().is(HttpStatus.CREATED.value()))
                 .andReturn().getResponse();
         assertThat(theResponse).isNotNull();
 

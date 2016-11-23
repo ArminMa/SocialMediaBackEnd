@@ -28,6 +28,8 @@ public class PostFK implements java.io.Serializable, Comparable<PostFK>{
     @ManyToOne(fetch = FetchType.EAGER,  targetEntity = UserEntity.class)
     @JoinColumn(name = "post_message_receiver_id")
     public UserEntity getReceiver() {
+        if(receiver != null)
+            receiver.setPassword(null);
         return receiver;
     }
 
@@ -38,6 +40,8 @@ public class PostFK implements java.io.Serializable, Comparable<PostFK>{
     @ManyToOne(fetch = FetchType.EAGER, targetEntity = UserEntity.class)
     @JoinColumn(name = "post_message_sender_id")
     public UserEntity getSender() {
+        if(sender != null)
+            sender.setPassword(null);
         return sender;
     }
     public void setSender(UserEntity sender) {

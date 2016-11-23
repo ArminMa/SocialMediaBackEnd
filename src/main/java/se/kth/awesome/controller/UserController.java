@@ -40,6 +40,7 @@ public class UserController {
 
     }
 
+    @Deprecated
     @RequestMapping(
             value = "/login/{userName}/{password}",
             method = RequestMethod.GET)
