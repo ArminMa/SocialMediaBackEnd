@@ -16,14 +16,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
-import se.kth.awesome.model.UserEntity;
-import se.kth.awesome.model.UserRepository;
+import se.kth.awesome.model.User.UserEntity;
+import se.kth.awesome.model.User.UserRepository;
 import se.kth.awesome.model.mailMessage.MailMessageRepository;
-import se.kth.awesome.model.modelConverter.ModelConverter;
+import se.kth.awesome.model.ModelConverter;
 import se.kth.awesome.model.role.Role;
-import se.kth.awesome.pojos.TokenPojo;
-import se.kth.awesome.pojos.UserPojo;
-import se.kth.awesome.pojos.UserRolePojo;
+import se.kth.awesome.model.TokenPojo;
+import se.kth.awesome.model.User.UserPojo;
+import se.kth.awesome.model.role.UserRolePojo;
 import se.kth.awesome.util.gson.GsonX;
 import se.kth.awesome.util.MediaTypes;
 
@@ -147,7 +147,7 @@ public class userAuthTest {
         assertThat(tokenPojo).isNotNull();
         assertThat(userPojos).isNotNull();
         String userName =  userPojos.get(0).getUsername().substring(1,(userPojos.get(0).getUsername().length()-1));
-        System.out.println(nLin+nLin+"----------------- UserControllerTest.searchUsersByString.start ----------------------------"+nLin+nLin);
+        System.out.println(nLin+nLin+"----------------- GetUserByEmailTest.searchUsersByString.start ----------------------------"+nLin+nLin);
         Collection<UserEntity> result = (Collection<UserEntity>) GsonX.gson.fromJson(
                 this.mockMvc.perform(
                                 get("/api/userSearch/"+userName)
@@ -161,7 +161,7 @@ public class userAuthTest {
         assertThat(result).isNotNull();
         assertThat(!result.isEmpty());
 
-        System.out.println(nLin+nLin+"----------------- UserControllerTest.searchUsersByString.end ----------------------------"+nLin+nLin);
+        System.out.println(nLin+nLin+"----------------- GetUserByEmailTest.searchUsersByString.end ----------------------------"+nLin+nLin);
     }
 
 

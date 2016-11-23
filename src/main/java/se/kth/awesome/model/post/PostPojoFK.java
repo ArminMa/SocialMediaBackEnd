@@ -1,21 +1,20 @@
-package se.kth.awesome.pojos.MailMessagePojo;
+package se.kth.awesome.model.post;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import se.kth.awesome.pojos.UserPojo;
-import se.kth.awesome.util.gson.GsonX;
-
 import javax.xml.bind.annotation.XmlRootElement;
+import se.kth.awesome.model.User.UserPojo;
+import se.kth.awesome.util.gson.GsonX;
 
 @XmlRootElement
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class MailMessageFKPojo implements java.io.Serializable, Comparable<MailMessageFKPojo>{
+public class PostPojoFK implements java.io.Serializable, Comparable<PostPojoFK>{
     private UserPojo sender;
     private UserPojo receiver;
 
-    public MailMessageFKPojo() {
+    public PostPojoFK() {
     }
 
-    public MailMessageFKPojo(UserPojo sender, UserPojo receiver) {
+    public PostPojoFK(UserPojo sender, UserPojo receiver) {
         this.sender = sender;
         this.receiver = receiver;
     }
@@ -34,16 +33,23 @@ public class MailMessageFKPojo implements java.io.Serializable, Comparable<MailM
         this.sender = sender;
     }
 
+
+    @Override
+    public int compareTo(PostPojoFK o) {
+        int thisTime = this.hashCode();
+        long anotherEntity = o.hashCode();
+        return (thisTime<anotherEntity ? -1 : (thisTime==anotherEntity ? 0 : 1));
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        MailMessageFKPojo that = (MailMessageFKPojo) o;
+        PostPojoFK that = (PostPojoFK) o;
 
         if (sender != null ? !sender.equals(that.sender) : that.sender != null) return false;
         return receiver != null ? receiver.equals(that.receiver) : that.receiver == null;
-
     }
 
     @Override
@@ -51,13 +57,6 @@ public class MailMessageFKPojo implements java.io.Serializable, Comparable<MailM
         int result = sender != null ? sender.hashCode() : 0;
         result = 31 * result + (receiver != null ? receiver.hashCode() : 0);
         return result;
-    }
-
-    @Override
-    public int compareTo(MailMessageFKPojo o) {
-        int thisTime = this.hashCode();
-        long anotherEntity = o.hashCode();
-        return (thisTime<anotherEntity ? -1 : (thisTime==anotherEntity ? 0 : 1));
     }
 
     @Override

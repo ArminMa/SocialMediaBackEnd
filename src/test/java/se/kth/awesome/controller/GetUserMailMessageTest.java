@@ -14,16 +14,16 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
-import se.kth.awesome.model.UserEntity;
-import se.kth.awesome.model.UserRepository;
+import se.kth.awesome.model.User.UserEntity;
+import se.kth.awesome.model.User.UserRepository;
 import se.kth.awesome.model.mailMessage.MailMessage;
 import se.kth.awesome.model.mailMessage.MailMessageRepository;
-import se.kth.awesome.model.modelConverter.ModelConverter;
+import se.kth.awesome.model.ModelConverter;
 import se.kth.awesome.model.role.Role;
-import se.kth.awesome.pojos.MailMessagePojo.MailMessagePojo;
-import se.kth.awesome.pojos.TokenPojo;
-import se.kth.awesome.pojos.UserPojo;
-import se.kth.awesome.pojos.UserRolePojo;
+import se.kth.awesome.model.mailMessage.MailMessagePojo;
+import se.kth.awesome.model.TokenPojo;
+import se.kth.awesome.model.User.UserPojo;
+import se.kth.awesome.model.role.UserRolePojo;
 import se.kth.awesome.util.gson.GsonX;
 import se.kth.awesome.util.MediaTypes;
 
@@ -42,7 +42,7 @@ import static se.kth.awesome.util.Util.nLin;
 @SpringBootTest
 @AutoConfigureMockMvc
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
-public class GetUserMailsTest {
+public class GetUserMailMessageTest {
 
 
     @Autowired
@@ -60,7 +60,7 @@ public class GetUserMailsTest {
     @SuppressWarnings("unchecked")
     @Before
     public void setUp() throws Exception {
-        System.out.println(nLin+nLin+"----------------- GetUserMailsTest.setUp-start ----------------------------"+nLin+nLin);
+        System.out.println(nLin+nLin+"----------------- GetUserMailMessageTest.setUp-start ----------------------------"+nLin+nLin);
 		/*"password:793148fd08f39ee62a84474fce8e0a544c5f1fc8," +*/ /*PasswordHashed0*/
         userPojos.add(new UserPojo("testUser", "test@test.test", "793148fd08f39ee62a84474fce8e0a544c5f1fc8"));
         userPojos.add(new UserPojo("testUser2", "test2@test2.test2", "793148fd08f39ee62a84474fce8e0a544c5f1fc8"));
@@ -98,12 +98,12 @@ public class GetUserMailsTest {
         assertThat(tokenJson).isNotNull();
         tokenPojo = GsonX.gson.fromJson(tokenJson, TokenPojo.class);
 
-        System.out.println(nLin+nLin+"----------------- GetUserMailsTest.setUp-end ----------------------------"+nLin+nLin);
+        System.out.println(nLin+nLin+"----------------- GetUserMailMessageTest.setUp-end ----------------------------"+nLin+nLin);
     }
 
     @After
     public void tearDown() throws Exception {
-        System.out.println(nLin+nLin+"----------------- GetUserMailsTest.tearDown-start ----------------------------"+nLin+nLin);
+        System.out.println(nLin+nLin+"----------------- GetUserMailMessageTest.tearDown-start ----------------------------"+nLin+nLin);
         mailMessageRepository.deleteAll();
         mailMessageRepository.flush();
         UserEntity userEntity = userRepository.findByEmail(userPojos.get(0).getEmail());
@@ -111,12 +111,12 @@ public class GetUserMailsTest {
         assertThat(userEntity.getEmail()).isEqualTo("test@test.test");
         userRepository.deleteAll();
         userRepository.flush();
-        System.out.println(nLin+nLin+"----------------- GetUserMailsTest.tearDown-end ----------------------------"+nLin+nLin);
+        System.out.println(nLin+nLin+"----------------- GetUserMailMessageTest.tearDown-end ----------------------------"+nLin+nLin);
     }
 
     @Test
     public void getPersonalMails() throws Exception {
-        System.out.println(nLin+nLin+"----------------- GetUserMailsTest.getPersonalMessages.start ----------------------------"+nLin+nLin);
+        System.out.println(nLin+nLin+"----------------- GetUserMailMessageTest.getPersonalMessages.start ----------------------------"+nLin+nLin);
         assertThat(tokenPojo).isNotNull();
         assertThat(userPojos).isNotNull();
 
@@ -136,6 +136,6 @@ public class GetUserMailsTest {
         List<MailMessagePojo> mailMessageReturnFromResponse = GsonX.gson.fromJson(theResponse, new TypeToken<List<MailMessagePojo>>(){}.getType() );
         assertThat(mailMessageReturnFromResponse).isNotNull();
         assertThat(mailMessageReturnFromResponse).isNotEmpty();
-        System.out.println(nLin+nLin+"----------------- GetUserMailsTest.getPersonalMessages.end ----------------------------"+nLin+nLin);
+        System.out.println(nLin+nLin+"----------------- GetUserMailMessageTest.getPersonalMessages.end ----------------------------"+nLin+nLin);
     }
 }

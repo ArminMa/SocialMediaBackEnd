@@ -3,7 +3,7 @@ package se.kth.awesome.model.mailMessage;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.format.annotation.DateTimeFormat;
-import se.kth.awesome.model.UserEntity;
+import se.kth.awesome.model.User.UserEntity;
 import se.kth.awesome.util.gson.GsonX;
 
 import javax.persistence.*;
@@ -70,16 +70,6 @@ public class MailMessage implements Serializable,Comparable<MailMessage>{
         this.pk = mailMessageId;
     }
 
-    @Temporal(TemporalType.TIMESTAMP)
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSS")
-    @CreatedDate
-    @Column(name = "sent_date")
-    public Date getSentDate() {
-        return sentDate;
-    }
-    public void setSentDate(Date sentDate) {
-        this.sentDate = sentDate;
-    }
     @Transient
     public UserEntity getReceiver() {
         return getPk().getReceiver();
@@ -96,6 +86,16 @@ public class MailMessage implements Serializable,Comparable<MailMessage>{
         getPk().setSender(sender);
     }
 
+    @Temporal(TemporalType.TIMESTAMP)
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSS")
+    @CreatedDate
+    @Column(name = "sent_date")
+    public Date getSentDate() {
+        return sentDate;
+    }
+    public void setSentDate(Date sentDate) {
+        this.sentDate = sentDate;
+    }
 
 
     @Override

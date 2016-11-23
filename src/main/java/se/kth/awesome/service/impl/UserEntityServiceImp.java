@@ -10,13 +10,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import se.kth.awesome.model.UserEntity;
-import se.kth.awesome.model.UserRepository;
+import se.kth.awesome.model.User.UserEntity;
+import se.kth.awesome.model.User.UserRepository;
 import se.kth.awesome.model.mailMessage.MailMessage;
 import se.kth.awesome.model.mailMessage.MailMessageRepository;
-import se.kth.awesome.model.modelConverter.ModelConverter;
-import se.kth.awesome.pojos.MailMessagePojo.MailMessagePojo;
-import se.kth.awesome.pojos.UserPojo;
+import se.kth.awesome.model.ModelConverter;
+import se.kth.awesome.model.mailMessage.MailMessagePojo;
+import se.kth.awesome.model.User.UserPojo;
 import se.kth.awesome.service.UserEntityService;
 import se.kth.awesome.util.MediaTypes;
 

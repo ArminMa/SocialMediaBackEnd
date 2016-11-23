@@ -1,12 +1,12 @@
-package se.kth.awesome.model.modelConverter;
+package se.kth.awesome.model;
 
 
 import java.util.ArrayList;
 import java.util.Collection;
-import se.kth.awesome.model.UserEntity;
+import se.kth.awesome.model.User.UserEntity;
 import se.kth.awesome.model.mailMessage.MailMessage;
-import se.kth.awesome.pojos.MailMessagePojo.MailMessagePojo;
-import se.kth.awesome.pojos.UserPojo;
+import se.kth.awesome.model.mailMessage.MailMessagePojo;
+import se.kth.awesome.model.User.UserPojo;
 import se.kth.awesome.util.gson.GsonX;
 
 

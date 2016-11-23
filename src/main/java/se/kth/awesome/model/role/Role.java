@@ -1,8 +1,8 @@
 package se.kth.awesome.model.role;
 
 
-import se.kth.awesome.model.UserEntity;
-import se.kth.awesome.pojos.UserPojo;
+import se.kth.awesome.model.User.UserEntity;
+import se.kth.awesome.model.User.UserPojo;
 
 /**
  * Enumerated {@link UserEntity} roles.

@@ -25,9 +25,9 @@ logging:
     file: Captains.log
     level:
           org:
-              hibernate: info
-              springframework.web: error
-    level.: info
+              hibernate: INFO
+              springframework.web: INFO
+    level.: INFO
 
 spring:
   profiles:

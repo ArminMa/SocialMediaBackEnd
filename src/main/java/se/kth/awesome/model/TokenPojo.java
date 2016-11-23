@@ -1,4 +1,4 @@
-package se.kth.awesome.pojos;
+package se.kth.awesome.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import java.io.Serializable;

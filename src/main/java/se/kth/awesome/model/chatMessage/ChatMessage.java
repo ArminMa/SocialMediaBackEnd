@@ -13,7 +13,7 @@ import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.format.annotation.DateTimeFormat;
-import se.kth.awesome.model.UserEntity;
+import se.kth.awesome.model.User.UserEntity;
 
 
 @Entity

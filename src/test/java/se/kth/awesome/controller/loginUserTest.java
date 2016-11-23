@@ -17,12 +17,12 @@ import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
-import se.kth.awesome.model.UserEntity;
-import se.kth.awesome.model.UserRepository;
-import se.kth.awesome.model.modelConverter.ModelConverter;
+import se.kth.awesome.model.User.UserEntity;
+import se.kth.awesome.model.User.UserRepository;
+import se.kth.awesome.model.ModelConverter;
 import se.kth.awesome.model.role.Role;
-import se.kth.awesome.pojos.UserPojo;
-import se.kth.awesome.pojos.UserRolePojo;
+import se.kth.awesome.model.User.UserPojo;
+import se.kth.awesome.model.role.UserRolePojo;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;

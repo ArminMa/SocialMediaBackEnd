@@ -1,4 +1,4 @@
-package se.kth.awesome.pojos;
+package se.kth.awesome.model.User;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import java.io.Serializable;
@@ -9,7 +9,11 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import se.kth.awesome.pojos.MailMessagePojo.MailMessagePojo;
+import se.kth.awesome.model.chatMessage.ChatMessagePojo;
+import se.kth.awesome.model.friendRequest.FriendRequestPojo;
+import se.kth.awesome.model.mailMessage.MailMessagePojo;
+import se.kth.awesome.model.post.PostPojo;
+import se.kth.awesome.model.role.UserRolePojo;
 import se.kth.awesome.security.auth.JwtAuthenticationToken;
 import se.kth.awesome.util.gson.GsonX;
 

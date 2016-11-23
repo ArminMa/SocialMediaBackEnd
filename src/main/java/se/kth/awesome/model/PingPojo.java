@@ -1,4 +1,4 @@
-package se.kth.awesome.pojos.ping;
+package se.kth.awesome.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;

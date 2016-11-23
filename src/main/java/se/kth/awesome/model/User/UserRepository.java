@@ -1,4 +1,4 @@
-package se.kth.awesome.model;
+package se.kth.awesome.model.User;
 
 import java.util.Collection;
 import org.springframework.data.jpa.repository.JpaRepository;

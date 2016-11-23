@@ -1,4 +1,4 @@
-package se.kth.awesome.model;
+package se.kth.awesome.model.User;
 
 
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -21,6 +21,7 @@ import org.hibernate.annotations.LazyCollectionOption;
 import org.hibernate.annotations.SortNatural;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
+import se.kth.awesome.model.friendRequest.FriendRequest;
 import se.kth.awesome.model.role.UserRole;
 import se.kth.awesome.util.gson.GsonX;
 

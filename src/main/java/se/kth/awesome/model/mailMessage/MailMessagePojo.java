@@ -1,8 +1,8 @@
-package se.kth.awesome.pojos.MailMessagePojo;
+package se.kth.awesome.model.mailMessage;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.springframework.format.annotation.DateTimeFormat;
-import se.kth.awesome.pojos.UserPojo;
+import se.kth.awesome.model.User.UserPojo;
 import se.kth.awesome.util.gson.GsonX;
 
 import javax.xml.bind.annotation.XmlRootElement;
@@ -38,10 +38,10 @@ public class MailMessagePojo implements Serializable,Comparable<MailMessagePojo>
 
 
     private MailMessageFKPojo pk;
-    public MailMessageFKPojo getPk() {
+    public   MailMessageFKPojo getPk() {
         return pk;
     }
-    public void setPk(MailMessageFKPojo mailMessageId) {
+    public void setPk(  MailMessageFKPojo mailMessageId) {
         this.pk = mailMessageId;
     }
 

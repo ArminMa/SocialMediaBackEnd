@@ -1,4 +1,4 @@
-package se.kth.awesome.pojos;
+package se.kth.awesome.model.role;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import javax.xml.bind.annotation.XmlRootElement;

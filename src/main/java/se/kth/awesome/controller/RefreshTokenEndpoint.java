@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-import se.kth.awesome.pojos.UserPojo;
+import se.kth.awesome.model.User.UserPojo;
 import se.kth.awesome.security.auth.jwt.extractor.TokenExtractor;
 import se.kth.awesome.security.auth.jwt.verifier.TokenVerifier;
 import se.kth.awesome.security.config.JwtSettings;

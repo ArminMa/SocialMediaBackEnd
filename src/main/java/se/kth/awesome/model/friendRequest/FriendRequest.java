@@ -1,4 +1,4 @@
-package se.kth.awesome.model;
+package se.kth.awesome.model.friendRequest;
 
 import java.io.Serializable;
 import javax.persistence.Column;
@@ -12,6 +12,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
+import se.kth.awesome.model.User.UserEntity;
 
 @Entity
 @Table(name = "friend_request")

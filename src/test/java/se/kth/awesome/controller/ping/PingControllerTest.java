@@ -12,7 +12,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
-import se.kth.awesome.pojos.ping.PingPojo;
+import se.kth.awesome.model.PingPojo;
 import se.kth.awesome.util.gson.GsonX;
 import se.kth.awesome.util.MediaTypes;
 

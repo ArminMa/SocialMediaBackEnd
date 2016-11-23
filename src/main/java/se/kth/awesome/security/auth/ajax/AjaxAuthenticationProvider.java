@@ -19,7 +19,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 import se.kth.awesome.SpringbootSecurityJwtApplication;
-import se.kth.awesome.pojos.UserPojo;
+import se.kth.awesome.model.User.UserPojo;
 import se.kth.awesome.security.model.UserContext;
 import se.kth.awesome.security.util.PasswordSaltUtil;
 import se.kth.awesome.service.UserEntityService;
