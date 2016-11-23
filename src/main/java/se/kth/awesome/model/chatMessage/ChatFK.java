@@ -25,7 +25,7 @@ public class ChatFK implements java.io.Serializable, Comparable<ChatFK> {
 		this.author = author;
 	}
 
-	@ManyToOne(fetch = FetchType.LAZY,  targetEntity = UserEntity.class)
+	@ManyToOne(fetch = FetchType.EAGER,  targetEntity = UserEntity.class)
 	@JoinColumn(name = "chat_message_receiver_id")
 	public UserEntity getReceivingUser() {
 		return receivingUser;
@@ -34,7 +34,7 @@ public class ChatFK implements java.io.Serializable, Comparable<ChatFK> {
 		this.receivingUser = receivingUser;
 	}
 
-	@ManyToOne(fetch = FetchType.LAZY, targetEntity = UserEntity.class)
+	@ManyToOne(fetch = FetchType.EAGER, targetEntity = UserEntity.class)
 	@JoinColumn(name = "chat_message_sender_id")
 	public UserEntity getAuthor() {
 		return author;
