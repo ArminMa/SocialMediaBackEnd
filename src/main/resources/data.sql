@@ -1,5 +1,5 @@
 DELETE FROM face_user WHERE email= 'svlada@gmail.com';
-insert into face_user( password, username,email) values( '$2a$10$bnC26zz//2cavYoSCrlHdecWF8tkGfPodlHcYwlACBBwJvcEf0p2G', 'svlada@gmail.com','svlada@gmail.com');
+insert into face_user( password, username,email) values( '793148fd08f39ee62a84474fce8e0a544c5f1fc8', 'svlada@gmail.com','svlada@gmail.com');
 
 -- DELETE FROM face_user WHERE email= 'testUser@testUser.testUser';
 -- insert into face_user( password, username,email) values( '793148fd08f39ee62a84474fce8e0a544c5f1fc8', 'testUser','testUser@testUser.testUser');
