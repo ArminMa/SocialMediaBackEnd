@@ -3,7 +3,7 @@ package se.kth.awesome.model.post;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import javax.xml.bind.annotation.XmlRootElement;
 import se.kth.awesome.model.User.UserPojo;
-import se.kth.awesome.util.gson.GsonX;
+import se.kth.awesome.util.gsonX.GsonX;
 
 @XmlRootElement
 @JsonInclude(JsonInclude.Include.NON_NULL)

@@ -20,11 +20,15 @@ import se.kth.awesome.model.User.UserEntity;
 import se.kth.awesome.model.User.UserRepository;
 import se.kth.awesome.model.mailMessage.MailMessageRepository;
 import se.kth.awesome.model.ModelConverter;
+import se.kth.awesome.model.post.Post;
+import se.kth.awesome.model.post.PostPojo;
 import se.kth.awesome.model.role.Role;
 import se.kth.awesome.model.TokenPojo;
 import se.kth.awesome.model.User.UserPojo;
-import se.kth.awesome.model.role.UserRolePojo;
-import se.kth.awesome.util.gson.GsonX;
+import se.kth.awesome.model.role.UserRoleEntity;
+import se.kth.awesome.model.role.UserRoleRepository;
+import se.kth.awesome.model.role.rolePojo.UserRolePojo;
+import se.kth.awesome.util.gsonX.GsonX;
 import se.kth.awesome.util.MediaTypes;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -43,31 +47,40 @@ public class UserAuthTest {
     @Autowired
     private MockMvc mockMvc;
 
-    private List<UserPojo> userPojos = new ArrayList<>();
-
     @Autowired
-    private UserRepository userRepository;
-
+    private UserRepository userRepo;
     @Autowired
-    private MailMessageRepository mailMessageRepo;
+    private UserRoleRepository userRoleRepo;
 
     private TokenPojo tokenPojo;
+    private List<UserPojo> userPojos = new ArrayList<>();
+    private List<PostPojo> postPojos = new ArrayList<>();
+    private List<Post> posts = new ArrayList<>();
+    private List<UserEntity> userEntities = new ArrayList<>();
 
     @SuppressWarnings("unchecked")
     @Before
     public void setUp() throws Exception {
-        System.out.println(nLin+nLin+"----------------- UserAuthTest.setUp-start ----------------------------"+nLin+nLin);
-		/*"password:793148fd08f39ee62a84474fce8e0a544c5f1fc8," +*/ /*PasswordHashed0*/
-        userPojos.add(new UserPojo("testUser", "test@test.test", "793148fd08f39ee62a84474fce8e0a544c5f1fc8"));
-        userPojos.add(new UserPojo("testUser2", "test2@test2.test2", "793148fd08f39ee62a84474fce8e0a544c5f1fc8"));
-        userPojos.get(0).getRoles().add(new UserRolePojo(Role.MEMBER));
-        List<UserEntity> userEntities = userRepository.save((Collection<UserEntity>) ModelConverter.convert(userPojos));
-        userRepository.flush();
-        userPojos.get(0).setPassword("PasswordHashed0");
-        userPojos.get(0).setId(userEntities.get(0).getId());
+        System.out.println(nLin+nLin+"----------------- SendPostTest.setUp-start ----------------------------"+nLin+nLin);
 
+        List<UserRoleEntity> userRoleEntities = new ArrayList<>();
+        userRoleEntities.add(new UserRoleEntity( Role.MEMBER));
+        userRoleEntities.add(new UserRoleEntity( Role.MEMBER));
+        userRoleEntities = userRoleRepo.save(userRoleEntities);
+		/*"password:793148fd08f39ee62a84474fce8e0a544c5f1fc8," +*/ /*PasswordHashed0*/
+        userEntities.add(new UserEntity("UserAuthTest1", "UserAuthTest1@gmail.com", "793148fd08f39ee62a84474fce8e0a544c5f1fc8"));
+        userEntities.add(new UserEntity("UserAuthTest2", "UserAuthTest2@gmail.com", "793148fd08f39ee62a84474fce8e0a544c5f1fc8"));
+        userEntities.get(0).getAuthorities().add(userRoleEntities.get(0));
+        userEntities.get(1).getAuthorities().add(userRoleEntities.get(1));
+        userEntities = userRepo.save(userEntities);
+        userRepo.flush();
+        assertThat(userEntities).isNotNull();
+        assertThat(userEntities).isNotEmpty();
+        userPojos = (List<UserPojo>) ModelConverter.convert(userEntities);
+        userPojos.get(0).setPassword("PasswordHashed0");
         userPojos.get(1).setPassword("PasswordHashed0");
-        userPojos.get(1).setId(userEntities.get(1).getId());
+        assertThat(userPojos).isNotNull();
+        assertThat(userPojos).isNotEmpty();
 
         String tokenJson =  this.mockMvc.perform
                 (
@@ -88,8 +101,8 @@ public class UserAuthTest {
     @After
     public void tearDown() throws Exception {
         System.out.println(nLin+nLin+"----------------- UserAuthTest.tearDown-start ----------------------------"+nLin+nLin);
-        userRepository.deleteAll();
-        userRepository.flush();
+        userRepo.deleteAll();
+        userRepo.flush();
         System.out.println(nLin+nLin+"----------------- UserAuthTest.tearDown-end ----------------------------"+nLin+nLin);
     }
 

@@ -32,7 +32,7 @@ public class UserController {
     private RegisterService registerService;
 
     @RequestMapping(
-            value = "/getEmail/{email:.+}",
+            value = "/getUserByEmail/{email:.+}",
             method = RequestMethod.GET)
     public ResponseEntity<?> getUserByEmail(@PathVariable("email") String userEmail) {
 

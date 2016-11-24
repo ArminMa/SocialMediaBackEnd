@@ -1,6 +1,7 @@
 package se.kth.awesome.common;
 
 import java.util.Date;
+import org.joda.time.DateTime;
 import org.springframework.http.HttpStatus;
 
 /**
@@ -20,13 +21,13 @@ public class ErrorResponse {
     // Error code
     private final ErrorCode errorCode;
 
-    private final Date timestamp;
+    private final DateTime timestamp;
 
     protected ErrorResponse(final String message, final ErrorCode errorCode, HttpStatus status) {
         this.message = message;
         this.errorCode = errorCode;
         this.status = status;
-        this.timestamp = new Date();
+        this.timestamp = new DateTime();
     }
 
     public static ErrorResponse of(final String message, final ErrorCode errorCode, HttpStatus status) {
@@ -45,7 +46,7 @@ public class ErrorResponse {
         return errorCode;
     }
 
-    public Date getTimestamp() {
+    public DateTime getTimestamp() {
         return timestamp;
     }
 }

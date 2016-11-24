@@ -18,7 +18,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import se.kth.awesome.model.User.UserRepository;
 import se.kth.awesome.model.User.UserPojo;
-import se.kth.awesome.util.gson.GsonX;
+import se.kth.awesome.util.gsonX.GsonX;
 import se.kth.awesome.util.MediaTypes;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -54,7 +54,7 @@ public class RegisterUserTest {
 	public void registerTest() throws Exception {
 		System.out.println("----------------- RegisterUserTest.registerTest-start ----------------------------");
 		userPojos.add(new UserPojo("loginUser", "LoginUserTest@gmail.com", "PasswordHashed0"));
-		System.out.println("\nGsonX.gson.toJson(userPojos.get(0)) = " + GsonX.gson.toJson(userPojos.get(0)) + nLin);
+		System.out.println("\nGsonX.gsonX.toJson(userPojos.get(0)) = " + GsonX.gson.toJson(userPojos.get(0)) + nLin);
 		HttpServletRequest httpServletRequest = null;
 		HttpServletResponse httpServletResponse = null;
 		MockHttpServletResponse theResponse =  this.mockMvc.perform

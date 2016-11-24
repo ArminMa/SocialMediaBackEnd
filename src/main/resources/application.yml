@@ -22,7 +22,7 @@ Jose4J.jwt.public.Server.Key: {"kty":"RSA","kid":"cbc379db-1631-422f-92dc-587ce1
 # Log Level — ERROR, WARN, INFO, DEBUG or TRACE.
 
 logging:
-    file: Captains.log
+#    file: Captains.log
     level:
           org:
               hibernate: INFO

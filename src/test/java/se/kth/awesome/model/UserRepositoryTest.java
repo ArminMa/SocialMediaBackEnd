@@ -63,11 +63,11 @@ public class UserRepositoryTest {
 
         userEntity = userRepository.findByEmail(userEntities.get(0).getEmail());
         assertThat(userEntity).isNotNull();
-        assertThat(userEntity.getEmail()).isEqualTo("testEmail0@gmail.com");
+        assertThat(userEntity.getEmail()).isEqualTo(userEntities.get(0).getEmail());
 
         userEntity = userRepository.findByUsername(userEntities.get(1).getUsername());
         assertThat(userEntity).isNotNull();
-        assertThat(userEntity.getUsername()).isEqualTo("testUser1");
+        assertThat(userEntity.getUsername()).isEqualTo(userEntities.get(1).getUsername());
 
         userEntity = userRepository.findByUsername(userEntities.get(2).getUsername());
         assertThat(userEntity).isNotNull();

@@ -1,6 +1,10 @@
 package se.kth.awesome.service.impl;
 
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,10 +16,12 @@ import org.springframework.stereotype.Service;
 import se.kth.awesome.model.User.UserEntity;
 import se.kth.awesome.model.User.UserRepository;
 import se.kth.awesome.model.ModelConverter;
+
 import se.kth.awesome.model.role.Role;
-import se.kth.awesome.model.role.UserRole;
-import se.kth.awesome.model.role.UserRoleRepository;
 import se.kth.awesome.model.User.UserPojo;
+import se.kth.awesome.model.role.UserRoleEntity;
+
+import se.kth.awesome.model.role.UserRoleRepository;
 import se.kth.awesome.security.util.PasswordSaltUtil;
 import se.kth.awesome.service.RegisterService;
 import se.kth.awesome.util.MediaTypes;
@@ -31,11 +37,12 @@ public class RegisterServiceImpl implements RegisterService {
 	private UserRepository userRepository;
 
 	@Autowired
-	private UserRoleRepository userRoleRepo;
+	private UserRoleRepository roleRepos;
 
 	@Value("${shared.secretKey}")
 	String hashPasswordKey;
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public ResponseEntity<?> registerNewUser(UserPojo userPojo)  {
 
@@ -70,12 +77,26 @@ public class RegisterServiceImpl implements RegisterService {
         }
 
 
+
+
 		String password = passwordSaltUtil.encodePassword(userPojo.getPassword(), hashPasswordKey);
 		userPojo.setPassword(password);
-		UserEntity userEntity =  userRepository.save( ModelConverter.convert(userPojo) );
-		userEntity.getRoles().add(new UserRole(Role.MEMBER));
-		userEntity =  userRepository.save( userEntity );
+		UserEntity userEntity =  ModelConverter.convert(userPojo);
+
+		userEntity = userRepository.save(userEntity );
 		userRepository.flush();
+
+		UserRoleEntity userRoleEntity = new UserRoleEntity( Role.MEMBER );
+
+		userRoleEntity = roleRepos.save(userRoleEntity);
+		roleRepos.flush();
+
+		userEntity.getAuthorities().add(userRoleEntity);
+
+		userEntity = userRepository.save(userEntity );
+		userRepository.flush();
+
+
 //		logger2.error(nLin+nLin+" ---------- RegisterServiceImpl.registerNewUser userEntity after save Role ----------\n");
 //		logger2.error( "\n"+ userEntity.toString() +"\n");
 //		logger2.error(nLin+nLin+" ---------- RegisterServiceImpl.registerNewUser userEntity after save Role ----------\n");

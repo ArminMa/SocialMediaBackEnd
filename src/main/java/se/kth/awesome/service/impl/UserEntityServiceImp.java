@@ -73,18 +73,18 @@ public class UserEntityServiceImp implements UserEntityService {
 
 	@Override
 	public ResponseEntity<?> sendMailMessage(MailMessagePojo messagePojo) {
-        if(messagePojo == null) ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        if(messagePojo.getPk() == null) ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        if(messagePojo.getSender() == null) ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        if(messagePojo.getReceiver() == null) ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        if(messagePojo.getTopic() == null) ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        messagePojo.setSentDate(new Date());
+        if(messagePojo == null) ResponseEntity.status(HttpStatus.BAD_REQUEST).body("messagePojo is null");
+        if(messagePojo.getPk() == null) ResponseEntity.status(HttpStatus.BAD_REQUEST).body("messagePojo.getPk() is null");
+        if(messagePojo.getSender() == null) ResponseEntity.status(HttpStatus.BAD_REQUEST).body("messagePojo.getSender() is null");
+        if(messagePojo.getReceiver() == null) ResponseEntity.status(HttpStatus.BAD_REQUEST).body("messagePojo.getReceiver() is null");
+        if(messagePojo.getTopic() == null) ResponseEntity.status(HttpStatus.BAD_REQUEST).body("messagePojo.getTopic() is null");
+
 
         //TODO check that the correct sender is sending from the token;
 //        JwtAuthenticationToken token = messagePojo.getSender().getToken();
-
+		System.out.println(nLin+"1.UserEntityServiceImp.sendMailMessage");
         MailMessage mailMessage = ModelConverter.convert(messagePojo);
-
+		System.out.println(nLin+"2.UserEntityServiceImp.sendMailMessage");
         mailMessageRepository.save(mailMessage);
         mailMessageRepository.flush();
         return ResponseEntity.status(HttpStatus.CREATED).build();
@@ -95,10 +95,10 @@ public class UserEntityServiceImp implements UserEntityService {
     public ResponseEntity<?> getMyMails(String username) {
         if(username == null) ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
 
-		System.out.println(nLin+"1.UserEntityServiceImp.getMyMails");
+
 
         Collection<MailMessage> mailMessages = mailMessageRepository.getAllSentAndReceivedMailByUserName(username);
-        System.out.println(nLin+"2.UserEntityServiceImp.getMyMails");
+
         if(mailMessages == null ||  mailMessages.isEmpty()) return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         System.out.println(nLin+"3.UserEntityServiceImp.getMyMails");
 		Collection<MailMessagePojo> mailMessagePojos = (Collection<MailMessagePojo>) ModelConverter.convert(mailMessages);

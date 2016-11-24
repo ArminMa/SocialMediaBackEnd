@@ -17,10 +17,14 @@ import org.springframework.test.web.servlet.MockMvc;
 import se.kth.awesome.model.User.UserEntity;
 import se.kth.awesome.model.User.UserRepository;
 import se.kth.awesome.model.ModelConverter;
+import se.kth.awesome.model.post.Post;
+import se.kth.awesome.model.post.PostPojo;
 import se.kth.awesome.model.role.Role;
 import se.kth.awesome.model.User.UserPojo;
-import se.kth.awesome.model.role.UserRolePojo;
-import se.kth.awesome.util.gson.GsonX;
+import se.kth.awesome.model.role.UserRoleEntity;
+import se.kth.awesome.model.role.UserRoleRepository;
+import se.kth.awesome.model.role.rolePojo.UserRolePojo;
+import se.kth.awesome.util.gsonX.GsonX;
 import se.kth.awesome.util.MediaTypes;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -36,31 +40,46 @@ import static se.kth.awesome.util.Util.nLin;
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class GetUserByEmailTest {
 
-
     @Autowired
     private MockMvc mockMvc;
-
-    private List<UserPojo> userPojos = new ArrayList<>();
-
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private UserRoleRepository userRoleRepo;
 
-	@SuppressWarnings("unchecked")
+    private List<UserPojo> userPojos = new ArrayList<>();
+    private List<PostPojo> postPojos = new ArrayList<>();
+    private List<Post> posts = new ArrayList<>();
+    private List<UserEntity> userEntities = new ArrayList<>();
+
+    @SuppressWarnings("unchecked")
     @Before
     public void setUp() throws Exception {
         System.out.println(nLin+nLin+"----------------- GetUserByEmailTest.setUp-start ----------------------------"+nLin+nLin);
+
+        List<UserRoleEntity> userRoleEntities = new ArrayList<>();
+        userRoleEntities.add(new UserRoleEntity( Role.MEMBER));
+        userRoleEntities = userRoleRepo.save(userRoleEntities);
+
 		/*"password:793148fd08f39ee62a84474fce8e0a544c5f1fc8," +*/ /*PasswordHashed0*/
-        userPojos.add(new UserPojo("testUser", "test@test.test", "793148fd08f39ee62a84474fce8e0a544c5f1fc8"));
-	    userPojos.get(0).getRoles().add(new UserRolePojo(Role.MEMBER));
-	    userRepository.save((Collection<UserEntity>) ModelConverter.convert(userPojos));
-		userRepository.flush();
+        userEntities.add(new UserEntity("getUserByEmailTest", "getUserByEmailTest@gmail.com", "793148fd08f39ee62a84474fce8e0a544c5f1fc8"));
+        userEntities.get(0).getAuthorities().add(userRoleEntities.get(0));
+
+        userEntities = userRepository.save(userEntities);
+        userRepository.flush();
+        userPojos = (List<UserPojo>) ModelConverter.convert(userEntities);
+        userPojos.get(0).setPassword("PasswordHashed0");
+        assertThat(userEntities).isNotNull();
+        assertThat(userEntities).isNotEmpty();
         System.out.println(nLin+nLin+"----------------- GetUserByEmailTest.setUp-end ----------------------------"+nLin+nLin);
     }
 
     @After
     public void tearDown() throws Exception {
         System.out.println(nLin+nLin+"----------------- GetUserByEmailTest.tearDown-start ----------------------------"+nLin+nLin);
-        userRepository.deleteAll();
+        assertThat(userEntities).isNotNull();
+        assertThat(userEntities).isNotEmpty();
+        userRepository.delete(userEntities);
         userRepository.flush();
         System.out.println(nLin+nLin+"----------------- GetUserByEmailTest.tearDown-end ----------------------------"+nLin+nLin);
     }
@@ -69,14 +88,14 @@ public class GetUserByEmailTest {
     public void getUserByEmail() throws Exception {
         System.out.println(nLin+nLin+"----------------- GetUserByEmailTest.getUserByEmail.start ----------------------------"+nLin+nLin);
         UserPojo userPojo = GsonX.gson.fromJson(
-                this.mockMvc.perform(get("/social/getEmail/test@test.test").accept(MediaTypes.JsonUtf8))
+                this.mockMvc.perform(get("/social/getUserByEmail/"+userPojos.get(0).getEmail()).accept(MediaTypes.JsonUtf8))
                         .andExpect(status().isOk())
                         .andExpect(content().contentType(MediaTypes.JsonUtf8))
                         .andReturn().getResponse().getContentAsString()
                 , UserPojo.class);
         assertThat(userPojo).isNotNull();
-        assertThat(userPojo.getEmail()).isEqualTo("test@test.test");
-        System.out.println("this is how userpojo looks like "+ System.lineSeparator() + userPojo.toString());
+        assertThat(userPojo.getEmail()).isEqualTo(userPojos.get(0).getEmail());
+        System.out.println("this is how userpojo looks like "+ nLin + userPojo.toString());
         System.out.println(nLin+nLin+"----------------- GetUserByEmailTest.getUserByEmail.end ----------------------------"+nLin+nLin);
     }
 

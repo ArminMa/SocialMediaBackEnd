@@ -12,7 +12,7 @@ import se.kth.awesome.model.User.UserRepository;
 import se.kth.awesome.model.chatMessage.ChatMessageRepository;
 import se.kth.awesome.model.role.UserRoleRepository;
 import se.kth.awesome.model.User.UserPojo;
-import se.kth.awesome.util.gson.GsonX;
+import se.kth.awesome.util.gsonX.GsonX;
 import se.kth.awesome.util.MediaTypes;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;

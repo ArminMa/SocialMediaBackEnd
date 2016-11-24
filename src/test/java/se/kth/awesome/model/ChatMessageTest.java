@@ -34,12 +34,12 @@ public class ChatMessageTest {
     @Before
     public void setUp() throws Exception {
         System.out.println(nLin+nLin+"----------------- ChatMessageTest.setUp-start ----------------------------"+nLin+nLin);
-        userEntities.add(new UserEntity("testChatEmail0@gmail.com", "testChatUser0", "PasswordHashed0"));
-        userEntities.add(new UserEntity("testChatEmail1@gmail.com", "testChatUser1", "PasswordHashed1"));
-        userEntities.add(new UserEntity("testChatEmail2@gmail.com", "testChatUser2", "PasswordHashed2"));
-        userEntities.add(new UserEntity("testChatEmail3@gmail.com", "testChatUser3", "PasswordHashed3"));
-        userEntities.add(new UserEntity("testChatEmail4@gmail.com", "testChatUser4", "PasswordHashed4"));
-        userEntities.add(new UserEntity("testChatEmail5@gmail.com", "testChatUser5", "PasswordHashed5"));
+        userEntities.add(new UserEntity( "testChatUser0", "testChatEmail0@gmail.com","PasswordHashed0"));
+        userEntities.add(new UserEntity( "testChatUser1", "testChatEmail1@gmail.com","PasswordHashed1"));
+        userEntities.add(new UserEntity( "testChatUser2","testChatEmail2@gmail.com", "PasswordHashed2"));
+        userEntities.add(new UserEntity( "testChatUser3","testChatEmail3@gmail.com", "PasswordHashed3"));
+        userEntities.add(new UserEntity( "testChatUser4", "testChatEmail4@gmail.com", "PasswordHashed4"));
+        userEntities.add(new UserEntity( "testChatUser5","testChatEmail5@gmail.com", "PasswordHashed5"));
         userEntities = userRepo.save(userEntities);
         userRepo.flush();
         assertThat(userEntities).isNotNull();
@@ -71,7 +71,7 @@ public class ChatMessageTest {
         //check that the user is not deleted
         UserEntity userEntity = userRepo.findByEmail(userEntities.get(0).getEmail());
         assertThat(userEntity).isNotNull();
-        assertThat(userEntity.getEmail()).isEqualTo("testChatEmail0@gmail.com");
+        assertThat(userEntity.getEmail()).isEqualTo(userEntities.get(0).getEmail());
         userRepo.delete(userEntities);
         userRepo.flush();
         System.out.println(nLin+nLin+"----------------- ChatMessageTest.tearDown-end ----------------------------"+nLin+nLin);
@@ -84,7 +84,7 @@ public class ChatMessageTest {
         UserEntity userEntity = null;
         userEntity = userRepo.findByEmail(userEntities.get(0).getEmail());
         assertThat(userEntity).isNotNull();
-        assertThat(userEntity.getEmail()).isEqualTo("testChatEmail0@gmail.com");
+        assertThat(userEntity.getEmail()).isEqualTo(userEntities.get(0).getEmail());
         List<ChatMessage> chatMessagesFromUser0ToUser1 =
                 chatMessageRepo.findBySenderAndReceiver(userEntities.get(0).getId(), userEntities.get(1).getId());
         assertThat(chatMessagesFromUser0ToUser1).isNotNull();

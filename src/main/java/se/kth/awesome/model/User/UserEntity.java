@@ -7,23 +7,27 @@ import java.util.Collection;
 import java.util.TreeSet;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.xml.bind.annotation.XmlRootElement;
+import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 import org.hibernate.annotations.SortNatural;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 import se.kth.awesome.model.friendRequest.FriendRequest;
-import se.kth.awesome.model.role.UserRole;
-import se.kth.awesome.util.gson.GsonX;
+
+
+
+import se.kth.awesome.model.role.UserRoleEntity;
+import se.kth.awesome.util.gsonX.GsonX;
 
 
 //import org.kth.HI1034.model.validators.ExtendedEmailValidator;
@@ -53,7 +57,7 @@ public class UserEntity implements Serializable,Comparable<UserEntity>{
 	 * @param password    3
 	 *
 	 */
-	public UserEntity(String email, String username, String password) {
+	public UserEntity( String username,String email, String password) {
 		this.email = email;
 		this.username = username;
 		this.password = password;
@@ -132,16 +136,16 @@ public class UserEntity implements Serializable,Comparable<UserEntity>{
     }
 
 
-	private Collection<UserRole> roles =  new TreeSet<>();
-	@OneToMany( /*fetch = FetchType.EAGER*/ )
+	private Collection<UserRoleEntity> authorities = new TreeSet<>();
+	@OneToMany( orphanRemoval = false, fetch = FetchType.EAGER)
+	@BatchSize(size=3)
 	@LazyCollection(LazyCollectionOption.FALSE)
 	@SortNatural
-	@JoinColumn(name="user_id")
-	public Collection<UserRole> getRoles() {
-		return roles;
+	public Collection<UserRoleEntity> getAuthorities() {
+		return authorities;
 	}
-	public void setRoles(Collection<UserRole> roles) {
-		this.roles = roles;
+	public void setAuthorities(Collection<UserRoleEntity> authorities) {
+		this.authorities = authorities;
 	}
 
 //	private Collection<MailMessage> mailMessages = new TreeSet<>();
@@ -153,6 +157,33 @@ public class UserEntity implements Serializable,Comparable<UserEntity>{
 //	}
 //	public void setMailMessages(Collection<MailMessage> mailMessages) {
 //		this.mailMessages = mailMessages;
+//	}
+
+
+	//----------------User Received Mail--------------------------
+
+//	private SortedSet<MailMessage> receivedFaceMails = new TreeSet<>();
+//	@OneToMany( cascade = CascadeType.ALL, orphanRemoval = true, targetEntity = MailMessage.class, fetch = FetchType.EAGER, mappedBy = "pk.receiver")
+////	@BatchSize(size=25)
+////	@LazyCollection(LazyCollectionOption.FALSE)
+//	@SortNatural
+//	public SortedSet<MailMessage> getReceivedFaceMails() {
+//		return receivedFaceMails;
+//	}
+//	public void setReceivedFaceMails(SortedSet<MailMessage> myReceivedFaceMails) {
+//		this.receivedFaceMails = myReceivedFaceMails;
+//	}
+//
+//	private SortedSet<MailMessage> sentFaceMails = new TreeSet<>();
+//	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, targetEntity = MailMessage.class,fetch = FetchType.LAZY, mappedBy = "pk.sender")
+//	@BatchSize(size=25)
+//	@LazyCollection(LazyCollectionOption.FALSE)
+//	@SortNatural
+//	public SortedSet<MailMessage> getSentFaceMails() {
+//		return sentFaceMails;
+//	}
+//	public void setSentFaceMails(SortedSet<MailMessage> mailSentFaceMails) {
+//		this.sentFaceMails = mailSentFaceMails;
 //	}
 
 //	private SortedSet<ChatMessage> chatMessages = new TreeSet<>();
@@ -224,8 +255,8 @@ public class UserEntity implements Serializable,Comparable<UserEntity>{
 		if(this.friendRequests != null && this.friendRequests.isEmpty()){
 			friendRequests = null;
 		}
-		if(this.roles != null && this.roles.isEmpty()){
-			this.roles = null;
+		if(this.authorities != null && this.authorities.isEmpty()){
+			this.authorities = null;
 		}
 
 //		if(this.mailMessages != null && this.mailMessages.isEmpty()){
@@ -247,8 +278,8 @@ public class UserEntity implements Serializable,Comparable<UserEntity>{
 			this.friendRequests = new TreeSet<>();
 		}
 
-		if(this.roles == null){
-			this.roles = new TreeSet<>();
+		if(this.authorities == null){
+			this.authorities = new TreeSet<>();
 		}
 //		if(this.mailMessages == null){
 //			this.mailMessages = new TreeSet<>();

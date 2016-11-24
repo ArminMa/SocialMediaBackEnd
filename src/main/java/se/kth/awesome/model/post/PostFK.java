@@ -8,7 +8,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.xml.bind.annotation.XmlRootElement;
 import se.kth.awesome.model.User.UserEntity;
-import se.kth.awesome.util.gson.GsonX;
+import se.kth.awesome.util.gsonX.GsonX;
 
 @XmlRootElement
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -25,23 +25,22 @@ public class PostFK implements java.io.Serializable, Comparable<PostFK>{
         this.receiver = receiver;
     }
 
-    @ManyToOne(fetch = FetchType.EAGER,  targetEntity = UserEntity.class)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "post_message_receiver_id")
     public UserEntity getReceiver() {
-        if(receiver != null)
-            receiver.setPassword(null);
+//        if(receiver != null)
+//            receiver.setPassword(null);
         return receiver;
     }
-
     public void setReceiver(UserEntity receiver) {
         this.receiver = receiver;
     }
 
-    @ManyToOne(fetch = FetchType.EAGER, targetEntity = UserEntity.class)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "post_message_sender_id")
     public UserEntity getSender() {
-        if(sender != null)
-            sender.setPassword(null);
+//        if(sender != null)
+//            sender.setPassword(null);
         return sender;
     }
     public void setSender(UserEntity sender) {

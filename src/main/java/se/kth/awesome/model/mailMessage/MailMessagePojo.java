@@ -1,9 +1,9 @@
 package se.kth.awesome.model.mailMessage;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.springframework.format.annotation.DateTimeFormat;
 import se.kth.awesome.model.User.UserPojo;
-import se.kth.awesome.util.gson.GsonX;
+import se.kth.awesome.util.gsonX.GsonX;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
@@ -15,7 +15,7 @@ public class MailMessagePojo implements Serializable,Comparable<MailMessagePojo>
     private Long id;
     private String messageContent;
     private String topic;
-    private Date sentDate;
+
 //    private boolean read;
 
     public MailMessagePojo() {
@@ -25,7 +25,7 @@ public class MailMessagePojo implements Serializable,Comparable<MailMessagePojo>
     public MailMessagePojo(String messageContent, String topic, UserPojo sender, UserPojo receiver) {
         this.messageContent = messageContent;
         this.topic = topic;
-        this.sentDate = new Date();
+        this.sentDate = new Date(/*System.currentTimeMillis()*/);
         this.pk = new MailMessageFKPojo(sender, receiver);
     }
 
@@ -73,10 +73,13 @@ public class MailMessagePojo implements Serializable,Comparable<MailMessagePojo>
         this.topic = topic;
     }
 
-	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSS")
+
+	private Date sentDate;
+	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss.SSS")
     public Date getSentDate() {
         return sentDate;
     }
+	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss.SSS")
     public void setSentDate(Date sentDate) {
         this.sentDate = sentDate;
     }

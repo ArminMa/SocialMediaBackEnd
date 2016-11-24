@@ -1,14 +1,14 @@
 package se.kth.awesome.model.post;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import java.io.Serializable;
 import java.util.Date;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
-import org.springframework.format.annotation.DateTimeFormat;
 import se.kth.awesome.model.User.UserPojo;
-import se.kth.awesome.util.gson.GsonX;
+import se.kth.awesome.util.gsonX.GsonX;
 
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.PUBLIC_MEMBER)
@@ -16,18 +16,17 @@ import se.kth.awesome.util.gson.GsonX;
 public class PostPojo implements Serializable,Comparable<PostPojo>{
 
 	private String postContent;
-	private Date postedDate;
+
 
 
 	public PostPojo() {
 		pk = new PostPojoFK();
 	}
 
-	public PostPojo(String postContent, Date postedDate, UserPojo sender, UserPojo receiver) {
-		this.postContent = postContent;
-		this.postedDate = postedDate;
+	public PostPojo(String postContent, UserPojo sender, UserPojo receiver) {
 		this.pk = new PostPojoFK(sender, receiver);
-
+		this.postContent = postContent;
+		this.postedDate = new Date(/*System.currentTimeMillis()*/);
 	}
 
 	private Long id;
@@ -67,11 +66,12 @@ public class PostPojo implements Serializable,Comparable<PostPojo>{
 		getPk().setSender(sender);
 	}
 
-
-	@DateTimeFormat(pattern = "yyyy-MM-dd hh:mm:ss.SSS")
+	private Date postedDate;
+	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss.SSS")
 	public Date getPostedDate() {
 		return postedDate;
 	}
+	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss.SSS")
 	public void setPostedDate(Date postedDate) {
 		this.postedDate = postedDate;
 	}

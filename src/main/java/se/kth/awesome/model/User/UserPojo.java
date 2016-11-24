@@ -5,6 +5,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.TreeSet;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -13,9 +14,12 @@ import se.kth.awesome.model.chatMessage.ChatMessagePojo;
 import se.kth.awesome.model.friendRequest.FriendRequestPojo;
 import se.kth.awesome.model.mailMessage.MailMessagePojo;
 import se.kth.awesome.model.post.PostPojo;
-import se.kth.awesome.model.role.UserRolePojo;
+
+
+import se.kth.awesome.model.role.rolePojo.UserRolePojo;
 import se.kth.awesome.security.auth.JwtAuthenticationToken;
-import se.kth.awesome.util.gson.GsonX;
+import se.kth.awesome.util.gsonX.GsonX;
+
 
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.PUBLIC_MEMBER)
@@ -39,7 +43,9 @@ public class UserPojo  implements Serializable,Comparable<UserPojo>{
     @JsonInclude(JsonInclude.Include.NON_EMPTY )
     private Collection<ChatMessagePojo> chatMessages = new ArrayList<>();
     @JsonInclude(JsonInclude.Include.NON_EMPTY )
-    private Collection<UserRolePojo> roles = new ArrayList<>();
+    private Collection<UserRolePojo> authorities = new TreeSet<>();
+
+
 
     public UserPojo() {}
 
@@ -136,16 +142,15 @@ public class UserPojo  implements Serializable,Comparable<UserPojo>{
     public void setChatMessages(Collection<ChatMessagePojo> chatMessages) {
         this.chatMessages = chatMessages;
     }
-    public Collection<UserRolePojo> getRoles() {
-        return roles;
-    }
 
-    public void setRoles(Collection<UserRolePojo> roles) {
-        this.roles = roles;
-    }
+	public Collection<UserRolePojo> getAuthorities() {
+		return authorities;
+	}
+	public void setAuthorities(Collection<UserRolePojo> authorities) {
+		this.authorities = authorities;
+	}
 
-
-    @Override
+	@Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
@@ -195,8 +200,8 @@ public class UserPojo  implements Serializable,Comparable<UserPojo>{
             this.chatMessages = null;
         }
 
-        if(this.roles != null && this.roles.isEmpty()){
-            this.roles = null;
+        if(this.authorities != null && this.authorities.isEmpty()){
+            this.authorities = null;
         }
 
         String thisJsonString = GsonX.gson.toJson(this);
@@ -218,8 +223,8 @@ public class UserPojo  implements Serializable,Comparable<UserPojo>{
             this.chatMessages = new ArrayList<>();
         }
 
-        if(this.roles == null){
-            this.roles = new ArrayList<>();
+        if(this.authorities == null){
+            this.authorities = new ArrayList<>();
         }
 
         return thisJsonString;

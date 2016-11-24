@@ -1,4 +1,4 @@
-package se.kth.awesome.util.gson;
+package se.kth.awesome.util.gsonX;
 
 /**
  * Created by Am on 11/23/2016.

@@ -12,7 +12,7 @@ import se.kth.awesome.model.User.UserPojo;
  * Aug 16, 2016
  */
 public enum Role {
-    MEMBER, PREMIUM_MEMBER, ADMIN, SUPER_ADMIN , ROLE_ANONYMOUS;
+    MEMBER, PREMIUM_MEMBER, ADMIN, SUPER_ADMIN , ANONYMOUS;
     
     public String authority() {
         return "ROLE_" + this.name();

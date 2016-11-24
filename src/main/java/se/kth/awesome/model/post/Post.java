@@ -1,15 +1,14 @@
 package se.kth.awesome.model.post;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import java.io.Serializable;
 import javax.xml.bind.annotation.XmlRootElement;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.util.Date;
 import se.kth.awesome.model.User.UserEntity;
-import se.kth.awesome.util.gson.GsonX;
+import se.kth.awesome.util.gsonX.GsonX;
 
 @XmlRootElement
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -25,10 +24,10 @@ public class Post implements Serializable,Comparable<Post>{
 		    pk = new PostFK();
     }
 
-    public Post( String postContent, Date postedDate, UserEntity sender, UserEntity receiver) {
+    public Post( String postContent, UserEntity sender, UserEntity receiver) {
 	    this.pk = new PostFK(sender, receiver);
         this.postContent = postContent;
-        this.postedDate = postedDate;
+        this.postedDate = new Date(/*System.currentTimeMillis()*/);
     }
 
     private Long id;
@@ -75,9 +74,9 @@ public class Post implements Serializable,Comparable<Post>{
 		getPk().setSender(sender);
 	}
 
-    @Temporal(TemporalType.TIMESTAMP)
-    @DateTimeFormat(pattern = "yyyy-MM-dd hh:mm:ss.SSS")
-    @CreatedDate
+	@Temporal(TemporalType.TIMESTAMP)
+	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss.SSS")
+//    @CreatedDate
     @Column(name = "posted_date",
             nullable = false,
             insertable = true,
@@ -85,6 +84,8 @@ public class Post implements Serializable,Comparable<Post>{
     public Date getPostedDate() {
         return postedDate;
     }
+	@Temporal(TemporalType.TIMESTAMP)
+	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss.SSS")
     public void setPostedDate(Date postedDate) {
         this.postedDate = postedDate;
     }

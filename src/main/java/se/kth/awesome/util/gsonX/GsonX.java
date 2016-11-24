@@ -1,4 +1,4 @@
-package se.kth.awesome.util.gson;
+package se.kth.awesome.util.gsonX;
 
 
 import com.google.gson.Gson;

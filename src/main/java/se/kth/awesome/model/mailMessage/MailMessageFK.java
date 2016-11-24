@@ -3,7 +3,7 @@ package se.kth.awesome.model.mailMessage;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import se.kth.awesome.model.User.UserEntity;
-import se.kth.awesome.util.gson.GsonX;
+import se.kth.awesome.util.gsonX.GsonX;
 
 import javax.persistence.Embeddable;
 import javax.persistence.FetchType;
@@ -26,17 +26,16 @@ public class MailMessageFK implements java.io.Serializable, Comparable<MailMessa
         this.receiver = receiver;
     }
 
-    @ManyToOne(fetch = FetchType.EAGER,  targetEntity = UserEntity.class)
+    @ManyToOne(fetch = FetchType.EAGER/*,  targetEntity = UserEntity.class*/ )
     @JoinColumn(name = "mail_message_receiver_id")
     public UserEntity getReceiver() {
         return receiver;
     }
-
     public void setReceiver(UserEntity receiver) {
         this.receiver = receiver;
     }
 
-    @ManyToOne(fetch = FetchType.EAGER, targetEntity = UserEntity.class)
+    @ManyToOne(fetch = FetchType.EAGER/*, targetEntity = UserEntity.class*/)
     @JoinColumn(name = "mail_message_sender_id")
     public UserEntity getSender() {
         return sender;

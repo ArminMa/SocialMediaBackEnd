@@ -9,7 +9,9 @@ import se.kth.awesome.model.mailMessage.MailMessagePojo;
 import se.kth.awesome.model.User.UserPojo;
 import se.kth.awesome.model.post.Post;
 import se.kth.awesome.model.post.PostPojo;
-import se.kth.awesome.util.gson.GsonX;
+import se.kth.awesome.model.role.UserRoleEntity;
+import se.kth.awesome.model.role.rolePojo.UserRolePojo;
+import se.kth.awesome.util.gsonX.GsonX;
 
 
 /**
@@ -45,14 +47,24 @@ public class ModelConverter {
         return GsonX.gson.fromJson(mailMessagePojo.toString(), MailMessage.class );
     }
 
+	public static UserRoleEntity convert(UserRolePojo userAuthorityPojo){
+		if( userAuthorityPojo == null ) return null;
+		return GsonX.gson.fromJson(userAuthorityPojo.toString(), UserRoleEntity.class );
+	}
+
+	public static UserRolePojo convert(UserRoleEntity userRoleEntity){
+		if( userRoleEntity == null ) return null;
+		return GsonX.gson.fromJson(userRoleEntity.toString(), UserRolePojo.class );
+	}
+
 //        public static FriendRequestPojo convert(FriendRequest friendRequest){
 //            if( friendRequest == null ) return null;
-//            return GsonX.gson.fromJson(friendRequest.toString(), FriendRequestPojo.class );
+//            return GsonX.gsonX.fromJson(friendRequest.toString(), FriendRequestPojo.class );
 //        }
 //
 //        public static MailMessagePojo convert (MailMessage mailMessage){
 //            if( mailMessage == null ) return null;
-//            return GsonX.gson.fromJson(mailMessage.toString(), MailMessagePojo.class );
+//            return GsonX.gsonX.fromJson(mailMessage.toString(), MailMessagePojo.class );
 //        }
 //
         public static PostPojo convert (Post post){
@@ -114,6 +126,18 @@ public class ModelConverter {
                 genericList.forEach( S -> posts.add( convert( (PostPojo) S) ) );
                 return posts;
             }
+
+	        if(genericList.iterator().next() instanceof UserRoleEntity){
+		        Collection<UserRolePojo> userAuthorityPojos = new ArrayList<>();
+		        genericList.forEach( S -> userAuthorityPojos.add( convert( (UserRoleEntity) S) ) );
+		        return userAuthorityPojos;
+	        }
+
+	        if(genericList.iterator().next() instanceof UserRolePojo){
+		        Collection<UserRoleEntity> userAuthorities = new ArrayList<>();
+		        genericList.forEach( S -> userAuthorities.add( convert( (UserRolePojo) S) ) );
+		        return userAuthorities;
+	        }
 
             return null;
 
