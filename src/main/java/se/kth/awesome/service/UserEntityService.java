@@ -25,4 +25,6 @@ public interface UserEntityService {
 	ResponseEntity<?> getPosts(String username);
 
     ResponseEntity<?> senPostMessage(PostPojo postPojo);
+
+	ResponseEntity<?> deletePost(PostPojo post);
 }

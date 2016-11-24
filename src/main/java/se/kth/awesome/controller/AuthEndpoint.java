@@ -1,5 +1,7 @@
 package se.kth.awesome.controller;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -104,5 +106,23 @@ public class AuthEndpoint {
 
         return userService.getPosts(username);
     }
+
+
+	@RequestMapping(value = "/api/deleteLogMessage",
+			method = RequestMethod.POST,
+			consumes = MediaType.ALL_VALUE,
+			produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	public @ResponseBody ResponseEntity<?> deleteLogMessage(
+			@RequestHeader(name = "X-Authorization", defaultValue = "") String jwt,
+			@RequestBody PostPojo post, HttpServletRequest request, HttpServletResponse response){
+
+    	//TODO extract user from token
+		String token = jwt.substring(jwt.indexOf("Bearer "), jwt.length());
+		System.out.println(nLin+"AuthEndpoint.deleteLogMessage token = " + token +nLin);
+		TokenPojo tokenPojo = new TokenPojo();
+		tokenPojo.setToken(token);
+
+		return userService.deletePost(post);
+	}
 
 }

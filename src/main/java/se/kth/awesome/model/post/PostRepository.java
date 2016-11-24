@@ -18,4 +18,7 @@ public interface PostRepository extends JpaRepository<Post, Long>,
 
     @Query(value = "select PM from Post PM where PM.pk.receiver.username = :userName")
     Collection<Post> getAllReceivedPostsByUserName(@Param("userName") String username);
+
+    @Query(value = "select PM from Post PM where PM.id = :iD")
+    Post getPost(@Param("iD")Long ID);
 }

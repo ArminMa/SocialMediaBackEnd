@@ -150,5 +150,22 @@ public class UserEntityServiceImp implements UserEntityService {
 		return ResponseEntity.status(HttpStatus.CREATED).build();
 	}
 
+	@Override
+	public ResponseEntity<?> deletePost(PostPojo post) {
+		if(post == null) ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+		if(post.getPk() == null) ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+		if(post.getSender() == null) ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+		if(post.getReceiver() == null) ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+		Post deletePost = ModelConverter.convert(post);
+		//TODO add control if user is sender of post
+		postRepository.delete(deletePost);
+		deletePost = postRepository.getPost(post.getId());
+		if(deletePost != null){
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+		}
+
+		return ResponseEntity.status(HttpStatus.OK).build();
+	}
+
 
 }

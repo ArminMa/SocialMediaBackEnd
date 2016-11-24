@@ -21,6 +21,8 @@ import se.kth.awesome.security.model.UserContext;
  *
  * May 31, 2016
  */
+
+//TODO implement all io.jsonwebtoken utilitys like get user from io.token and so on......
 @Component
 public class JwtTokenFactory {
     private final JwtSettings settings;
