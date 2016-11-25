@@ -1,10 +1,11 @@
 package se.kth.awesome.model.mailMessage;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.format.annotation.DateTimeFormat;
-import se.kth.awesome.model.UserEntity;
-import se.kth.awesome.util.gson.GsonX;
+import javax.validation.constraints.NotNull;
+import se.kth.awesome.model.User.UserEntity;
+
+import se.kth.awesome.util.gsonX.GsonX;
 
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -19,7 +20,6 @@ public class MailMessage implements Serializable,Comparable<MailMessage>{
     private Long id;
     private String messageContent;
     private String topic;
-    private Date sentDate;
     //TODO implement boolen/replacement for read messages
 //    private boolean read;
 
@@ -61,6 +61,47 @@ public class MailMessage implements Serializable,Comparable<MailMessage>{
         this.topic = topic;
     }
 
+	private Boolean messageRead = false;
+	@NotNull
+	@Column(nullable = false,
+			insertable = true,
+			updatable = true)
+	public Boolean getMessageRead() {
+		return messageRead;
+	}
+	public void setMessageRead(Boolean messageRead) {
+		this.messageRead = messageRead;
+	}
+
+	private Boolean senderRemovedMessage = false;
+	@NotNull
+	@Column(nullable = false,
+			insertable = true,
+			updatable = true)
+	public Boolean getSenderRemovedMessage() {
+		return senderRemovedMessage;
+	}
+	public void setSenderRemovedMessage(Boolean senderRemovedMessage) {
+		this.senderRemovedMessage = senderRemovedMessage;
+	}
+
+	private Boolean receiverRemovedMessage = false;
+	@NotNull
+	@Column(nullable = false,
+			insertable = true,
+			updatable = true)
+	public Boolean getReceiverRemovedMessage() {
+		return receiverRemovedMessage;
+	}
+	public void setReceiverRemovedMessage(Boolean receiverRemovedMessage) {
+		this.receiverRemovedMessage = receiverRemovedMessage;
+	}
+
+
+
+
+
+
     private MailMessageFK pk;
     @Embedded
     public MailMessageFK getPk() {
@@ -70,16 +111,6 @@ public class MailMessage implements Serializable,Comparable<MailMessage>{
         this.pk = mailMessageId;
     }
 
-    @Temporal(TemporalType.TIMESTAMP)
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSS")
-    @CreatedDate
-    @Column(name = "sent_date")
-    public Date getSentDate() {
-        return sentDate;
-    }
-    public void setSentDate(Date sentDate) {
-        this.sentDate = sentDate;
-    }
     @Transient
     public UserEntity getReceiver() {
         return getPk().getReceiver();
@@ -96,6 +127,21 @@ public class MailMessage implements Serializable,Comparable<MailMessage>{
         getPk().setSender(sender);
     }
 
+
+
+    private Date sentDate;
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(nullable = true,
+			insertable = true,
+			updatable = false)
+	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss.SSS")
+    public Date getSentDate() {
+        return sentDate;
+    }
+	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss.SSS")
+    public void setSentDate(Date sentDate) {
+        this.sentDate = sentDate;
+    }
 
 
     @Override

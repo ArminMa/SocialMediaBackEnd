@@ -13,7 +13,7 @@ import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.format.annotation.DateTimeFormat;
-import se.kth.awesome.model.UserEntity;
+import se.kth.awesome.model.User.UserEntity;
 
 
 @Entity
@@ -53,7 +53,7 @@ public class ChatMessage implements Serializable,Comparable<ChatMessage>{
 
 
     @Temporal(TemporalType.TIMESTAMP)
-    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSS")
     @CreatedDate
     @Column(name = "sent_date",
             nullable = false,

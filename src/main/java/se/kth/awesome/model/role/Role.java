@@ -1,8 +1,8 @@
 package se.kth.awesome.model.role;
 
 
-import se.kth.awesome.model.UserEntity;
-import se.kth.awesome.pojos.UserPojo;
+import se.kth.awesome.model.User.UserEntity;
+import se.kth.awesome.model.User.UserPojo;
 
 /**
  * Enumerated {@link UserEntity} roles.
@@ -12,7 +12,7 @@ import se.kth.awesome.pojos.UserPojo;
  * Aug 16, 2016
  */
 public enum Role {
-    MEMBER, PREMIUM_MEMBER, ADMIN, SUPER_ADMIN , ROLE_ANONYMOUS;
+    MEMBER, PREMIUM_MEMBER, ADMIN, SUPER_ADMIN , ANONYMOUS;
     
     public String authority() {
         return "ROLE_" + this.name();

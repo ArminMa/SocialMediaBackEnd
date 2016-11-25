@@ -5,7 +5,7 @@ import javax.persistence.Embeddable;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import se.kth.awesome.model.UserEntity;
+import se.kth.awesome.model.User.UserEntity;
 
 
 @Embeddable
@@ -25,7 +25,7 @@ public class ChatFK implements java.io.Serializable, Comparable<ChatFK> {
 		this.author = author;
 	}
 
-	@ManyToOne(fetch = FetchType.LAZY,  targetEntity = UserEntity.class)
+	@ManyToOne(fetch = FetchType.EAGER,  targetEntity = UserEntity.class)
 	@JoinColumn(name = "chat_message_receiver_id")
 	public UserEntity getReceivingUser() {
 		return receivingUser;
@@ -34,7 +34,7 @@ public class ChatFK implements java.io.Serializable, Comparable<ChatFK> {
 		this.receivingUser = receivingUser;
 	}
 
-	@ManyToOne(fetch = FetchType.LAZY, targetEntity = UserEntity.class)
+	@ManyToOne(fetch = FetchType.EAGER, targetEntity = UserEntity.class)
 	@JoinColumn(name = "chat_message_sender_id")
 	public UserEntity getAuthor() {
 		return author;

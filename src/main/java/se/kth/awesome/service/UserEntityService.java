@@ -2,8 +2,9 @@ package se.kth.awesome.service;
 
 import java.util.Collection;
 import org.springframework.http.ResponseEntity;
-import se.kth.awesome.pojos.MailMessagePojo.MailMessagePojo;
-import se.kth.awesome.pojos.UserPojo;
+import se.kth.awesome.model.mailMessage.MailMessagePojo;
+import se.kth.awesome.model.User.UserPojo;
+import se.kth.awesome.model.post.PostPojo;
 
 
 public interface UserEntityService {
@@ -20,4 +21,10 @@ public interface UserEntityService {
     ResponseEntity<?> sendMailMessage(MailMessagePojo messagePojo);
 
     ResponseEntity<?> getMyMails(String username);
+
+	ResponseEntity<?> getPosts(String username);
+
+    ResponseEntity<?> senPostMessage(PostPojo postPojo);
+
+	ResponseEntity<?> deletePost(PostPojo post);
 }

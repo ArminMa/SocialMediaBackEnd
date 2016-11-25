@@ -16,8 +16,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-import se.kth.awesome.pojos.ping.PingPojo;
-import se.kth.awesome.util.gson.GsonX;
+import se.kth.awesome.model.PingPojo;
+import se.kth.awesome.util.gsonX.GsonX;
 import se.kth.awesome.util.MediaTypes;
 
 

@@ -1,5 +1,5 @@
 DELETE FROM face_user WHERE email= 'svlada@gmail.com';
-insert into face_user( password, username,email) values( '$2a$10$bnC26zz//2cavYoSCrlHdecWF8tkGfPodlHcYwlACBBwJvcEf0p2G', 'svlada@gmail.com','svlada@gmail.com');
+insert into face_user( password, username,email) values( '793148fd08f39ee62a84474fce8e0a544c5f1fc8', 'svlada@gmail.com','svlada@gmail.com');
 
 -- DELETE FROM face_user WHERE email= 'testUser@testUser.testUser';
 -- insert into face_user( password, username,email) values( '793148fd08f39ee62a84474fce8e0a544c5f1fc8', 'testUser','testUser@testUser.testUser');
@@ -8,12 +8,13 @@ insert into face_user( password, username,email) values( '$2a$10$bnC26zz//2cavYo
 -- insert into face_user( password, username,email) values( '793148fd08f39ee62a84474fce8e0a544c5f1fc8', 'testUser2','testUser2@testUser2.testUser2');
 
 
-TRUNCATE TABLE user_role;
-insert into user_role(id, role, user_id) values(1, 'MEMBER', 1);
-insert into user_role(id, role, user_id) values(2, 'PREMIUM_MEMBER', 1);
+DELETE FROM roles_entity WHERE id=1 or id=2 or id= 3 or id = 4 or id = 5;
+insert into roles_entity(id, role) values( 1, 'MEMBER');
+insert into roles_entity(id, role) values( 2, 'PREMIUM_MEMBER');
+insert into roles_entity(id, role) values( 3, 'ADMIN');
+insert into roles_entity(id, role) values( 4, 'SUPER_ADMIN');
+insert into roles_entity(id, role) values( 5, 'ANONYMOUS');
 
--- insert into user_role(id, role, user_id) values(1, 'MEMBER', 2);
--- insert into user_role(id, role, user_id) values(1, 'MEMBER', 3);
--- insert into user_role(id, role, user_id) values(1, 'MEMBER', 4);
+
 
 -- MEMBER, PREMIUM_MEMBER, ADMIN, SUPER_ADMIN , ROLE_ANONYMOUS;

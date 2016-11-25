@@ -10,13 +10,16 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import se.kth.awesome.model.UserEntity;
-import se.kth.awesome.model.UserRepository;
+import se.kth.awesome.model.User.UserEntity;
+import se.kth.awesome.model.User.UserRepository;
 import se.kth.awesome.model.mailMessage.MailMessage;
 import se.kth.awesome.model.mailMessage.MailMessageRepository;
-import se.kth.awesome.model.modelConverter.ModelConverter;
-import se.kth.awesome.pojos.MailMessagePojo.MailMessagePojo;
-import se.kth.awesome.pojos.UserPojo;
+import se.kth.awesome.model.ModelConverter;
+import se.kth.awesome.model.mailMessage.MailMessagePojo;
+import se.kth.awesome.model.User.UserPojo;
+import se.kth.awesome.model.post.Post;
+import se.kth.awesome.model.post.PostPojo;
+import se.kth.awesome.model.post.PostRepository;
 import se.kth.awesome.service.UserEntityService;
 import se.kth.awesome.util.MediaTypes;
 
@@ -28,6 +31,9 @@ public class UserEntityServiceImp implements UserEntityService {
 
 	@Autowired
 	private UserRepository userRepository;
+
+	@Autowired
+	private PostRepository postRepository;
 
 	@Autowired
 	private MailMessageRepository mailMessageRepository;
@@ -67,21 +73,21 @@ public class UserEntityServiceImp implements UserEntityService {
 
 	@Override
 	public ResponseEntity<?> sendMailMessage(MailMessagePojo messagePojo) {
-        if(messagePojo == null) ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        if(messagePojo.getPk() == null) ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        if(messagePojo.getSender() == null) ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        if(messagePojo.getReceiver() == null) ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        if(messagePojo.getTopic() == null) ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        messagePojo.setSentDate(new Date());
+        if(messagePojo == null) ResponseEntity.status(HttpStatus.BAD_REQUEST).body("messagePojo is null");
+        if(messagePojo.getPk() == null) ResponseEntity.status(HttpStatus.BAD_REQUEST).body("messagePojo.getPk() is null");
+        if(messagePojo.getSender() == null) ResponseEntity.status(HttpStatus.BAD_REQUEST).body("messagePojo.getSender() is null");
+        if(messagePojo.getReceiver() == null) ResponseEntity.status(HttpStatus.BAD_REQUEST).body("messagePojo.getReceiver() is null");
+        if(messagePojo.getTopic() == null) ResponseEntity.status(HttpStatus.BAD_REQUEST).body("messagePojo.getTopic() is null");
+
 
         //TODO check that the correct sender is sending from the token;
 //        JwtAuthenticationToken token = messagePojo.getSender().getToken();
-
+		System.out.println(nLin+"1.UserEntityServiceImp.sendMailMessage");
         MailMessage mailMessage = ModelConverter.convert(messagePojo);
-
+		System.out.println(nLin+"2.UserEntityServiceImp.sendMailMessage");
         mailMessageRepository.save(mailMessage);
         mailMessageRepository.flush();
-        return ResponseEntity.ok().build();
+        return ResponseEntity.status(HttpStatus.CREATED).build();
 	}
 
     @SuppressWarnings("unchecked")
@@ -89,10 +95,10 @@ public class UserEntityServiceImp implements UserEntityService {
     public ResponseEntity<?> getMyMails(String username) {
         if(username == null) ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
 
-		System.out.println(nLin+"1.UserEntityServiceImp.getMyMails");
+
 
         Collection<MailMessage> mailMessages = mailMessageRepository.getAllSentAndReceivedMailByUserName(username);
-        System.out.println(nLin+"2.UserEntityServiceImp.getMyMails");
+
         if(mailMessages == null ||  mailMessages.isEmpty()) return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         System.out.println(nLin+"3.UserEntityServiceImp.getMyMails");
 		Collection<MailMessagePojo> mailMessagePojos = (Collection<MailMessagePojo>) ModelConverter.convert(mailMessages);
@@ -104,6 +110,62 @@ public class UserEntityServiceImp implements UserEntityService {
                 .contentType(MediaTypes.JsonUtf8)
                 .body(mailMessages);
     }
+
+	@Override
+	public ResponseEntity<?> getPosts(String username) {
+		if(username == null) ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+
+		System.out.println(nLin+"1.UserEntityServiceImp.getPosts");
+
+		Collection<Post> posts = postRepository.getAllReceivedPostsByUserName(username);
+		System.out.println(nLin+"2.UserEntityServiceImp.getPosts");
+		if(posts == null ||  posts.isEmpty()) return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+		System.out.println(nLin+"3.UserEntityServiceImp.getPosts");
+		Collection<PostPojo> postPojos = (Collection<PostPojo>) ModelConverter.convert(posts);
+		System.out.println(nLin+"4.UserEntityServiceImp.getPosts");
+		if(postPojos == null ||  postPojos.isEmpty()) return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+		System.out.println(nLin+"5.UserEntityServiceImp.getPosts");
+
+		return ResponseEntity.status(HttpStatus.OK)
+				.contentType(MediaTypes.JsonUtf8)
+				.body(postPojos);
+
+	}
+
+	@Override
+	public ResponseEntity<?> senPostMessage(PostPojo postPojo) {
+		if(postPojo == null) ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+		if(postPojo.getPk() == null) ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+		if(postPojo.getSender() == null) ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+		if(postPojo.getReceiver() == null) ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+		postPojo.setPostedDate(new Date());
+
+		//TODO check that the correct sender is sending from the token;
+//        JwtAuthenticationToken token = messagePojo.getSender().getToken();
+
+		Post post = ModelConverter.convert(postPojo);
+
+		postRepository.save(post);
+		postRepository.flush();
+		return ResponseEntity.status(HttpStatus.CREATED).build();
+	}
+
+	@Override
+	public ResponseEntity<?> deletePost(PostPojo post) {
+		if(post == null) ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+		if(post.getPk() == null) ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+		if(post.getSender() == null) ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+		if(post.getReceiver() == null) ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+		Post deletePost = ModelConverter.convert(post);
+		//TODO add control if user is sender of post
+		postRepository.delete(deletePost);
+		deletePost = postRepository.getPost(post.getId());
+		if(deletePost != null){
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+		}
+
+		return ResponseEntity.status(HttpStatus.OK).build();
+	}
 
 
 }

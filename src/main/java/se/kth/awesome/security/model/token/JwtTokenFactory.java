@@ -21,6 +21,8 @@ import se.kth.awesome.security.model.UserContext;
  *
  * May 31, 2016
  */
+
+//TODO implement all io.jsonwebtoken utilitys like get user from io.token and so on......
 @Component
 public class JwtTokenFactory {
     private final JwtSettings settings;
@@ -51,7 +53,7 @@ public class JwtTokenFactory {
           .setClaims(claims)
           .setIssuer(settings.getTokenIssuer())
           .setIssuedAt(currentTime.toDate())
-          .setExpiration(currentTime.plusMinutes(settings.getTokenExpirationTime()).toDate())
+          .setExpiration(currentTime.plusDays(settings.getTokenExpirationTime()).toDate())
           .signWith(SignatureAlgorithm.HS512, settings.getTokenSigningKey())
         .compact();
 

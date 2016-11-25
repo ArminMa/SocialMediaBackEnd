@@ -11,7 +11,7 @@ public class SpringbootSecurityJwtApplicationTests {
 
 	@Test
 	public void contextLoads() {
-		System.out.println("helo world test");
+		System.out.println("hello world test");
 	}
 
 }

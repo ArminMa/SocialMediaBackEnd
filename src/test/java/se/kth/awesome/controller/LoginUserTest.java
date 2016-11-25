@@ -17,12 +17,14 @@ import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
-import se.kth.awesome.model.UserEntity;
-import se.kth.awesome.model.UserRepository;
-import se.kth.awesome.model.modelConverter.ModelConverter;
+import se.kth.awesome.model.User.UserEntity;
+import se.kth.awesome.model.User.UserRepository;
+import se.kth.awesome.model.ModelConverter;
 import se.kth.awesome.model.role.Role;
-import se.kth.awesome.pojos.UserPojo;
-import se.kth.awesome.pojos.UserRolePojo;
+import se.kth.awesome.model.User.UserPojo;
+import se.kth.awesome.model.role.UserRoleEntity;
+import se.kth.awesome.model.role.UserRoleRepository;
+import se.kth.awesome.model.role.rolePojo.UserRolePojo;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -45,16 +47,23 @@ public class LoginUserTest {
 	@Autowired
 	private UserRepository userRepository;
 
+	@Autowired
+	private UserRoleRepository userRoleRepo;
+
+
 	@SuppressWarnings("unchecked")
 	@Before
 	public void setUp() throws Exception {
 		System.out.println(nLin+nLin+"----------------- LoginUserTest.setUp-start ----------------------------"+nLin+nLin);
+		UserRoleEntity userRoleEntity = userRoleRepo.save(new UserRoleEntity(Role.MEMBER));
+		userRoleRepo.flush();
 
 		/*"password:793148fd08f39ee62a84474fce8e0a544c5f1fc8," +*/ /*PasswordHashed0*/
-		userPojos.add(new UserPojo("loginUser", "LoginUserTest@gmail.com", "793148fd08f39ee62a84474fce8e0a544c5f1fc8"));
-		userPojos.get(0).getRoles().add(new UserRolePojo(Role.MEMBER));
-		userRepository.save((Collection<UserEntity>) ModelConverter.convert(userPojos));
+		userEntities.add(new UserEntity("loginUser", "LoginUserTest@gmail.com", "793148fd08f39ee62a84474fce8e0a544c5f1fc8"));
+		userEntities.get(0).getAuthorities().add(userRoleEntity);
+		userEntities  = userRepository.save(userEntities) ;
 		userRepository.flush();
+		userPojos = (List<UserPojo>) ModelConverter.convert(userEntities);
 		System.out.println(nLin+nLin+"----------------- LoginUserTest.setUp-end ----------------------------"+nLin+nLin);
 	}
 
@@ -73,9 +82,8 @@ public class LoginUserTest {
 
 		System.out.println(nLin+nLin+"----------------- LoginUserTest.login.start ----------------------------"+nLin+nLin);
 
-		UserEntity entitySaved = userRepository.findByEmail("LoginUserTest@gmail.com");
-		System.out.println(nLin+nLin+"------------------------ userSaved? -------------------------"+nLin);
-		System.out.println(nLin+entitySaved.toString() + nLin);
+		assertThat(userPojos).isNotNull();
+		assertThat(userPojos).isNotEmpty();
 
 		UserPojo userPojoTryToLogin = userPojos.get(0);
 		userPojoTryToLogin.setPassword("PasswordHashed0");

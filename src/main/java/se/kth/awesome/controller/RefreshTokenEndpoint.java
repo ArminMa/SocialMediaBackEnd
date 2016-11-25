@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-import se.kth.awesome.pojos.UserPojo;
+import se.kth.awesome.model.User.UserPojo;
 import se.kth.awesome.security.auth.jwt.extractor.TokenExtractor;
 import se.kth.awesome.security.auth.jwt.verifier.TokenVerifier;
 import se.kth.awesome.security.config.JwtSettings;
@@ -62,9 +62,9 @@ public class RefreshTokenEndpoint {
         if(user== null)
             throw  new UsernameNotFoundException("User not found: " + subject);
 
-        if (user.getRoles() == null) throw new InsufficientAuthenticationException("User has no roles assigned");
-        List<GrantedAuthority> authorities = user.getRoles().stream()
-                .map(authority -> new SimpleGrantedAuthority(authority.getRole().authority()))
+        if (user.getAuthorities() == null) throw new InsufficientAuthenticationException("User has no roles assigned");
+        List<GrantedAuthority> authorities = user.getAuthorities().stream()
+                .map(authority -> new SimpleGrantedAuthority(authority.getAuthority().getRole().authority()))
                 .collect(Collectors.toList());
 
         UserContext userContext = UserContext.create(user.getUsername(), authorities);

@@ -19,7 +19,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 import se.kth.awesome.SpringbootSecurityJwtApplication;
-import se.kth.awesome.pojos.UserPojo;
+import se.kth.awesome.model.User.UserPojo;
 import se.kth.awesome.security.model.UserContext;
 import se.kth.awesome.security.util.PasswordSaltUtil;
 import se.kth.awesome.service.UserEntityService;
@@ -77,10 +77,10 @@ public class AjaxAuthenticationProvider implements AuthenticationProvider {
             throw new BadCredentialsException("Authentication Failed. Username or Password not valid.");
         }
 
-        if (user.getRoles() == null) throw new InsufficientAuthenticationException("User has no roles assigned");
+        if (user.getAuthorities() == null) throw new InsufficientAuthenticationException("User has no roles assigned");
         
-        List<GrantedAuthority> authorities = user.getRoles().stream()
-                .map(authority -> new SimpleGrantedAuthority(authority.getRole().authority()))
+        List<GrantedAuthority> authorities = user.getAuthorities().stream()
+                .map(authority -> new SimpleGrantedAuthority(authority.getAuthority().getRole().authority()))
                 .collect(Collectors.toList());
         
         UserContext userContext = UserContext.create(user.getUsername(), authorities);
