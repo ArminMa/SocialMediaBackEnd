@@ -33,8 +33,12 @@ public class UserController {
 
     @RequestMapping(
             value = "/getUserByEmail/{email:.+}",
-            method = RequestMethod.GET)
-    public ResponseEntity<?> getUserByEmail(@PathVariable("email") String userEmail) {
+            method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public  @ResponseBody ResponseEntity<?> getUserByEmail(
+    		@PathVariable("email") String userEmail,
+		    HttpServletRequest request,
+		    HttpServletResponse response) {
 
         return userService.findByEmail(userEmail);
 
