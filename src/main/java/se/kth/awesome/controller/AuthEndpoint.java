@@ -65,7 +65,8 @@ public class AuthEndpoint {
 
     @RequestMapping(
             value = "/api/getMyMails/{username}",
-            method = RequestMethod.GET)
+            method = RequestMethod.GET
+            produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<?> getMyMails(@PathVariable("username") String username,
                                         @RequestHeader(name = "X-Authorization", defaultValue = "") String jwt) {
 
