@@ -82,7 +82,7 @@ public class AuthEndpoint {
             method = RequestMethod.GET)
     public ResponseEntity<?> getMyMails(@RequestHeader(name = "X-Authorization", defaultValue = "") String jwt) {
 		UserPojo user = getUserPojoFromToken(jwt);
-        return userService.getMyMails(user.getUsername());
+        return userService.getMyMails(user.getId());
     }
 
 	@RequestMapping(

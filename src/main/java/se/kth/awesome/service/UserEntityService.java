@@ -20,7 +20,7 @@ public interface UserEntityService {
 
     ResponseEntity<?> sendMailMessage(MailMessagePojo messagePojo);
 
-    ResponseEntity<?> getMyMails(String username);
+    ResponseEntity<?> getMyMails(Long userId);
 
 	ResponseEntity<?> getPosts(String username);
 

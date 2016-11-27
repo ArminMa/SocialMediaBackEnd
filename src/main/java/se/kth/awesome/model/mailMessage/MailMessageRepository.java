@@ -19,4 +19,7 @@ public interface MailMessageRepository extends JpaRepository<MailMessage, Long>,
 
     @Query(value = "select MM from MailMessage MM where MM.pk.sender.username = :userName or MM.pk.receiver.username = :userName")
     List<MailMessage> getAllSentAndReceivedMailByUserName(@Param("userName")String username);
+
+    @Query(value = "select MM from MailMessage MM where MM.pk.receiver.id = :userID")
+    Collection<MailMessage> getAllReceivedMails(@Param("userID")long userId);
 }

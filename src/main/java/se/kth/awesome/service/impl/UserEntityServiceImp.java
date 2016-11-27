@@ -79,10 +79,6 @@ public class UserEntityServiceImp implements UserEntityService {
         if(messagePojo.getReceiver() == null) ResponseEntity.status(HttpStatus.BAD_REQUEST).body("messagePojo.getReceiver() is null");
         if(messagePojo.getTopic() == null) ResponseEntity.status(HttpStatus.BAD_REQUEST).body("messagePojo.getTopic() is null");
 
-
-        //TODO check that the correct sender is sending from the token;
-//        JwtAuthenticationToken token = messagePojo.getSender().getToken();
-		System.out.println(nLin+"1.UserEntityServiceImp.sendMailMessage");
         MailMessage mailMessage = ModelConverter.convert(messagePojo);
 		System.out.println(nLin+"2.UserEntityServiceImp.sendMailMessage");
         mailMessageRepository.save(mailMessage);
@@ -92,10 +88,8 @@ public class UserEntityServiceImp implements UserEntityService {
 
     @SuppressWarnings("unchecked")
     @Override
-    public ResponseEntity<?> getMyMails(String username) {
-        if(username == null) ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-
-        Collection<MailMessage> mailMessages = mailMessageRepository.getAllSentAndReceivedMailByUserName(username);
+    public ResponseEntity<?> getMyMails(Long userId) {
+        Collection<MailMessage> mailMessages = mailMessageRepository.getAllReceivedMails(userId);
 
         if(mailMessages == null ||  mailMessages.isEmpty()) return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         System.out.println(nLin+"3.UserEntityServiceImp.getMyMails");
@@ -104,9 +98,11 @@ public class UserEntityServiceImp implements UserEntityService {
         if(mailMessagePojos == null ||  mailMessagePojos.isEmpty()) return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         System.out.println(nLin+"5.UserEntityServiceImp.getMyMails");
 
+		Collection<MailMessagePojo> messagePojos = (Collection<MailMessagePojo>) ModelConverter.convert(mailMessages);
+
         return ResponseEntity.status(HttpStatus.OK)
                 .contentType(MediaTypes.JsonUtf8)
-                .body(mailMessages);
+                .body(messagePojos);
     }
 
 	@Override
