@@ -9,6 +9,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
+import javax.crypto.SecretKey;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
@@ -19,7 +20,10 @@ import org.springframework.stereotype.Component;
 import se.kth.awesome.model.role.Role;
 import se.kth.awesome.model.role.rolePojo.UserRolePojo;
 import se.kth.awesome.model.user.UserPojo;
+import se.kth.awesome.security.AwesomeServerKeys;
 import se.kth.awesome.security.auth.ajax.AjaxAuthenticationProvider;
+import se.kth.awesome.security.util.CipherUtils;
+import se.kth.awesome.security.util.KeyUtil;
 
 
 import static se.kth.awesome.util.Util.nLin;
@@ -36,11 +40,20 @@ import static se.kth.awesome.util.Util.nLin;
 @Component
 public class JwtTokenFactory {
 	private final JwtSettings settings;
+	private final AwesomeServerKeys awesomeServerKeys;
 	public static final Logger logger1 = LoggerFactory.getLogger( AjaxAuthenticationProvider.class );
+
+
+
+	private SecretKey secretKey ;
+
 	@Autowired
-	public JwtTokenFactory(JwtSettings settings) {
+	public JwtTokenFactory(JwtSettings settings, AwesomeServerKeys awesomeServerKeys) {
 		this.settings = settings;
+		this.awesomeServerKeys = awesomeServerKeys;
 	}
+
+
 
 	/**
 	 *
@@ -48,6 +61,7 @@ public class JwtTokenFactory {
 	 * @return AccessJwtToken
 	 */
 	public AccessJwtToken createAccessJwtToken(UserPojo userContext) {
+		secretKey = KeyUtil.SymmetricKey.getSecretKeyFromString(awesomeServerKeys.getEncryptPayloadKey());
 		if (StringUtils.isBlank(userContext.getUsername()))
 			throw new IllegalArgumentException("Cannot create JWT Token without username");
 
@@ -55,9 +69,9 @@ public class JwtTokenFactory {
 			throw new IllegalArgumentException("user doesn't have any privileges");
 		DateTime currentTime = new DateTime();
 		Claims claims = generateClaims(userContext, currentTime);
-		System.out.println("currentTime.toDate() = " +currentTime.toDate());
-		System.out.println("settings.getRefreshTokenExpTime() = " +settings.getTokenExpirationTime());
-		System.out.println("currentTime.plusHours = " +(currentTime.plusHours(settings.getTokenExpirationTime())).toDate() + nLin+nLin);
+
+
+
 		String token = Jwts.builder()
 				.setClaims(claims)
 				.setIssuer(settings.getTokenIssuer())
@@ -104,7 +118,12 @@ public class JwtTokenFactory {
 		claims.put(settings.getClaimKeySubject(), userPojo.getUsername());
 //		claims.put(settings.getClaimKeyAudience(), audience);
 		claims.put(settings.getClaimKeyCreated(), currentTime.toDate());
-		claims.put(settings.getClaimKeyPayload(), userPojo.toString());
+
+
+		userPojo.setPassword(UUID.randomUUID().toString());
+		String encyptedUser = CipherUtils.encryptWithSymmetricKey(userPojo.toString(), secretKey );
+		if(encyptedUser.isEmpty()) return null;
+		claims.put(settings.getClaimKeyPayload(), encyptedUser);
 		return claims;
 	}
 

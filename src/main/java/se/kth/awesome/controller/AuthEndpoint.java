@@ -20,8 +20,10 @@ import se.kth.awesome.model.user.UserPojo;
 import se.kth.awesome.model.post.PostPojo;
 import se.kth.awesome.security.auth.JwtAuthenticationToken;
 import se.kth.awesome.security.auth.jwt.extractor.JwtHeaderTokenExtractor;
+
 import se.kth.awesome.security.auth.jwt.model.token.JwtSettings;
 import se.kth.awesome.security.auth.jwt.model.token.JwtTokenFactory;
+
 import se.kth.awesome.service.UserEntityService;
 import se.kth.awesome.util.MediaTypes;
 

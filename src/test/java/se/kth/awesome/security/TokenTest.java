@@ -3,6 +3,7 @@ package se.kth.awesome.security;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import javax.crypto.SecretKey;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.FixMethodOrder;
@@ -28,6 +29,7 @@ import se.kth.awesome.model.user.UserRepository;
 import se.kth.awesome.security.auth.jwt.extractor.JwtHeaderTokenExtractor;
 import se.kth.awesome.security.auth.jwt.model.token.JwtSettings;
 import se.kth.awesome.security.auth.jwt.model.token.JwtTokenFactory;
+import se.kth.awesome.security.util.CipherUtils;
 import se.kth.awesome.security.util.KeyUtil;
 import se.kth.awesome.security.util.PasswordSaltUtil;
 import se.kth.awesome.util.gsonX.GsonX;
@@ -70,6 +72,10 @@ public class TokenTest {
 		userPojos.get(2).getAuthorities().add(new UserRolePojo( Role.MEMBER));
 		userPojos.get(3).getAuthorities().add(new UserRolePojo( Role.MEMBER));
 
+		SecretKey secretKey = KeyUtil.SymmetricKey.generateSecretAesKey(16);
+		String stringSecretKey = KeyUtil.SymmetricKey.getKeyAsString(secretKey);
+		System.out.println(nLin+"TokenTest.setUp stringSecretKey = " + stringSecretKey +nLin);
+
 		tokenPojos.add(new TokenPojo("Bearer "+ tokenFactory.createAccessJwtToken(userPojos.get(0)).getToken(), null ) );
 		tokenPojos.add(new TokenPojo("Bearer "+ tokenFactory.createAccessJwtToken(userPojos.get(1)).getToken(), null ) );
 		tokenPojos.add(new TokenPojo("Bearer "+ tokenFactory.createAccessJwtToken(userPojos.get(2)).getToken(), null ) );
@@ -94,13 +100,21 @@ public class TokenTest {
 		String token2 = tokenPojos.get(0).getToken().substring("Bearer ".length(), tokenPojos.get(0).getToken().length());
 		assertThat(token1).isEqualTo(token2);
 
-		UserPojo userPojo0 = GsonX.gson.fromJson( tokenFactory.getPayloadFromJwt(token1), UserPojo.class);
+		SecretKey encryptDecryptTokenPayloadKey = KeyUtil.SymmetricKey.getSecretKeyFromString(awesomeServerKeys.getEncryptPayloadKey());
+		String decryptedPayload = null;
+		try {
+			decryptedPayload = CipherUtils.decryptWithSymmetricKey(tokenFactory.getPayloadFromJwt(token1), encryptDecryptTokenPayloadKey);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		UserPojo userPojo0 = GsonX.gson.fromJson( decryptedPayload, UserPojo.class);
 
 		String userName = tokenFactory.getSubject(token1);
 
 		assertThat(userPojo0.getUsername()).isEqualTo(userName);
 
-		System.out.println(nLin+"AuthEndpoint.sendMailMessage userPojo2 = " + userPojo0.toString() +nLin);
+		System.out.println(nLin+"TokenTest.tokenTest userPojo0 = " + userPojo0.toString() +nLin);
 
 		System.out.println(nLin+nLin+"----------------- TokenTest.tokenTest-end ----------------------------"+nLin+nLin);
 

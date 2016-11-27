@@ -13,6 +13,7 @@ public class AwesomeServerKeys {
 
 	private String serverRsaPublicKey;
 
+	private String encryptPayloadKey;
 
 	public String getSharedSecretKey() {
 		return sharedSecretKey;
@@ -36,4 +37,10 @@ public class AwesomeServerKeys {
 	}
 
 
+	public String getEncryptPayloadKey() {
+		return encryptPayloadKey;
+	}
+	public void setEncryptPayloadKey(String encryptPayloadKey) {
+		this.encryptPayloadKey = encryptPayloadKey;
+	}
 }

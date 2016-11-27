@@ -12,6 +12,7 @@ import java.security.Provider;
 import java.security.PublicKey;
 import java.security.SecureRandom;
 import java.security.spec.EncodedKeySpec;
+import java.security.spec.InvalidKeySpecException;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
 import javax.crypto.KeyGenerator;
@@ -46,7 +47,7 @@ public class KeyUtil {
 	}
 
 	// ---------||||||||||||||||| generate Key util |||||||||||||||||---------
-
+	// ---------||||||||||||||||| SymmetricKey class start |||||||||||||||||---------
 	public static class SymmetricKey {
 
 		/**
@@ -110,7 +111,7 @@ public class KeyUtil {
 
 	}
 
-
+	// ---------||||||||||||||||| SymmetricKey class end |||||||||||||||||---------
 
 //	public static SecretKey generateSymmetricHmacSha1Key() {
 //		return generateSymmetricKey(HMACSHA1);
@@ -160,12 +161,18 @@ public class KeyUtil {
 	 * @return The PublicKey
 	 * @throws Exception
 	 */
-	public static PublicKey getPublicKeyFromString(String key) throws GeneralSecurityException {
+	public static PublicKey getPublicKeyFromString(String key) {
 
 		EncodedKeySpec publicKeySpec = new X509EncodedKeySpec(decodeBASE64(key));
-		KeyFactory keyFactory = KeyFactory.getInstance(RSA_ALGORITHM);
-		return keyFactory.generatePublic(publicKeySpec);
+		KeyFactory keyFactory = null;
+		try {
+			keyFactory = KeyFactory.getInstance(RSA_ALGORITHM);
 
+			return keyFactory.generatePublic(publicKeySpec);
+		} catch (InvalidKeySpecException | NoSuchAlgorithmException e) {
+			e.printStackTrace();
+		}
+		return null;
 
 	}
 
