@@ -5,6 +5,8 @@ import java.nio.charset.Charset;
 import java.util.Collection;
 import java.util.Date;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -20,6 +22,7 @@ import se.kth.awesome.model.user.UserPojo;
 import se.kth.awesome.model.post.Post;
 import se.kth.awesome.model.post.PostPojo;
 import se.kth.awesome.model.post.PostRepository;
+import se.kth.awesome.security.auth.ajax.AjaxAuthenticationProvider;
 import se.kth.awesome.service.UserEntityService;
 import se.kth.awesome.util.MediaTypes;
 
@@ -37,6 +40,8 @@ public class UserEntityServiceImp implements UserEntityService {
 
 	@Autowired
 	private MailMessageRepository mailMessageRepository;
+
+//	private final Logger logger1 = LoggerFactory.getLogger(getClass());
 
 	MediaType mediaType = new MediaType(MediaType.APPLICATION_JSON.getType(), MediaType.APPLICATION_JSON.getSubtype(), Charset.forName("utf8"));
 
@@ -109,7 +114,7 @@ public class UserEntityServiceImp implements UserEntityService {
 	public ResponseEntity<?> getPosts(String username) {
 		if(username == null) ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
 
-		Collection<Post> posts = postRepository.getAllReceivedPostsByUserName(username);
+		Collection<Post> posts = postRepository.getAllPostsByUserName(username);
 		if(posts == null ||  posts.isEmpty()) return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 		Collection<PostPojo> postPojos = (Collection<PostPojo>) ModelConverter.convert(posts);
 		if(postPojos == null ||  postPojos.isEmpty()) return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
@@ -122,12 +127,22 @@ public class UserEntityServiceImp implements UserEntityService {
 
 	@Override
 	public ResponseEntity<?> senPostMessage(PostPojo postPojo) {
-		if(postPojo == null) ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-		if(postPojo.getPk() == null) ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-		if(postPojo.getSender() == null) ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-		if(postPojo.getReceiver() == null) ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+		if(postPojo == null) {
+//			logger1.error("postpojo = null");
+			ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+		}
+		if(postPojo.getPk() == null) {
+//			logger1.error("pk = null");
+			ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+		}
+		if(postPojo.getSender() == null) {
+//			logger1.error("sender = null");
+			ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+		}
+		if(postPojo.getReceiver() == null){
+			postPojo.setReceiver(postPojo.getSender());
+		}
 		postPojo.setPostedDate(new Date());
-
 		Post post = ModelConverter.convert(postPojo);
 
 		postRepository.save(post);
@@ -137,18 +152,23 @@ public class UserEntityServiceImp implements UserEntityService {
 
 	@Override
 	public ResponseEntity<?> deletePost(PostPojo post) {
-		if(post == null) ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-		if(post.getPk() == null) ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-		if(post.getSender() == null) ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-		if(post.getReceiver() == null) ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-		Post deletePost = ModelConverter.convert(post);
-
-		postRepository.delete(deletePost);
-		deletePost = postRepository.getPost(post.getId());
-		if(deletePost != null){
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+		if(post == null) {
+//			logger1.error("postpojo = null");
+			ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+		}
+		if(post.getPk() == null) {
+//			logger1.error("pk = null");
+			ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+		}
+		if(post.getSender() == null) {
+//			logger1.error("sender = null");
+			ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+		}
+		if(post.getReceiver() == null){
+			post.setReceiver(post.getSender());
 		}
 
+		postRepository.deletePostByID(post.getId());
 		return ResponseEntity.status(HttpStatus.OK).build();
 	}
 

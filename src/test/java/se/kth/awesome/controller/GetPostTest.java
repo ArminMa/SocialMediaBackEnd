@@ -171,26 +171,18 @@ public class GetPostTest {
 
         // get post for other other members posts
 
-	    theResponse = this.mockMvc.perform(get("/api/getPostsByUserName/"+userPojos.get(3).getUsername())
+	    theResponse = this.mockMvc.perform(get("/api/getPostsByUserName/"+userPojos.get(0).getUsername())
 			    .accept(MediaTypes.JsonUtf8)
 			    .header("X-Authorization", "Bearer " + tokenPojo.getToken())
 			    .header("Cache-Control", "no-cache"))
-
 			    .andExpect(status().isOk())
 			    .andExpect(content().contentType(MediaTypes.JsonUtf8))
 			    .andReturn().getResponse().getContentAsString();
 
-
 	    System.out.println(nLin+"  theResponse = "+theResponse+nLin);
-
 	    PostsReturnFromResponse = GsonX.gson.fromJson(theResponse, new TypeToken<List<PostPojo>>(){}.getType() );
 	    assertThat(PostsReturnFromResponse).isNotNull();
 	    assertThat(PostsReturnFromResponse).isNotEmpty();
-
-
-
-
-
 
         System.out.println(nLin+nLin+"----------------- GetPostTest.getPosts.end ----------------------------"+nLin+nLin);
     }

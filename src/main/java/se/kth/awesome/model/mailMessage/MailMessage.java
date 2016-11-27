@@ -86,9 +86,7 @@ public class MailMessage implements Serializable,Comparable<MailMessage>{
 	}
 
 	private Boolean receiverRemovedMessage = false;
-	@NotNull
-	@Column(nullable = false,
-			insertable = true,
+	@Column(insertable = true,
 			updatable = true)
 	public Boolean getReceiverRemovedMessage() {
 		return receiverRemovedMessage;
@@ -96,11 +94,6 @@ public class MailMessage implements Serializable,Comparable<MailMessage>{
 	public void setReceiverRemovedMessage(Boolean receiverRemovedMessage) {
 		this.receiverRemovedMessage = receiverRemovedMessage;
 	}
-
-
-
-
-
 
     private MailMessageFK pk;
     @Embedded
