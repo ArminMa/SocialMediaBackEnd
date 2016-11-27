@@ -1,6 +1,7 @@
 package se.kth.awesome.controller;
 
 import java.security.KeyPair;
+import javax.crypto.SecretKey;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,12 +19,15 @@ import se.kth.awesome.model.mailMessage.MailMessagePojo;
 import se.kth.awesome.model.TokenPojo;
 import se.kth.awesome.model.user.UserPojo;
 import se.kth.awesome.model.post.PostPojo;
+import se.kth.awesome.security.AwesomeServerKeys;
 import se.kth.awesome.security.auth.JwtAuthenticationToken;
 import se.kth.awesome.security.auth.jwt.extractor.JwtHeaderTokenExtractor;
 
 import se.kth.awesome.security.auth.jwt.model.token.JwtSettings;
 import se.kth.awesome.security.auth.jwt.model.token.JwtTokenFactory;
 
+import se.kth.awesome.security.util.CipherUtils;
+import se.kth.awesome.security.util.KeyUtil;
 import se.kth.awesome.service.UserEntityService;
 import se.kth.awesome.util.MediaTypes;
 
@@ -46,7 +50,7 @@ public class AuthEndpoint {
 
 	@Autowired private JwtTokenFactory tokenFactory;
 
-	@Autowired private JwtSettings jwtSettings;
+	@Autowired private AwesomeServerKeys awesomeServerKeys;
 
 	@Autowired private JwtHeaderTokenExtractor tokenExtractor;
 
@@ -75,15 +79,23 @@ public class AuthEndpoint {
 	    String token1 = jwt.substring("Bearer ".length(), jwt.length());
 	    String token2 = tokenExtractor.extract(jwt);
 
-	    System.out.println(nLin+"AuthEndpoint.sendMailMessage token1 = " + token1 +nLin);
-	    System.out.println(nLin+"AuthEndpoint.sendMailMessage token2 = " + token2 +nLin);
+	    SecretKey encryptDecryptTokenPayloadKey = KeyUtil.SymmetricKey.getSecretKeyFromString(awesomeServerKeys.getEncryptPayloadKey());
+	    String decryptedPayload = null;
+	    try {
+		    decryptedPayload = CipherUtils.decryptWithSymmetricKey(tokenFactory.getPayloadFromJwt(token1), encryptDecryptTokenPayloadKey);
+	    } catch (Exception e) {
+		    e.printStackTrace();
+	    }
 
+	    UserPojo userPojo0 = GsonX.gson.fromJson( decryptedPayload, UserPojo.class);
 
-	    System.out.println(nLin+"AuthEndpoint.sendMailMessage tokenPayload = " + tokenFactory.getPayloadFromJwt(token1) +nLin);
+	    String userName = tokenFactory.getSubject(token1);
 
-	    UserPojo userPojo = GsonX.gson.fromJson(tokenFactory.getPayloadFromJwt(token1), UserPojo.class);
+	   if(userName.equals(userPojo0.getEmail())){
 
-	    System.out.println(nLin+"AuthEndpoint.sendMailMessage userPojo = " + userPojo.toString() +nLin);
+		   System.out.println(nLin+"\"/api/sendMail\".userToken verified = " + userPojo0.toString() +nLin);
+	   }
+
 
          return userService.sendMailMessage(messagePojo);
     }

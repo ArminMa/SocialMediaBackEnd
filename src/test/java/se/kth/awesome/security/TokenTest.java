@@ -46,8 +46,6 @@ public class TokenTest {
 
 	@Autowired private JwtTokenFactory tokenFactory;
 
-	@Autowired private JwtSettings jwtSettings;
-
 	@Autowired private JwtHeaderTokenExtractor tokenExtractor;
 
 	@Autowired private AwesomeServerKeys awesomeServerKeys;
