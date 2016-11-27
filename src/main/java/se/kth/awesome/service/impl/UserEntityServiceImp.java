@@ -79,9 +79,6 @@ public class UserEntityServiceImp implements UserEntityService {
         if(messagePojo.getReceiver() == null) ResponseEntity.status(HttpStatus.BAD_REQUEST).body("messagePojo.getReceiver() is null");
         if(messagePojo.getTopic() == null) ResponseEntity.status(HttpStatus.BAD_REQUEST).body("messagePojo.getTopic() is null");
 
-
-        //TODO check that the correct sender is sending from the token;
-//        JwtAuthenticationToken token = messagePojo.getSender().getToken();
 		System.out.println(nLin+"1.UserEntityServiceImp.sendMailMessage");
         MailMessage mailMessage = ModelConverter.convert(messagePojo);
 		System.out.println(nLin+"2.UserEntityServiceImp.sendMailMessage");
