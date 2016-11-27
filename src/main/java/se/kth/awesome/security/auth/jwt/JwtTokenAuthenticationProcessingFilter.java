@@ -20,7 +20,7 @@ import se.kth.awesome.SpringbootSecurityJwtApplication;
 import se.kth.awesome.security.auth.JwtAuthenticationToken;
 import se.kth.awesome.security.auth.jwt.extractor.TokenExtractor;
 import se.kth.awesome.security.config.WebSecurityConfig;
-import se.kth.awesome.security.model.token.RawAccessJwtToken;
+import se.kth.awesome.security.auth.jwt.model.token.RawAccessJwtToken;
 
 import static se.kth.awesome.util.Util.nLin;
 
@@ -51,7 +51,8 @@ public class JwtTokenAuthenticationProcessingFilter extends AbstractAuthenticati
 
         String tokenPayload = request.getHeader(WebSecurityConfig.JWT_TOKEN_HEADER_PARAM);
         RawAccessJwtToken token = new RawAccessJwtToken(tokenExtractor.extract(tokenPayload));
-        return getAuthenticationManager().authenticate(new JwtAuthenticationToken(token));
+        JwtAuthenticationToken jwtAuthenticationToken = new JwtAuthenticationToken(token);
+        return getAuthenticationManager().authenticate(jwtAuthenticationToken);
     }
 
     @Override

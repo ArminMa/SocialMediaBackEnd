@@ -3,10 +3,10 @@ package se.kth.awesome.model;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import se.kth.awesome.model.User.UserEntity;
+import se.kth.awesome.model.user.UserEntity;
 import se.kth.awesome.model.mailMessage.MailMessage;
 import se.kth.awesome.model.mailMessage.MailMessagePojo;
-import se.kth.awesome.model.User.UserPojo;
+import se.kth.awesome.model.user.UserPojo;
 import se.kth.awesome.model.post.Post;
 import se.kth.awesome.model.post.PostPojo;
 import se.kth.awesome.model.role.UserRoleEntity;

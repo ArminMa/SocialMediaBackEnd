@@ -3,7 +3,7 @@ package se.kth.awesome.model.mailMessage;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import javax.validation.constraints.NotNull;
-import se.kth.awesome.model.User.UserEntity;
+import se.kth.awesome.model.user.UserEntity;
 
 import se.kth.awesome.util.gsonX.GsonX;
 

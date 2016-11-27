@@ -22,7 +22,7 @@ public class RolesEntity implements Serializable, Comparable<RolesEntity> {
 
 
 
-	private Role role;
+	private Role authority;
 
 
     public RolesEntity() {
@@ -30,18 +30,18 @@ public class RolesEntity implements Serializable, Comparable<RolesEntity> {
     }
 
     public RolesEntity(Role theRoles) {
-        this.role = theRoles;
+        this.authority = theRoles;
         this.id = (long) (theRoles.ordinal()+1);
 
     }
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "role")
-    public Role getRole() {
-        return role;
+    @Column(name = "authority")
+    public Role getAuthority() {
+        return authority;
     }
-    public void setRole(Role role) {
-        this.role = role;
+    public void setAuthority(Role authority) {
+        this.authority = authority;
     }
 
     private Long id;

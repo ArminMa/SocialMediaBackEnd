@@ -255,8 +255,13 @@ public class CipherUtils {
 
 // --------- encrypt and decrypt With SymmetricKey ---------
 
-	public static String encryptWithSymmetricKey(String plaintext, Key symmetricKey) throws Exception {
-		return encryptWithSymmetricKey(generateIV(), plaintext, symmetricKey);
+	public static String encryptWithSymmetricKey(String plaintext, Key symmetricKey) {
+		try {
+			return encryptWithSymmetricKey(generateIV(), plaintext, symmetricKey);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return "";
 	}
 
 	public static String decryptWithSymmetricKey(String ciphertext, Key symmetricKey) throws Exception {

@@ -16,18 +16,16 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
-import se.kth.awesome.model.User.UserEntity;
-import se.kth.awesome.model.User.UserRepository;
-import se.kth.awesome.model.mailMessage.MailMessageRepository;
+import se.kth.awesome.model.user.UserEntity;
+import se.kth.awesome.model.user.UserRepository;
 import se.kth.awesome.model.ModelConverter;
 import se.kth.awesome.model.post.Post;
 import se.kth.awesome.model.post.PostPojo;
 import se.kth.awesome.model.role.Role;
 import se.kth.awesome.model.TokenPojo;
-import se.kth.awesome.model.User.UserPojo;
+import se.kth.awesome.model.user.UserPojo;
 import se.kth.awesome.model.role.UserRoleEntity;
 import se.kth.awesome.model.role.UserRoleRepository;
-import se.kth.awesome.model.role.rolePojo.UserRolePojo;
 import se.kth.awesome.util.gsonX.GsonX;
 import se.kth.awesome.util.MediaTypes;
 
@@ -116,7 +114,7 @@ public class UserAuthTest {
 
         System.out.println(nLin+ "token = " + tokenPojo.toString() + nLin);
 
-        this.mockMvc.perform(get("/api/me").
+        String userPojoJsonString = this.mockMvc.perform(get("/api/me").
                 accept(MediaTypes.JsonUtf8)
                 .header("X-Authorization", "Bearer " + tokenPojo.getToken())
                 .header("Cache-Control", "no-cache"))
@@ -125,6 +123,10 @@ public class UserAuthTest {
                 .andExpect(content().contentType(MediaTypes.JsonUtf8))
                 .andReturn().getResponse().getContentAsString();
 
+        UserPojo userPojo = GsonX.gson.fromJson(userPojoJsonString, UserPojo.class);
+        assertThat(userPojo).isNotNull();
+        assertThat(userPojo.getUsername()).isNotNull();
+        assertThat(userPojo.getUsername()).isEqualTo(userPojos.get(0).getUsername());
         System.out.println(nLin+nLin+"----------------- UserAuthTest.testGetUser.end ----------------------------"+nLin+nLin);
     }
 

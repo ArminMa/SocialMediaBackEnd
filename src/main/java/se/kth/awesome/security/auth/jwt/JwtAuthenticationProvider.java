@@ -15,11 +15,11 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
 import se.kth.awesome.SpringbootSecurityJwtApplication;
+import se.kth.awesome.model.user.UserPojo;
 import se.kth.awesome.security.auth.JwtAuthenticationToken;
-import se.kth.awesome.security.config.JwtSettings;
-import se.kth.awesome.security.model.UserContext;
-import se.kth.awesome.security.model.token.JwtToken;
-import se.kth.awesome.security.model.token.RawAccessJwtToken;
+import se.kth.awesome.security.auth.jwt.model.token.JwtSettings;
+import se.kth.awesome.security.auth.jwt.model.token.JwtToken;
+import se.kth.awesome.security.auth.jwt.model.token.RawAccessJwtToken;
 
 import static se.kth.awesome.util.Util.nLin;
 
@@ -48,14 +48,14 @@ public class JwtAuthenticationProvider implements AuthenticationProvider {
 
         Jws<Claims> jwsClaims = rawAccessToken.parseClaims(jwtSettings.getTokenSigningKey());
         String subject = jwsClaims.getBody().getSubject();
-        List<String> scopes = jwsClaims.getBody().get("scopes", List.class);
+        List<String> scopes = jwsClaims.getBody().get(jwtSettings.getClaimKeyRoles(), List.class);
         List<GrantedAuthority> authorities = scopes.stream()
                 .map(authority -> new SimpleGrantedAuthority(authority))
                 .collect(Collectors.toList());
+        UserPojo userPojo = new UserPojo(subject, null, null);
+//        UserPojo context = UserContext.create(subject, authorities);
         
-        UserContext context = UserContext.create(subject, authorities);
-        
-        return new JwtAuthenticationToken(context, context.getAuthorities());
+        return new JwtAuthenticationToken(userPojo, authorities);
     }
 
     @Override

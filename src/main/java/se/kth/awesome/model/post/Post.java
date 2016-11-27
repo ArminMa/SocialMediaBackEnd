@@ -7,7 +7,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import javax.persistence.*;
 import java.util.Date;
-import se.kth.awesome.model.User.UserEntity;
+import se.kth.awesome.model.user.UserEntity;
 import se.kth.awesome.util.gsonX.GsonX;
 
 @XmlRootElement

@@ -7,7 +7,7 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.xml.bind.annotation.XmlRootElement;
-import se.kth.awesome.model.User.UserEntity;
+import se.kth.awesome.model.user.UserEntity;
 import se.kth.awesome.util.gsonX.GsonX;
 
 @XmlRootElement

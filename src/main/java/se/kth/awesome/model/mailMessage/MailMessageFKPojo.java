@@ -1,7 +1,7 @@
 package se.kth.awesome.model.mailMessage;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import se.kth.awesome.model.User.UserPojo;
+import se.kth.awesome.model.user.UserPojo;
 import se.kth.awesome.util.gsonX.GsonX;
 
 import javax.xml.bind.annotation.XmlRootElement;

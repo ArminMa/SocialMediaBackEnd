@@ -5,8 +5,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
-import se.kth.awesome.security.model.UserContext;
-import se.kth.awesome.security.model.token.RawAccessJwtToken;
+import se.kth.awesome.model.user.UserPojo;
+import se.kth.awesome.security.auth.jwt.model.token.RawAccessJwtToken;
 
 /**
  * An {@link org.springframework.security.core.Authentication} implementation
@@ -20,7 +20,7 @@ public class JwtAuthenticationToken extends AbstractAuthenticationToken {
     private static final long serialVersionUID = 2877954820905567501L;
 
     private RawAccessJwtToken rawAccessToken;
-    private UserContext userContext;
+    private UserPojo userContext;
     public Logger logger2 = LoggerFactory.getLogger(getClass());
 
 
@@ -30,7 +30,7 @@ public class JwtAuthenticationToken extends AbstractAuthenticationToken {
         this.setAuthenticated(false);
     }
 
-    public JwtAuthenticationToken(UserContext userContext, Collection<? extends GrantedAuthority> authorities) {
+    public JwtAuthenticationToken(UserPojo userContext, Collection<? extends GrantedAuthority> authorities) {
         super(authorities);
         this.eraseCredentials();
         this.userContext = userContext;

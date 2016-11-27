@@ -1,12 +1,14 @@
-package se.kth.awesome.security.model.token;
+package se.kth.awesome.security.auth.jwt.model.token;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import java.util.List;
 import java.util.Optional;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.BadCredentialsException;
+import se.kth.awesome.model.role.Role;
 import se.kth.awesome.security.exceptions.JwtExpiredTokenException;
-import se.kth.awesome.security.model.Scopes;
+
 
 /**
  * RefreshToken
@@ -18,8 +20,11 @@ import se.kth.awesome.security.model.Scopes;
 @SuppressWarnings("unchecked")
 public class RefreshToken implements JwtToken {
     private Jws<Claims> claims;
+    @Autowired private JwtSettings jwtSettings;
 
+    private static String roleMapKey;
     private RefreshToken(Jws<Claims> claims) {
+        roleMapKey = jwtSettings.getClaimKeyRoles();
         this.claims = claims;
     }
 
@@ -37,9 +42,9 @@ public class RefreshToken implements JwtToken {
     public static Optional<RefreshToken> create(RawAccessJwtToken token, String signingKey) {
         Jws<Claims> claims = token.parseClaims(signingKey);
 
-        List<String> scopes = claims.getBody().get("scopes", List.class);
-        if (scopes == null || scopes.isEmpty() 
-                || !scopes.stream().filter(scope -> Scopes.REFRESH_TOKEN.authority().equals(scope)).findFirst().isPresent()) {
+        List<String> roles = claims.getBody().get(roleMapKey, List.class);
+        if (roles == null || roles.isEmpty()
+                || !roles.stream().filter(role -> Role.REFRESH_TOKEN.authority().equals(role)).findFirst().isPresent()) {
             return Optional.empty();
         }
 
