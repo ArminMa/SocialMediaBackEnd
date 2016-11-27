@@ -13,11 +13,9 @@ import se.kth.awesome.util.gsonX.GsonX;
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.PUBLIC_MEMBER)
 @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.NON_EMPTY)
-public class PostPojo implements Serializable,Comparable<PostPojo>{
-
+public class
+PostPojo implements Serializable,Comparable<PostPojo>{
 	private String postContent;
-
-
 
 	public PostPojo() {
 		pk = new PostPojoFK();

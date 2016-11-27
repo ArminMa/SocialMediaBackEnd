@@ -133,18 +133,15 @@ public class GetMailMessageTest {
         assertThat(userPojos).isNotNull();
 
 
-        String theResponse = this.mockMvc.perform(get("/api/getMyMails/"+userPojos.get(0).getUsername())
+        String theResponse = this.mockMvc.perform(get("/api/getMyMails")
                 .accept(MediaTypes.JsonUtf8)
                 .header("X-Authorization", "Bearer " + tokenPojo.getToken())
                 .header("Cache-Control", "no-cache"))
-
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaTypes.JsonUtf8))
                 .andReturn().getResponse().getContentAsString();
 
-
         System.out.println(nLin+"  theResponse = "+theResponse+nLin);
-
         List<MailMessagePojo> mailMessageReturnFromResponse = GsonX.gson.fromJson(theResponse, new TypeToken<List<MailMessagePojo>>(){}.getType() );
         assertThat(mailMessageReturnFromResponse).isNotNull();
         assertThat(mailMessageReturnFromResponse).isNotEmpty();

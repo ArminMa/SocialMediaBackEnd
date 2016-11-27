@@ -75,43 +75,17 @@ public class AuthEndpoint {
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<?> sendMailMessage(@RequestBody MailMessagePojo messagePojo,
                                              @RequestHeader(name = "X-Authorization", defaultValue = "") String jwt) {
-
-	    String token1 = jwt.substring("Bearer ".length(), jwt.length());
-//	    String token2 = tokenExtractor.extract(jwt);
-
-	    SecretKey encryptDecryptTokenPayloadKey = KeyUtil.SymmetricKey.getSecretKeyFromString(awesomeServerKeys.getEncryptPayloadKey());
-	    String decryptedPayload = null;
-	    try {
-		    decryptedPayload = CipherUtils.decryptWithSymmetricKey(tokenFactory.getPayloadFromJwt(token1), encryptDecryptTokenPayloadKey);
-	    } catch (Exception e) {
-		    e.printStackTrace();
-	    }
-
-	    UserPojo userPojo0 = GsonX.gson.fromJson( decryptedPayload, UserPojo.class);
-
-	    String userName = tokenFactory.getSubject(token1); // username
-
-	   if(userName.equals(userPojo0.getUsername())){
-
-		   System.out.println(nLin+"\"/api/sendMail\".userToken verified = " + userPojo0.toString() +nLin);
-	   }
-
-
-         return userService.sendMailMessage(messagePojo);
+	    UserPojo userPojo0 = getUserPojoFromToken(jwt);
+	    messagePojo.setSender(userPojo0);
+	    return userService.sendMailMessage(messagePojo);
     }
 
-    @RequestMapping(
-            value = "/api/getMyMails/{username}",
+	@RequestMapping(
+            value = "/api/getMyMails",
             method = RequestMethod.GET)
-    public ResponseEntity<?> getMyMails(@PathVariable("username") String username,
-                                        @RequestHeader(name = "X-Authorization", defaultValue = "") String jwt) {
-
-	    String token = jwt.substring("Bearer ".length(), jwt.length());
-        System.out.println(nLin+"AuthEndpoint.getMyMails token = " + token +nLin);
-        TokenPojo tokenPojo = new TokenPojo();
-        tokenPojo.setToken(token);
-
-        return userService.getMyMails(username);
+    public ResponseEntity<?> getMyMails(@RequestHeader(name = "X-Authorization", defaultValue = "") String jwt) {
+		UserPojo user = getUserPojoFromToken(jwt);
+        return userService.getMyMails(user.getUsername());
     }
 
 	@RequestMapping(
@@ -121,13 +95,8 @@ public class AuthEndpoint {
 			produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	public ResponseEntity<?> sendPost(@RequestBody PostPojo postPojo,
 	                                  @RequestHeader(name = "X-Authorization", defaultValue = "") String jwt) {
-
-		String token = jwt.substring(jwt.indexOf("Bearer "), jwt.length());
-		System.out.println(nLin+"AuthEndpoint.getMyMails token = " + token +nLin);
-
-		TokenPojo tokenPojo = new TokenPojo();
-		tokenPojo.setToken(token);
-
+		UserPojo user = getUserPojoFromToken(jwt);
+		postPojo.setSender(user);
 		return userService.senPostMessage(postPojo);
 	}
 
@@ -136,12 +105,6 @@ public class AuthEndpoint {
             method = RequestMethod.GET)
     public ResponseEntity<?> getPosts(@PathVariable("username") String username,
                                       @RequestHeader(name = "X-Authorization", defaultValue = "") String jwt) {
-
-        String token = jwt.substring(jwt.indexOf("Bearer "), jwt.length());
-        System.out.println(nLin+"AuthEndpoint.getMyMails token = " + token +nLin);
-        TokenPojo tokenPojo = new TokenPojo();
-        tokenPojo.setToken(token);
-
         return userService.getPosts(username);
     }
 
@@ -154,13 +117,32 @@ public class AuthEndpoint {
 			@RequestHeader(name = "X-Authorization", defaultValue = "") String jwt,
 			@RequestBody PostPojo post, HttpServletRequest request, HttpServletResponse response){
 
-    	//TODO extract user from token
-		String token = jwt.substring(jwt.indexOf("Bearer "), jwt.length());
-		System.out.println(nLin+"AuthEndpoint.deleteLogMessage token = " + token +nLin);
-		TokenPojo tokenPojo = new TokenPojo();
-		tokenPojo.setToken(token);
-
+    	UserPojo user = getUserPojoFromToken(jwt);
+		post.setSender(user);
 		return userService.deletePost(post);
+	}
+
+	private UserPojo getUserPojoFromToken(String jwt) {
+		String token1 = jwt.substring("Bearer ".length(), jwt.length());
+//	    String token2 = tokenExtractor.extract(jwt);
+
+		SecretKey encryptDecryptTokenPayloadKey = KeyUtil.SymmetricKey.getSecretKeyFromString(awesomeServerKeys.getEncryptPayloadKey());
+		String decryptedPayload = null;
+		try {
+			decryptedPayload = CipherUtils.decryptWithSymmetricKey(tokenFactory.getPayloadFromJwt(token1), encryptDecryptTokenPayloadKey);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		UserPojo userPojo0 = GsonX.gson.fromJson( decryptedPayload, UserPojo.class);
+		String userName = tokenFactory.getSubject(token1); // username
+
+		if(userName.equals(userPojo0.getUsername())){
+			System.out.println(nLin+"\"/api/sendMail\".userToken verified = " + userPojo0.toString() +nLin);
+		}else {
+			return null;
+		}
+		return userPojo0;
 	}
 
 }
