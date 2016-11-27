@@ -77,7 +77,7 @@ public class AuthEndpoint {
                                              @RequestHeader(name = "X-Authorization", defaultValue = "") String jwt) {
 
 	    String token1 = jwt.substring("Bearer ".length(), jwt.length());
-	    String token2 = tokenExtractor.extract(jwt);
+//	    String token2 = tokenExtractor.extract(jwt);
 
 	    SecretKey encryptDecryptTokenPayloadKey = KeyUtil.SymmetricKey.getSecretKeyFromString(awesomeServerKeys.getEncryptPayloadKey());
 	    String decryptedPayload = null;
@@ -89,9 +89,9 @@ public class AuthEndpoint {
 
 	    UserPojo userPojo0 = GsonX.gson.fromJson( decryptedPayload, UserPojo.class);
 
-	    String userName = tokenFactory.getSubject(token1);
+	    String userName = tokenFactory.getSubject(token1); // username
 
-	   if(userName.equals(userPojo0.getEmail())){
+	   if(userName.equals(userPojo0.getUsername())){
 
 		   System.out.println(nLin+"\"/api/sendMail\".userToken verified = " + userPojo0.toString() +nLin);
 	   }
