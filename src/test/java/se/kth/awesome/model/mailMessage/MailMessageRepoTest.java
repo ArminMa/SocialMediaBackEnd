@@ -9,8 +9,8 @@ import org.junit.runners.MethodSorters;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-import se.kth.awesome.model.User.UserEntity;
-import se.kth.awesome.model.User.UserRepository;
+import se.kth.awesome.model.user.UserEntity;
+import se.kth.awesome.model.user.UserRepository;
 
 import java.util.ArrayList;
 import java.util.List;

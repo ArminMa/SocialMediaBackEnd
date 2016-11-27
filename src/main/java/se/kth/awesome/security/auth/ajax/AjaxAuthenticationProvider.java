@@ -19,8 +19,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 import se.kth.awesome.SpringbootSecurityJwtApplication;
-import se.kth.awesome.model.User.UserPojo;
-import se.kth.awesome.security.model.UserContext;
+import se.kth.awesome.model.user.UserPojo;
+import se.kth.awesome.security.AwesomeServerKeys;
+import se.kth.awesome.security.auth.jwt.model.token.JwtSettings;
 import se.kth.awesome.security.util.PasswordSaltUtil;
 import se.kth.awesome.service.UserEntityService;
 
@@ -36,10 +37,9 @@ import static se.kth.awesome.util.Util.nLin;
 @Component
 public class AjaxAuthenticationProvider implements AuthenticationProvider {
 
-    @Autowired
-    private UserEntityService userService;
-	@Value("${shared.secretKey}")
-	public String serverSecretKey;
+    @Autowired private UserEntityService userService;
+	@Autowired private AwesomeServerKeys awesomeServerKeys;
+
 	private static PasswordSaltUtil passwordSaltUtil = new PasswordSaltUtil();
 	public static final Logger logger1 = LoggerFactory.getLogger( AjaxAuthenticationProvider.class );
 	private final Logger logger2 = LoggerFactory.getLogger(getClass());
@@ -55,37 +55,32 @@ public class AjaxAuthenticationProvider implements AuthenticationProvider {
         String username = (String) authentication.getPrincipal();
         String password = (String) authentication.getCredentials();
 
-        UserPojo user = userService.findByUsername(username);
+        UserPojo userContext = userService.findByUsername(username);
 
+        if(userContext == null)
+            throw new UsernameNotFoundException("user not found: " + username);
 
-
-        if(user == null)
-            throw new UsernameNotFoundException("User not found: " + username);
-
-
-
-
-	    String password2 = passwordSaltUtil.encodePassword( password, serverSecretKey );
+	    String password2 = passwordSaltUtil.encodePassword( password, awesomeServerKeys.getSharedSecretKey() );
 
 	    logger2.error(nLin+nLin+"---------- AjaxAuthenticationProvider.authenticate debug start ----------\n" +
-			    "\n"+ user.toString() +"\n" +
+			    "\n"+ userContext.toString() +"\n" +
 			    "\npassword = "+ password +"\n" +
 			    "\npassword2 = "+ password2 +"\n" +
 			    "\n ---------- AjaxAuthenticationProvider.authenticate debug end ----------\n");
 
-        if (password2 == null || !password2.equals(user.getPassword()) ) {
+        if (password2 == null || !password2.equals(userContext.getPassword()) ) {
             throw new BadCredentialsException("Authentication Failed. Username or Password not valid.");
         }
 
-        if (user.getAuthorities() == null) throw new InsufficientAuthenticationException("User has no roles assigned");
+        if (userContext.getAuthorities() == null) throw new InsufficientAuthenticationException("user has no roles assigned");
         
-        List<GrantedAuthority> authorities = user.getAuthorities().stream()
-                .map(authority -> new SimpleGrantedAuthority(authority.getAuthority().getRole().authority()))
+        List<GrantedAuthority> authorities = userContext.getAuthorities().stream()
+                .map(authority -> new SimpleGrantedAuthority(authority.getAuthority().getAuthority()))
                 .collect(Collectors.toList());
         
-        UserContext userContext = UserContext.create(user.getUsername(), authorities);
+//        UserContext userContext = UserContext.create(user.getUsername(), authorities);
         
-        return new UsernamePasswordAuthenticationToken(userContext, null, userContext.getAuthorities());
+        return new UsernamePasswordAuthenticationToken(userContext, null, authorities);
     }
 
     @Override

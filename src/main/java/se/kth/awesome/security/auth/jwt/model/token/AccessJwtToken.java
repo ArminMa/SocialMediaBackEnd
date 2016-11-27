@@ -1,4 +1,4 @@
-package se.kth.awesome.security.model.token;
+package se.kth.awesome.security.auth.jwt.model.token;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.jsonwebtoken.Claims;

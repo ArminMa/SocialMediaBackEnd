@@ -1,4 +1,4 @@
-package se.kth.awesome.model.User;
+package se.kth.awesome.model.user;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import java.io.Serializable;
@@ -31,7 +31,7 @@ public class UserPojo  implements Serializable,Comparable<UserPojo>{
     private String email;
     private String password;
     private JwtAuthenticationToken token;
-    private byte[] picture; // Todo implement this Armin. low prio
+    private Byte[] picture; // Todo implement this Armin. low prio
     @JsonInclude(JsonInclude.Include.NON_EMPTY )
     private Collection<FriendRequestPojo> friendRequests = new ArrayList<>();
     @JsonInclude(JsonInclude.Include.NON_EMPTY )
@@ -95,11 +95,11 @@ public class UserPojo  implements Serializable,Comparable<UserPojo>{
         this.password = password;
     }
 
-    public byte[] getPicture() {
+    public Byte[] getPicture() {
         return picture;
     }
 
-    public void setPicture(byte[] picture) {
+    public void setPicture(Byte[] picture) {
         this.picture = picture;
     }
 

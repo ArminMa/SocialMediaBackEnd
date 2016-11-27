@@ -1,10 +1,6 @@
 package se.kth.awesome.service.impl;
 
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,15 +9,16 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import se.kth.awesome.model.User.UserEntity;
-import se.kth.awesome.model.User.UserRepository;
+import se.kth.awesome.model.user.UserEntity;
+import se.kth.awesome.model.user.UserRepository;
 import se.kth.awesome.model.ModelConverter;
 
 import se.kth.awesome.model.role.Role;
-import se.kth.awesome.model.User.UserPojo;
+import se.kth.awesome.model.user.UserPojo;
 import se.kth.awesome.model.role.UserRoleEntity;
 
 import se.kth.awesome.model.role.UserRoleRepository;
+import se.kth.awesome.security.AwesomeServerKeys;
 import se.kth.awesome.security.util.PasswordSaltUtil;
 import se.kth.awesome.service.RegisterService;
 import se.kth.awesome.util.MediaTypes;
@@ -33,14 +30,11 @@ public class RegisterServiceImpl implements RegisterService {
 	public Logger logger2 = LoggerFactory.getLogger(getClass());
 	private static final PasswordSaltUtil passwordSaltUtil = new PasswordSaltUtil();
 
-	@Autowired
-	private UserRepository userRepository;
+	@Autowired private UserRepository userRepository;
 
-	@Autowired
-	private UserRoleRepository roleRepos;
+	@Autowired private UserRoleRepository roleRepo;
 
-	@Value("${shared.secretKey}")
-	String hashPasswordKey;
+	@Autowired private AwesomeServerKeys awesomeServerKeys;
 
 	@SuppressWarnings("unchecked")
 	@Override
@@ -79,7 +73,7 @@ public class RegisterServiceImpl implements RegisterService {
 
 
 
-		String password = passwordSaltUtil.encodePassword(userPojo.getPassword(), hashPasswordKey);
+		String password = passwordSaltUtil.encodePassword(userPojo.getPassword(), awesomeServerKeys.getSharedSecretKey());
 		userPojo.setPassword(password);
 		UserEntity userEntity =  ModelConverter.convert(userPojo);
 
@@ -88,19 +82,13 @@ public class RegisterServiceImpl implements RegisterService {
 
 		UserRoleEntity userRoleEntity = new UserRoleEntity( Role.MEMBER );
 
-		userRoleEntity = roleRepos.save(userRoleEntity);
-		roleRepos.flush();
+		userRoleEntity = roleRepo.save(userRoleEntity);
+		roleRepo.flush();
 
 		userEntity.getAuthorities().add(userRoleEntity);
 
 		userEntity = userRepository.save(userEntity );
 		userRepository.flush();
-
-
-//		logger2.error(nLin+nLin+" ---------- RegisterServiceImpl.registerNewUser userEntity after save Role ----------\n");
-//		logger2.error( "\n"+ userEntity.toString() +"\n");
-//		logger2.error(nLin+nLin+" ---------- RegisterServiceImpl.registerNewUser userEntity after save Role ----------\n");
-
 
         if(userEntity == null){
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();

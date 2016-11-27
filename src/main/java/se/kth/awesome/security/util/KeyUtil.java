@@ -182,11 +182,17 @@ public class KeyUtil {
 	 * @return key pair
 	 * @throws NoSuchAlgorithmException
 	 */
-	public static KeyPair generateKeyPair() throws GeneralSecurityException {
+	public static KeyPair generateKeyPair()  {
+		KeyPair keyPair = null;
+		try {
+			KeyPairGenerator keyGen = KeyPairGenerator.getInstance(RSA_ALGORITHM);
+			keyGen.initialize(1024);
+			keyPair = keyGen.generateKeyPair();
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+		}
 
-		KeyPairGenerator keyGen = KeyPairGenerator.getInstance(RSA_ALGORITHM);
-		keyGen.initialize(1024);
-		return keyGen.generateKeyPair();
+		return keyPair;
 
 	}
 

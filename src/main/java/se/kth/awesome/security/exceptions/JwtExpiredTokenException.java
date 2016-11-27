@@ -1,7 +1,7 @@
 package se.kth.awesome.security.exceptions;
 
 import org.springframework.security.core.AuthenticationException;
-import se.kth.awesome.security.model.token.JwtToken;
+import se.kth.awesome.security.auth.jwt.model.token.JwtToken;
 
 /**
  * 

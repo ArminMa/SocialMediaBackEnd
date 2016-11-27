@@ -2,7 +2,7 @@ package se.kth.awesome.model.friendRequest;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
-import se.kth.awesome.model.User.UserEntity;
+import se.kth.awesome.model.user.UserEntity;
 
 /**
  * Created by Sys on 2016-11-07.

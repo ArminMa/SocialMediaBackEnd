@@ -3,15 +3,13 @@ package se.kth.awesome.model.role.rolePojo;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import java.io.Serializable;
 import javax.xml.bind.annotation.XmlRootElement;
-import se.kth.awesome.model.User.UserPojo;
 import se.kth.awesome.model.role.Role;
-import se.kth.awesome.model.role.RolesEntity;
 import se.kth.awesome.util.gsonX.GsonX;
 
 
 @XmlRootElement
 @JsonInclude(JsonInclude.Include.NON_NULL )
-public class UserRolePojo  implements Serializable, Comparable<UserRolePojo> {
+public class UserRolePojo implements Serializable, Comparable<UserRolePojo>{
 	private Long id;
 	private Boolean isLocked = false;
 	private RolesPojo authority;

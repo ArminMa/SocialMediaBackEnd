@@ -15,6 +15,11 @@ public class TokenPojo implements Serializable,Comparable<TokenPojo>{
 	public TokenPojo() {
 	}
 
+	public TokenPojo(String token, String refreshToken) {
+		this.token = token;
+		this.refreshToken = refreshToken;
+	}
+
 	public String getToken() {
 		return token;
 	}

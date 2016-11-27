@@ -1,4 +1,4 @@
-package se.kth.awesome.model.User;
+package se.kth.awesome.model.user;
 
 
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -115,7 +115,7 @@ public class UserEntity implements Serializable,Comparable<UserEntity>{
 //	}
 
 	/*
-	 * User Mapping starts Here
+	 * user Mapping starts Here
 	 */
 //---------------------------- authority ------------------------
 
@@ -160,7 +160,7 @@ public class UserEntity implements Serializable,Comparable<UserEntity>{
 //	}
 
 
-	//----------------User Received Mail--------------------------
+	//----------------user Received Mail--------------------------
 
 //	private SortedSet<MailMessage> receivedFaceMails = new TreeSet<>();
 //	@OneToMany( cascade = CascadeType.ALL, orphanRemoval = true, targetEntity = MailMessage.class, fetch = FetchType.EAGER, mappedBy = "pk.receiver")

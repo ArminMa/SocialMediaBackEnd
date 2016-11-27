@@ -18,9 +18,9 @@ import org.springframework.security.web.WebAttributes;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 import se.kth.awesome.SpringbootSecurityJwtApplication;
-import se.kth.awesome.security.model.UserContext;
-import se.kth.awesome.security.model.token.JwtToken;
-import se.kth.awesome.security.model.token.JwtTokenFactory;
+import se.kth.awesome.model.user.UserPojo;
+import se.kth.awesome.security.auth.jwt.model.token.JwtToken;
+import se.kth.awesome.security.auth.jwt.model.token.JwtTokenFactory;
 
 import static se.kth.awesome.util.Util.nLin;
 
@@ -47,7 +47,7 @@ public class AjaxAwareAuthenticationSuccessHandler implements AuthenticationSucc
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
             Authentication authentication) throws IOException, ServletException {
         logger2.error(nLin+nLin+"   "+ SpringbootSecurityJwtApplication.steps++ +" ---------- AjaxAwareAuthenticationSuccessHandler.onAuthenticationSuccess debug start ----------\n" );
-        UserContext userContext = (UserContext) authentication.getPrincipal();
+        UserPojo userContext = (UserPojo) authentication.getPrincipal();
         
         JwtToken accessToken = tokenFactory.createAccessJwtToken(userContext);
         JwtToken refreshToken = tokenFactory.createRefreshToken(userContext);

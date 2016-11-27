@@ -1,8 +1,6 @@
 package se.kth.awesome.controller;
 
 import java.io.IOException;
-import java.util.List;
-import java.util.stream.Collectors;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -10,24 +8,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.InsufficientAuthenticationException;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-import se.kth.awesome.model.User.UserPojo;
+import se.kth.awesome.model.user.UserPojo;
 import se.kth.awesome.security.auth.jwt.extractor.TokenExtractor;
 import se.kth.awesome.security.auth.jwt.verifier.TokenVerifier;
-import se.kth.awesome.security.config.JwtSettings;
+import se.kth.awesome.security.auth.jwt.model.token.JwtSettings;
 import se.kth.awesome.security.config.WebSecurityConfig;
 import se.kth.awesome.security.exceptions.InvalidJwtToken;
-import se.kth.awesome.security.model.UserContext;
-import se.kth.awesome.security.model.token.JwtToken;
-import se.kth.awesome.security.model.token.JwtTokenFactory;
-import se.kth.awesome.security.model.token.RawAccessJwtToken;
-import se.kth.awesome.security.model.token.RefreshToken;
+import se.kth.awesome.security.auth.jwt.model.token.JwtToken;
+import se.kth.awesome.security.auth.jwt.model.token.JwtTokenFactory;
+import se.kth.awesome.security.auth.jwt.model.token.RawAccessJwtToken;
+import se.kth.awesome.security.auth.jwt.model.token.RefreshToken;
 import se.kth.awesome.service.UserEntityService;
 
 /**
@@ -60,15 +55,15 @@ public class RefreshTokenEndpoint {
         String subject = refreshToken.getSubject();
         UserPojo user = userService.findByUsername(subject);
         if(user== null)
-            throw  new UsernameNotFoundException("User not found: " + subject);
+            throw  new UsernameNotFoundException("user not found: " + subject);
 
-        if (user.getAuthorities() == null) throw new InsufficientAuthenticationException("User has no roles assigned");
-        List<GrantedAuthority> authorities = user.getAuthorities().stream()
-                .map(authority -> new SimpleGrantedAuthority(authority.getAuthority().getRole().authority()))
-                .collect(Collectors.toList());
+        if (user.getAuthorities() == null) throw new InsufficientAuthenticationException("user has no roles assigned");
+//        List<GrantedAuthority> authorities = user.getAuthorities().stream()
+//                .map(authority -> new SimpleGrantedAuthority(authority.getAuthority().getAuthority().authority()))
+//                .collect(Collectors.toList());
+//
+//        UserContext userContext = UserContext.create(user.getUsername(), authorities);
 
-        UserContext userContext = UserContext.create(user.getUsername(), authorities);
-
-        return tokenFactory.createAccessJwtToken(userContext);
+        return tokenFactory.createAccessJwtToken(user);
     }
 }

@@ -14,23 +14,21 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
-import se.kth.awesome.model.User.UserEntity;
-import se.kth.awesome.model.User.UserRepository;
+import se.kth.awesome.model.user.UserEntity;
+import se.kth.awesome.model.user.UserRepository;
 import se.kth.awesome.model.mailMessage.MailMessage;
 import se.kth.awesome.model.mailMessage.MailMessageRepository;
 import se.kth.awesome.model.ModelConverter;
 import se.kth.awesome.model.role.Role;
 import se.kth.awesome.model.mailMessage.MailMessagePojo;
 import se.kth.awesome.model.TokenPojo;
-import se.kth.awesome.model.User.UserPojo;
+import se.kth.awesome.model.user.UserPojo;
 import se.kth.awesome.model.role.UserRoleEntity;
 import se.kth.awesome.model.role.UserRoleRepository;
-import se.kth.awesome.model.role.rolePojo.UserRolePojo;
 import se.kth.awesome.util.gsonX.GsonX;
 import se.kth.awesome.util.MediaTypes;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;

@@ -3,16 +3,17 @@ package se.kth.awesome.model.role.rolePojo;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import java.io.Serializable;
 import javax.xml.bind.annotation.XmlRootElement;
+import org.springframework.security.core.GrantedAuthority;
 import se.kth.awesome.model.role.Role;
 import se.kth.awesome.util.gsonX.GsonX;
 
 @XmlRootElement
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class RolesPojo implements Serializable, Comparable<RolesPojo> {
+public class RolesPojo implements Serializable, Comparable<RolesPojo>,GrantedAuthority {
 
 
 
-	private Role role;
+	private String authority;
 
 
 	public RolesPojo() {
@@ -20,17 +21,17 @@ public class RolesPojo implements Serializable, Comparable<RolesPojo> {
 	}
 
 	public RolesPojo(Role theRoles) {
-		this.role = theRoles;
+		this.authority = theRoles.getAuthority();
 		this.id = (long) (theRoles.ordinal()+1);
 
 	}
 
 
-	public Role getRole() {
-		return role;
+	public String getAuthority() {
+		return authority;
 	}
-	public void setRole(Role role) {
-		this.role = role;
+	public void setAuthority(String authority) {
+		this.authority = authority;
 	}
 
 	private Long id;
@@ -48,13 +49,13 @@ public class RolesPojo implements Serializable, Comparable<RolesPojo> {
 
 		RolesPojo rolesPojo = (RolesPojo) o;
 
-		if (role != rolesPojo.role) return false;
+		if (authority != rolesPojo.authority) return false;
 		return id != null ? id.equals(rolesPojo.id) : rolesPojo.id == null;
 	}
 
 	@Override
 	public int hashCode() {
-		int result = role != null ? role.hashCode() : 0;
+		int result = authority != null ? authority.hashCode() : 0;
 		result = 31 * result + (id != null ? id.hashCode() : 0);
 		return result;
 	}

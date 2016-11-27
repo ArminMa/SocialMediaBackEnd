@@ -4,7 +4,7 @@ import java.nio.charset.Charset;
 import org.springframework.http.MediaType;
 
 
-public class MediaTypes {
+public interface MediaTypes {
 
 
 	public static final MediaType JsonUtf8 = new MediaType(MediaType.APPLICATION_JSON.getType(), MediaType.APPLICATION_JSON.getSubtype(), Charset.forName("utf8"));

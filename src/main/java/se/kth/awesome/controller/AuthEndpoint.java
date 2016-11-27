@@ -1,5 +1,6 @@
 package se.kth.awesome.controller;
 
+import java.security.KeyPair;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,14 +16,17 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import se.kth.awesome.model.mailMessage.MailMessagePojo;
 import se.kth.awesome.model.TokenPojo;
-import se.kth.awesome.model.User.UserPojo;
+import se.kth.awesome.model.user.UserPojo;
 import se.kth.awesome.model.post.PostPojo;
 import se.kth.awesome.security.auth.JwtAuthenticationToken;
-import se.kth.awesome.security.model.UserContext;
+import se.kth.awesome.security.auth.jwt.extractor.JwtHeaderTokenExtractor;
+import se.kth.awesome.security.auth.jwt.model.token.JwtSettings;
+import se.kth.awesome.security.auth.jwt.model.token.JwtTokenFactory;
 import se.kth.awesome.service.UserEntityService;
 import se.kth.awesome.util.MediaTypes;
 
 import java.util.Collection;
+import se.kth.awesome.util.gsonX.GsonX;
 
 import static se.kth.awesome.util.Util.nLin;
 
@@ -36,12 +40,17 @@ import static se.kth.awesome.util.Util.nLin;
 @RestController
 public class AuthEndpoint {
 
-    @Autowired
-    private UserEntityService userService;
+    @Autowired private UserEntityService userService;
+
+	@Autowired private JwtTokenFactory tokenFactory;
+
+	@Autowired private JwtSettings jwtSettings;
+
+	@Autowired private JwtHeaderTokenExtractor tokenExtractor;
 
     @RequestMapping(value="/api/me", method=RequestMethod.GET)
-    public @ResponseBody UserContext get(JwtAuthenticationToken token) {
-        return (UserContext) token.getPrincipal();
+    public @ResponseBody UserPojo get(JwtAuthenticationToken token) {
+        return (UserPojo) token.getPrincipal();
     }
 
 
@@ -58,7 +67,21 @@ public class AuthEndpoint {
             method = RequestMethod.POST,
             consumes = MediaType.ALL_VALUE,
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<?> sendMailMessage(@RequestBody MailMessagePojo messagePojo ) {
+    public ResponseEntity<?> sendMailMessage(@RequestBody MailMessagePojo messagePojo,
+                                             @RequestHeader(name = "X-Authorization", defaultValue = "") String jwt) {
+
+	    String token1 = jwt.substring("Bearer ".length(), jwt.length());
+	    String token2 = tokenExtractor.extract(jwt);
+
+	    System.out.println(nLin+"AuthEndpoint.sendMailMessage token1 = " + token1 +nLin);
+	    System.out.println(nLin+"AuthEndpoint.sendMailMessage token2 = " + token2 +nLin);
+
+
+	    System.out.println(nLin+"AuthEndpoint.sendMailMessage tokenPayload = " + tokenFactory.getPayloadFromJwt(token1) +nLin);
+
+	    UserPojo userPojo = GsonX.gson.fromJson(tokenFactory.getPayloadFromJwt(token1), UserPojo.class);
+
+	    System.out.println(nLin+"AuthEndpoint.sendMailMessage userPojo = " + userPojo.toString() +nLin);
 
          return userService.sendMailMessage(messagePojo);
     }
@@ -69,7 +92,7 @@ public class AuthEndpoint {
     public ResponseEntity<?> getMyMails(@PathVariable("username") String username,
                                         @RequestHeader(name = "X-Authorization", defaultValue = "") String jwt) {
 
-        String token = jwt.substring(jwt.indexOf("Bearer "), jwt.length());
+	    String token = jwt.substring("Bearer ".length(), jwt.length());
         System.out.println(nLin+"AuthEndpoint.getMyMails token = " + token +nLin);
         TokenPojo tokenPojo = new TokenPojo();
         tokenPojo.setToken(token);
@@ -87,6 +110,7 @@ public class AuthEndpoint {
 
 		String token = jwt.substring(jwt.indexOf("Bearer "), jwt.length());
 		System.out.println(nLin+"AuthEndpoint.getMyMails token = " + token +nLin);
+
 		TokenPojo tokenPojo = new TokenPojo();
 		tokenPojo.setToken(token);
 

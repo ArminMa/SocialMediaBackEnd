@@ -9,15 +9,27 @@ server:
 #  user.password: root
 
 
-demo.security.jwt:
-  tokenExpirationTime: 15 # Number of minutes
-  refreshTokenExpTime: 60 # Minutes
-  tokenIssuer: http://socialWar.kth
-  tokenSigningKey: xm8EV6Hy5RMFK4EEACIDAwQus
+awesome.security.jwt:
+    tokenExpirationTime: 15 # Number of Hours
+    refreshTokenExpTime: 60 # Number of Hours
+    tokenIssuer: http://socialWar.kth
+    tokenSigningKey: xm8EV6Hy5RMFK4EEACIDAwQus
+    claimKeyIssuer: issuer
+    claimKeySubject: sub
+    claimKeyAudience: audience
+    claimKeyCreated: created
+    claimKeyPayload: payload
+    claimKeyRoles: roles
+    audienceUnknown: unknown
+    audienceWeb: web
+    audienceMobile: mobile
+    audienceTablet: tablet
+    creationBufferSeconds: 600 #6 min
 
-shared.secretKey: NMg+3ftaYoaqh9uCMN8gbD2xgWkaq6SkiDpjcTuMnQY=
-Jose4J.jwt.private.Server.Key: {"kty":"RSA","kid":"cbc379db-1631-422f-92dc-587ce10cb867","n":"iVUuc_WQWOUY_sQYTkY-l9i0jmTjvwerOyG7cXnoW_gFqm3mw21EODw7xM7avqlnVA9r-Rpkp5WQu8coKxnhiqh8IbKez_PAE1pXJEkcojaQgq96NsPy9pJHhBys0e2wS7UKS1T1i_k9ToMAz7IElg6DOEESfzx1PCdjQfDKaTNoPbq7WATXbrMD_re9f5Oc0V30KJt5YHRr00sn4ojJ50qMVHnLP-1YPnEShGiMA3Ld-ddusKweWsFpKMwXZn2brg8TjppGtXmd4XVANqM5f_jgxFgImHLp-slb60hRL6DCuJcTJiiUruxtZ7XQTrdDBK7SA525HJRfizfH5yljIw","e":"AQAB","d":"SufdOH5-Rx5ebcdDgp4p0eTvRqOc3TsvmEcj2BcoN9GmNXlQXtOgXBPufcBd65S2uVDYEbzlncqkcOeF70xkip6vZinpGX_YCjZCRZZjOc8NL1rLDEgAo6DRxStmz_IXMJQEk2Y5sCk32TT3IlH00mwEApDrp96wCyloqDTQEmSYZt_6SNEy4u8aRN_rJFGky0XsoXrlASKKFb3aHeyGQydh_BKonDcYdVPj_pkc6IIzmaa3jZBdLOCvovScISHXoaxTH-pbRdE35_O3Clja6vur2ICloEn3ZCyNnJbZdMg7g70Gz07aXWJb2KSSpsdTCVbxX9bxOncqw6zXCJP_QQ","p":"6LmInSeVCQyV008C11Ps7-hNXbQtynq86Y0zFAOe35PBTlnlNa3B1tmDAOuuQ2q-yGiYCVZILGJbcTQKHI0vHGtqL1aOjRBcBxrN4tVmqyy0nioC3C8nJmpp_Ifws3zkm6YxY4klqIQVYTzVZY_PCeVWFiL3hrYcdGcDkwNfx1E","q":"lxFSAfAhAGnc7WVPZ3q5aqiehI4SDb7ybRZw4gqqsOgV3CPxAeubSzh3zmcPmLlAmEheVwNy3WD851ROe8ZJF33bW3G3DT-sseGvPEc9lANEU2rKS0VynGcxiiYxX12r1haXDe4DEW9QgAkgwyABO5_P8QLk1tmf8XsI1KQ6TjM","dp":"zkxBhQYkf_wPCFz-6MA1xclIY6sn-FhrBCGtyK0Y9Zo1_m2D2Nypevofvf4t4QdMDb1iIMzCd83Mv4HhAMRKoce6PjJddUCuQ4IIRm7jbxPXHGmjVWnbK5ujTj93KLSqtitRlqlpn4NOrH7PsBMV9fC9Kixe_aSLfsgejACus7E","dq":"VrBxxvrtdTdKuFAyyMb8L-CjVp3QbmLs6vy9unk0imAkazeUze1OKFQ3LBKoOJPWJY0h1fz8pV1Kw9T1VMHsn7ZxcoBG8ytfBpTj4ktfYtidFOFrRNaNdoMhQo24N2mhejFsbWnwCMlAALk8O7zZ-EU1JrDqcQBhcEmSP7QeYVE","qi":"isbSKIeGfPBlsNsrbHc9ww7sZ43GsdgdJorQzpOSwVu3qlUZin33PibBWG3G2ZPDfcdRnOub6UGug10uqlkipc-eq9gCFyDQ0U9PIsZVOzeSLhcpvLaeC3lwsMYzTfq3hyj7acC_AMN6UO6P8YDwqM8RVw2gXx-E3680ngWv1Xg"}
-Jose4J.jwt.public.Server.Key: {"kty":"RSA","kid":"cbc379db-1631-422f-92dc-587ce10cb867","n":"iVUuc_WQWOUY_sQYTkY-l9i0jmTjvwerOyG7cXnoW_gFqm3mw21EODw7xM7avqlnVA9r-Rpkp5WQu8coKxnhiqh8IbKez_PAE1pXJEkcojaQgq96NsPy9pJHhBys0e2wS7UKS1T1i_k9ToMAz7IElg6DOEESfzx1PCdjQfDKaTNoPbq7WATXbrMD_re9f5Oc0V30KJt5YHRr00sn4ojJ50qMVHnLP-1YPnEShGiMA3Ld-ddusKweWsFpKMwXZn2brg8TjppGtXmd4XVANqM5f_jgxFgImHLp-slb60hRL6DCuJcTJiiUruxtZ7XQTrdDBK7SA525HJRfizfH5yljIw","e":"AQAB"}
+awesome.security.key:
+    sharedSecretKey: NMg+3ftaYoaqh9uCMN8gbD2xgWkaq6SkiDpjcTuMnQY=
+    serverRsaPrivateKey: MIICeAIBADANBgkqhkiG9w0BAQEFAASCAmIwggJeAgEAAoGBAKocQGxL1Z5n6GLEYTkMd5SUKuP5FbmdZMZrlz0CHbHu4dKcQXF8xlaQHWyblf8UfEnr6QMuLbK1UaHql5zm1IpibToiT4MSH1GARZtslbmZ5NaWmQkkg0uUbK0uq5CUX8lwWwW0NFmUoTFtXRkaVTtwJ2HXHHLV86P8h2Qvv2K/AgMBAAECgYB8HkT7P5HMFLDAb90oTOprZHivAi1R03+WLyaYgxS7oTrv+sbdUVc+DcUKW7Nj/MR7A0Bu66C4RggcBhk9iEcGxsupUv5N6jG9CvXhwHjkNtQaVuuMkNNqpB0wYdm5BWgtP3d/J9u0z3HZIOTOKp1KgV0SgeDdBhQAGwOtpAa4gQJBAOxQSk0JGr7/eCZlR3rA2CGD8PP9FNbsSq/vO/qbXRh6OBoJtZ4um0u7YKXtCdavoQmhRyJzQ8HZqmGJeR2D8mECQQC4SBYj48ctfX+0w+rvxbcwUSExuRzp6oBoakYGr3ISlZo0Z1sTO+LofGkAEZ2pzA7AuV8TxCPUssGJaWTuo6kfAkEArBggtA9QUg4cAuI49vVfsLC0lgsV1RsJnSx9IploZ74CAzxU7liEsddIoC2Kv7TxcuDnu/fzPUX15chG0q7XoQJBAI/KZ8QvWl4re7dP3ASlcNA5rb3/pAj9mp5eti9HPKo1o3JaZ101sFMZqFCObkhsWeKVghOJSzAPHyaaX1A50Z8CQQCWM9ftCtCz6TZYrqjFlZr/Bl3EW+JKloir2ZjzaSAwqogcQONl30ZflIM9X3x5ACX2likT8BiBtCVh/NHF3ej+
+    serverRsaPublicKey: MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCqHEBsS9WeZ+hixGE5DHeUlCrj+RW5nWTGa5c9Ah2x7uHSnEFxfMZWkB1sm5X/FHxJ6+kDLi2ytVGh6pec5tSKYm06Ik+DEh9RgEWbbJW5meTWlpkJJINLlGytLquQlF/JcFsFtDRZlKExbV0ZGlU7cCdh1xxy1fOj/IdkL79ivwIDAQAB
 
 # Log Level — ERROR, WARN, INFO, DEBUG or TRACE.
 

@@ -19,7 +19,7 @@ import org.springframework.security.web.authentication.AbstractAuthenticationPro
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import se.kth.awesome.SpringbootSecurityJwtApplication;
-import se.kth.awesome.model.User.UserPojo;
+import se.kth.awesome.model.user.UserPojo;
 import se.kth.awesome.security.exceptions.AuthMethodNotSupportedException;
 
 import static se.kth.awesome.util.Util.nLin;
