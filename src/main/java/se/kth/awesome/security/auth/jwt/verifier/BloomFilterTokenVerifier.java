@@ -20,7 +20,7 @@ import static se.kth.awesome.util.Util.nLin;
  * Aug 17, 2016
  */
 
-//TODO userPojo or userName must be encrypted with server secret and decrypted hear.  low prio security reasons "token is unsafe"
+
 @Component
 public class BloomFilterTokenVerifier implements TokenVerifier {
     private final Logger logger2 = LoggerFactory.getLogger(getClass());
