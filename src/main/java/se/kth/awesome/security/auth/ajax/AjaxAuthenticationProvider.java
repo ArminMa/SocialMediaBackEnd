@@ -5,7 +5,6 @@ import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.InsufficientAuthenticationException;
@@ -21,7 +20,6 @@ import org.springframework.util.Assert;
 import se.kth.awesome.SpringbootSecurityJwtApplication;
 import se.kth.awesome.model.user.UserPojo;
 import se.kth.awesome.security.AwesomeServerKeys;
-import se.kth.awesome.security.auth.jwt.model.token.JwtSettings;
 import se.kth.awesome.security.util.PasswordSaltUtil;
 import se.kth.awesome.service.UserEntityService;
 
@@ -41,14 +39,14 @@ public class AjaxAuthenticationProvider implements AuthenticationProvider {
 	@Autowired private AwesomeServerKeys awesomeServerKeys;
 
 	private static PasswordSaltUtil passwordSaltUtil = new PasswordSaltUtil();
-	public static final Logger logger1 = LoggerFactory.getLogger( AjaxAuthenticationProvider.class );
-	private final Logger logger2 = LoggerFactory.getLogger(getClass());
+	public final Logger logger1 = LoggerFactory.getLogger( AjaxAuthenticationProvider.class );
+//	private final Logger logger2 = LoggerFactory.getLogger(getClass());
 
 	public AjaxAuthenticationProvider(BCryptPasswordEncoder saltUtil) {}
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-	    logger2.error(nLin+nLin+"   "+ SpringbootSecurityJwtApplication.steps++ +" ---------- AjaxAuthenticationProvider.authenticate debug start ----------\n" );
+		logger1.error(nLin+nLin+"   "+ SpringbootSecurityJwtApplication.steps++ +" ---------- AjaxAuthenticationProvider.authenticate debug start ----------\n" );
 
         Assert.notNull(authentication, "No authentication data provided");
 
@@ -62,7 +60,7 @@ public class AjaxAuthenticationProvider implements AuthenticationProvider {
 
 	    String password2 = passwordSaltUtil.encodePassword( password, awesomeServerKeys.getSharedSecretKey() );
 
-	    logger2.error(nLin+nLin+"---------- AjaxAuthenticationProvider.authenticate debug start ----------\n" +
+		logger1.error(nLin+nLin+"---------- AjaxAuthenticationProvider.authenticate debug start ----------\n" +
 			    "\n"+ userContext.toString() +"\n" +
 			    "\npassword = "+ password +"\n" +
 			    "\npassword2 = "+ password2 +"\n" +

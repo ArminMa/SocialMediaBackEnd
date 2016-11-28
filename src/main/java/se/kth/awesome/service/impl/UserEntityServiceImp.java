@@ -40,7 +40,7 @@ public class UserEntityServiceImp implements UserEntityService {
 	@Autowired
 	private MailMessageRepository mailMessageRepository;
 
-//	private final Logger logger1 = LoggerFactory.getLogger(getClass());
+	private final Logger logger1 = LoggerFactory.getLogger(getClass());
 
 	MediaType mediaType = new MediaType(MediaType.APPLICATION_JSON.getType(), MediaType.APPLICATION_JSON.getSubtype(), Charset.forName("utf8"));
 
@@ -67,10 +67,11 @@ public class UserEntityServiceImp implements UserEntityService {
 				.body(appUser);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public Collection<UserPojo> searchUsersResemblingByUsername(String name) {
 		Collection<UserEntity> matchingUsers = userRepository.searchUsersResemblingByUsername(name);
-		@SuppressWarnings("unchecked")
+
 		Collection<UserPojo> users = (Collection<UserPojo>)ModelConverter.convert(matchingUsers);
 		return users;
 	}
@@ -91,12 +92,14 @@ public class UserEntityServiceImp implements UserEntityService {
         return ResponseEntity.status(HttpStatus.CREATED).build();
 	}
 
-    @SuppressWarnings("unchecked")
-    @Override
-    public ResponseEntity<?> getMyMails(String username) {
-        if(username == null) ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
 
-        Collection<MailMessage> mailMessages = mailMessageRepository.getAllSentAndReceivedMailByUserName(username);
+	@SuppressWarnings("unchecked")
+    @Override
+    public ResponseEntity<?> getMyMails(UserPojo userPojo) {
+        if(userPojo == null) ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        if(userPojo.getUsername() == null) ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+
+        Collection<MailMessage> mailMessages = mailMessageRepository.getAllSentAndReceivedMailByUserName(userPojo.getUsername());
 
         if(mailMessages == null ||  mailMessages.isEmpty()) return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         System.out.println(nLin+"3.UserEntityServiceImp.getMyMails");
@@ -130,15 +133,15 @@ public class UserEntityServiceImp implements UserEntityService {
 	@Override
 	public ResponseEntity<?> senPostMessage(PostPojo postPojo) {
 		if(postPojo == null) {
-//			logger1.error("postpojo = null");
+			logger1.error("postpojo = null");
 			ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
 		}
 		if(postPojo.getPk() == null) {
-//			logger1.error("pk = null");
+			logger1.error("pk = null");
 			ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
 		}
 		if(postPojo.getSender() == null) {
-//			logger1.error("sender = null");
+			logger1.error("sender = null");
 			ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
 		}
 		if(postPojo.getReceiver() == null){
@@ -156,15 +159,15 @@ public class UserEntityServiceImp implements UserEntityService {
 	@Override
 	public ResponseEntity<?> deletePost(PostPojo post) {
 		if(post == null) {
-//			logger1.error("postpojo = null");
+			logger1.error("UserEntityServiceImp.deletePost.postpojo = null");
 			ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
 		}
 		if(post.getPk() == null) {
-//			logger1.error("pk = null");
+			logger1.error("UserEntityServiceImp.deletePost.pk = null");
 			ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
 		}
 		if(post.getSender() == null) {
-//			logger1.error("sender = null");
+			logger1.error("UserEntityServiceImp.deletePost.sender = null");
 			ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
 		}
 		if(post.getReceiver() == null){
@@ -173,10 +176,11 @@ public class UserEntityServiceImp implements UserEntityService {
 		postRepository.deletePostByID(post.getId());
 
 		Post deletePost = postRepository.getPost(post.getId());
-		if(deletePost != null){
+		if(deletePost == null){
 			return ResponseEntity.status(HttpStatus.OK).build();
 
 		}
+		logger1.error("UserEntityServiceImp.deletePost.deletePost != null");
 		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
 	}
 

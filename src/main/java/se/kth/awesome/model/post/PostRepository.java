@@ -30,4 +30,8 @@ public interface PostRepository extends JpaRepository<Post, Long>,
     @Transactional
     @Query(value = "delete from Post Po where Po.id = :postID")
     void deletePostByID(@Param("postID") Long postId);
+
+	@Query(value = "select PM from Post PM where PM.pk.receiver.username = :userName")
+    Collection<Post> getAllReceivedPostsByUserName(@Param("userName") String username);
+
 }
