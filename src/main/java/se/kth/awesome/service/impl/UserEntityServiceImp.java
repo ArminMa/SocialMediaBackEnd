@@ -22,7 +22,6 @@ import se.kth.awesome.model.user.UserPojo;
 import se.kth.awesome.model.post.Post;
 import se.kth.awesome.model.post.PostPojo;
 import se.kth.awesome.model.post.PostRepository;
-import se.kth.awesome.security.auth.ajax.AjaxAuthenticationProvider;
 import se.kth.awesome.service.UserEntityService;
 import se.kth.awesome.util.MediaTypes;
 
@@ -84,6 +83,7 @@ public class UserEntityServiceImp implements UserEntityService {
         if(messagePojo.getReceiver() == null) ResponseEntity.status(HttpStatus.BAD_REQUEST).body("messagePojo.getReceiver() is null");
         if(messagePojo.getTopic() == null) ResponseEntity.status(HttpStatus.BAD_REQUEST).body("messagePojo.getTopic() is null");
 
+		System.out.println(nLin+"1.UserEntityServiceImp.sendMailMessage");
         MailMessage mailMessage = ModelConverter.convert(messagePojo);
 		System.out.println(nLin+"2.UserEntityServiceImp.sendMailMessage");
         mailMessageRepository.save(mailMessage);
@@ -93,8 +93,10 @@ public class UserEntityServiceImp implements UserEntityService {
 
     @SuppressWarnings("unchecked")
     @Override
-    public ResponseEntity<?> getMyMails(Long userId) {
-        Collection<MailMessage> mailMessages = mailMessageRepository.getAllReceivedMails(userId);
+    public ResponseEntity<?> getMyMails(String username) {
+        if(username == null) ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+
+        Collection<MailMessage> mailMessages = mailMessageRepository.getAllSentAndReceivedMailByUserName(username);
 
         if(mailMessages == null ||  mailMessages.isEmpty()) return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         System.out.println(nLin+"3.UserEntityServiceImp.getMyMails");
@@ -114,7 +116,7 @@ public class UserEntityServiceImp implements UserEntityService {
 	public ResponseEntity<?> getPosts(String username) {
 		if(username == null) ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
 
-		Collection<Post> posts = postRepository.getAllPostsByUserName(username);
+		Collection<Post> posts = postRepository.getAllReceivedPostsByUserName(username);
 		if(posts == null ||  posts.isEmpty()) return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 		Collection<PostPojo> postPojos = (Collection<PostPojo>) ModelConverter.convert(posts);
 		if(postPojos == null ||  postPojos.isEmpty()) return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
@@ -143,6 +145,7 @@ public class UserEntityServiceImp implements UserEntityService {
 			postPojo.setReceiver(postPojo.getSender());
 		}
 		postPojo.setPostedDate(new Date());
+
 		Post post = ModelConverter.convert(postPojo);
 
 		postRepository.save(post);
@@ -167,9 +170,14 @@ public class UserEntityServiceImp implements UserEntityService {
 		if(post.getReceiver() == null){
 			post.setReceiver(post.getSender());
 		}
-
 		postRepository.deletePostByID(post.getId());
-		return ResponseEntity.status(HttpStatus.OK).build();
+
+		Post deletePost = postRepository.getPost(post.getId());
+		if(deletePost != null){
+			return ResponseEntity.status(HttpStatus.OK).build();
+
+		}
+		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
 	}
 
 
