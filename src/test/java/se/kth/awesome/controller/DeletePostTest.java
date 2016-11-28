@@ -55,7 +55,7 @@ public class DeletePostTest {
 	private TokenPojo tokenPojo;
 	private List<UserPojo> userPojos = new ArrayList<>();
 	private List<PostPojo> postPojos = new ArrayList<>();
-	private List<Post> posts = new ArrayList<>();
+	private List<Post> postsEntity = new ArrayList<>();
 	private List<UserEntity> userEntities = new ArrayList<>();
 
 	@SuppressWarnings("unchecked")
@@ -97,13 +97,13 @@ public class DeletePostTest {
 		postPojos.add(new PostPojo("P4", userPojos.get(0),userPojos.get(3)));
 		postPojos.add(new PostPojo("P5", userPojos.get(1),userPojos.get(0)));
 		postPojos.add(new PostPojo("P6", userPojos.get(2),userPojos.get(3)));
-		posts = postRepository.save((Collection<Post>) ModelConverter.convert(postPojos));
+		postsEntity = postRepository.save((Collection<Post>) ModelConverter.convert(postPojos));
 		postRepository.flush();
-		assertThat(posts).isNotNull();
-		assertThat(posts).isNotEmpty();
-		assertThat(posts.size()).isEqualTo(postPojos.size());
+		assertThat(postsEntity).isNotNull();
+		assertThat(postsEntity).isNotEmpty();
+		assertThat(postsEntity.size()).isEqualTo(postPojos.size());
 
-		postPojos = (List<PostPojo>) ModelConverter.convert(posts);
+		postPojos = (List<PostPojo>) ModelConverter.convert(postsEntity);
 
 
 
@@ -130,7 +130,7 @@ public class DeletePostTest {
 		assertThat(posts).isNotNull();
 		assertThat(posts).isNotEmpty();
 
-		postRepository.deleteAll();
+		postRepository.delete(postsEntity);
 		postRepository.flush();
 		assertThat(userPojos).isNotNull();
 		//check that the user is not deleted
@@ -138,7 +138,7 @@ public class DeletePostTest {
 		assertThat(userEntity).isNotNull();
 
 
-		userRepo.deleteAll();
+		userRepo.delete(userEntities);
 		userRepo.flush();
 		System.out.println(nLin+nLin+"-----------------   DeletePostTest.tearDown-end ----------------------------"+nLin+nLin);
 	}
