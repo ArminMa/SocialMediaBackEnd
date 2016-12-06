@@ -1,6 +1,7 @@
 package se.kth.awesome.controller;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.catalina.servlet4preview.http.HttpServletRequest;
@@ -16,6 +17,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import se.kth.awesome.model.mailMessage.MailMessage;
+import se.kth.awesome.model.user.UserEntity;
 import se.kth.awesome.model.user.UserRepository;
 import se.kth.awesome.model.user.UserPojo;
 import se.kth.awesome.util.gsonX.GsonX;
@@ -43,7 +46,9 @@ public class RegisterUserTest {
 	@After
 	public void tearDown() throws Exception {
 		System.out.println(nLin+nLin+"----------------- RegisterUserTest.tearDown-start ----------------------------"+nLin+nLin);
-		userRepository.deleteAll();
+		UserEntity userEntities = userRepository.findByEmail(userPojos.get(0).getEmail());
+		assertThat(userEntities).isNotNull();
+		userRepository.delete(userEntities);
 		userRepository.flush();
 		System.out.println(nLin+nLin+"----------------- RegisterUserTest.tearDown-end ----------------------------"+nLin+nLin);
 	}
@@ -53,7 +58,7 @@ public class RegisterUserTest {
 	@Test
 	public void registerTest() throws Exception {
 		System.out.println("----------------- RegisterUserTest.registerTest-start ----------------------------");
-		userPojos.add(new UserPojo("loginUser", "LoginUserTest@gmail.com", "PasswordHashed0"));
+		userPojos.add(new UserPojo("registerUser", "registerUser@gmail.com", "PasswordHashed0"));
 		System.out.println("\nGsonX.gsonX.toJson(userPojos.get(0)) = " + GsonX.gson.toJson(userPojos.get(0)) + nLin);
 		HttpServletRequest httpServletRequest = null;
 		HttpServletResponse httpServletResponse = null;
