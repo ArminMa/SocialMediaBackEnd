@@ -23,10 +23,8 @@ import se.kth.awesome.util.MediaTypes;
 @RequestMapping("/social")
 public class UserController {
 
-
     @Autowired
     private UserEntityService userService;
-
 
     @Autowired
     private RegisterService registerService;
