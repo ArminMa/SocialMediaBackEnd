@@ -18,7 +18,6 @@ import se.kth.awesome.service.RegisterService;
 import se.kth.awesome.service.UserEntityService;
 import se.kth.awesome.util.MediaTypes;
 
-
 @RestController
 @RequestMapping("/social")
 public class UserController {
