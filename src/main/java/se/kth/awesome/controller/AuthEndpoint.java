@@ -82,7 +82,7 @@ public class AuthEndpoint {
             method = RequestMethod.GET)
     public ResponseEntity<?> getMyMails(@RequestHeader(name = "X-Authorization", defaultValue = "") String jwt) {
 		UserPojo user = getUserPojoFromToken(jwt);
-        return userService.getMyMails(user.getId());
+        return userService.getMyMails(user);
     }
 
 	@RequestMapping(
@@ -108,8 +108,7 @@ public class AuthEndpoint {
 
 	@RequestMapping(value = "/api/deleteLogMessage",
 			method = RequestMethod.POST,
-			consumes = MediaType.ALL_VALUE,
-			produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+			consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	public @ResponseBody ResponseEntity<?> deleteLogMessage(
 			@RequestHeader(name = "X-Authorization", defaultValue = "") String jwt,
 			@RequestBody PostPojo post, HttpServletRequest request, HttpServletResponse response){

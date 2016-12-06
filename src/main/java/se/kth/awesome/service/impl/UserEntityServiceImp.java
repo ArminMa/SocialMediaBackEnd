@@ -5,6 +5,8 @@ import java.nio.charset.Charset;
 import java.util.Collection;
 import java.util.Date;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -38,6 +40,8 @@ public class UserEntityServiceImp implements UserEntityService {
 	@Autowired
 	private MailMessageRepository mailMessageRepository;
 
+	private final Logger logger1 = LoggerFactory.getLogger(getClass());
+
 	MediaType mediaType = new MediaType(MediaType.APPLICATION_JSON.getType(), MediaType.APPLICATION_JSON.getSubtype(), Charset.forName("utf8"));
 
 	@Override
@@ -63,10 +67,11 @@ public class UserEntityServiceImp implements UserEntityService {
 				.body(appUser);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public Collection<UserPojo> searchUsersResemblingByUsername(String name) {
 		Collection<UserEntity> matchingUsers = userRepository.searchUsersResemblingByUsername(name);
-		@SuppressWarnings("unchecked")
+
 		Collection<UserPojo> users = (Collection<UserPojo>)ModelConverter.convert(matchingUsers);
 		return users;
 	}
@@ -79,6 +84,7 @@ public class UserEntityServiceImp implements UserEntityService {
         if(messagePojo.getReceiver() == null) ResponseEntity.status(HttpStatus.BAD_REQUEST).body("messagePojo.getReceiver() is null");
         if(messagePojo.getTopic() == null) ResponseEntity.status(HttpStatus.BAD_REQUEST).body("messagePojo.getTopic() is null");
 
+		System.out.println(nLin+"1.UserEntityServiceImp.sendMailMessage");
         MailMessage mailMessage = ModelConverter.convert(messagePojo);
 		System.out.println(nLin+"2.UserEntityServiceImp.sendMailMessage");
         mailMessageRepository.save(mailMessage);
@@ -86,10 +92,14 @@ public class UserEntityServiceImp implements UserEntityService {
         return ResponseEntity.status(HttpStatus.CREATED).build();
 	}
 
-    @SuppressWarnings("unchecked")
+
+	@SuppressWarnings("unchecked")
     @Override
-    public ResponseEntity<?> getMyMails(Long userId) {
-        Collection<MailMessage> mailMessages = mailMessageRepository.getAllReceivedMails(userId);
+    public ResponseEntity<?> getMyMails(UserPojo userPojo) {
+        if(userPojo == null) ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        if(userPojo.getUsername() == null) ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+
+        Collection<MailMessage> mailMessages = mailMessageRepository.getAllSentAndReceivedMailByUserName(userPojo.getUsername());
 
         if(mailMessages == null ||  mailMessages.isEmpty()) return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         System.out.println(nLin+"3.UserEntityServiceImp.getMyMails");
@@ -122,10 +132,21 @@ public class UserEntityServiceImp implements UserEntityService {
 
 	@Override
 	public ResponseEntity<?> senPostMessage(PostPojo postPojo) {
-		if(postPojo == null) ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-		if(postPojo.getPk() == null) ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-		if(postPojo.getSender() == null) ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-		if(postPojo.getReceiver() == null) ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+		if(postPojo == null) {
+			logger1.error("postpojo = null");
+			ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+		}
+		if(postPojo.getPk() == null) {
+			logger1.error("pk = null");
+			ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+		}
+		if(postPojo.getSender() == null) {
+			logger1.error("sender = null");
+			ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+		}
+		if(postPojo.getReceiver() == null){
+			postPojo.setReceiver(postPojo.getSender());
+		}
 		postPojo.setPostedDate(new Date());
 
 		Post post = ModelConverter.convert(postPojo);
@@ -137,19 +158,30 @@ public class UserEntityServiceImp implements UserEntityService {
 
 	@Override
 	public ResponseEntity<?> deletePost(PostPojo post) {
-		if(post == null) ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-		if(post.getPk() == null) ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-		if(post.getSender() == null) ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-		if(post.getReceiver() == null) ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-		Post deletePost = ModelConverter.convert(post);
-
-		postRepository.delete(deletePost);
-		deletePost = postRepository.getPost(post.getId());
-		if(deletePost != null){
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+		if(post == null) {
+			logger1.error("UserEntityServiceImp.deletePost.postpojo = null");
+			ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
 		}
+		if(post.getPk() == null) {
+			logger1.error("UserEntityServiceImp.deletePost.pk = null");
+			ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+		}
+		if(post.getSender() == null) {
+			logger1.error("UserEntityServiceImp.deletePost.sender = null");
+			ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+		}
+		if(post.getReceiver() == null){
+			post.setReceiver(post.getSender());
+		}
+		postRepository.deletePostByID(post.getId());
 
-		return ResponseEntity.status(HttpStatus.OK).build();
+		Post deletePost = postRepository.getPost(post.getId());
+		if(deletePost == null){
+			return ResponseEntity.status(HttpStatus.OK).build();
+
+		}
+		logger1.error("UserEntityServiceImp.deletePost.deletePost != null");
+		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
 	}
 
 
