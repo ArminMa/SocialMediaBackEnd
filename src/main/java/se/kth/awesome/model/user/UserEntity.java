@@ -4,6 +4,7 @@ package se.kth.awesome.model.user;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.SortedSet;
 import java.util.TreeSet;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -22,10 +23,10 @@ import org.hibernate.annotations.LazyCollectionOption;
 import org.hibernate.annotations.SortNatural;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
+import se.kth.awesome.model.UserFriends.UserFriend;
+
+
 import se.kth.awesome.model.friendRequest.FriendRequest;
-
-
-
 import se.kth.awesome.model.role.UserRoleEntity;
 import se.kth.awesome.util.gsonX.GsonX;
 
@@ -148,107 +149,10 @@ public class UserEntity implements Serializable,Comparable<UserEntity>{
 		this.authorities = authorities;
 	}
 
-//	private Collection<MailMessage> mailMessages = new TreeSet<>();
-//	@ManyToMany(/*cascade = {CascadeType.PERSIST, CascadeType.MERGE},*/)
-//	@LazyCollection(LazyCollectionOption.TRUE)
-//	@SortNatural
-//	public Collection<MailMessage> getMailMessages() {
-//		return mailMessages;
-//	}
-//	public void setMailMessages(Collection<MailMessage> mailMessages) {
-//		this.mailMessages = mailMessages;
-//	}
 
 
-	//----------------user Received Mail--------------------------
 
-//	private SortedSet<MailMessage> receivedFaceMails = new TreeSet<>();
-//	@OneToMany( cascade = CascadeType.ALL, orphanRemoval = true, targetEntity = MailMessage.class, fetch = FetchType.EAGER, mappedBy = "pk.receiver")
-////	@BatchSize(size=25)
-////	@LazyCollection(LazyCollectionOption.FALSE)
-//	@SortNatural
-//	public SortedSet<MailMessage> getReceivedFaceMails() {
-//		return receivedFaceMails;
-//	}
-//	public void setReceivedFaceMails(SortedSet<MailMessage> myReceivedFaceMails) {
-//		this.receivedFaceMails = myReceivedFaceMails;
-//	}
-//
-//	private SortedSet<MailMessage> sentFaceMails = new TreeSet<>();
-//	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, targetEntity = MailMessage.class,fetch = FetchType.LAZY, mappedBy = "pk.sender")
-//	@BatchSize(size=25)
-//	@LazyCollection(LazyCollectionOption.FALSE)
-//	@SortNatural
-//	public SortedSet<MailMessage> getSentFaceMails() {
-//		return sentFaceMails;
-//	}
-//	public void setSentFaceMails(SortedSet<MailMessage> mailSentFaceMails) {
-//		this.sentFaceMails = mailSentFaceMails;
-//	}
 
-//	private SortedSet<ChatMessage> chatMessages = new TreeSet<>();
-//
-//	@ManyToMany(
-//			targetEntity=ChatMessage.class,
-//			/*cascade={CascadeType.PERSIST, CascadeType.MERGE},*/
-//					fetch = FetchType.EAGER
-//	)
-//    @LazyCollection(LazyCollectionOption.FALSE)
-//    @SortNatural
-//    public SortedSet<ChatMessage> getChatMessages() {
-//        return chatMessages;
-//    }
-//    public void setChatMessages(SortedSet<ChatMessage> receivedChatMessages) {
-//        this.chatMessages = receivedChatMessages;
-//    }
-//
-
-//
-//	private SortedSet<UserEntity> friends = new TreeSet<>();
-//	@OneToOne( fetch = FetchType.LAZY)
-////	@BatchSize(size=25)
-////	@LazyCollection(LazyCollectionOption.FALSE)
-//	@SortNatural
-//	public SortedSet<UserEntity> getFriends() {
-//		return friends;
-//	}
-//	public void setFriends(SortedSet<UserEntity> friends) {
-//		this.friends = friends;
-//	}
-//
-//	private SortedSet<Post> log = new TreeSet<>();
-//	@OneToMany( cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-//	@LazyCollection(LazyCollectionOption.FALSE)
-//	@SortNatural
-//	public SortedSet<Post> getLog() {
-//		return log;
-//	}
-//	public void setLog(SortedSet<Post> log) {
-//		this.log = log;
-//	}
-//
-//	private SortedSet<ChatMessage> receivedChatMessages = new TreeSet<>();
-//    @OneToMany(fetch = FetchType.LAZY, mappedBy = "receiver")
-//    @LazyCollection(LazyCollectionOption.FALSE)
-//    @SortNatural
-//    public SortedSet<ChatMessage> getReceivedChatMessages() {
-//        return receivedChatMessages;
-//    }
-//    public void setReceivedChatMessages(SortedSet<ChatMessage> receivedChatMessages) {
-//        this.receivedChatMessages = receivedChatMessages;
-//    }
-//
-//    private SortedSet<ChatMessage> sendentChatMessages = new TreeSet<>();
-//    @OneToMany(fetch = FetchType.LAZY, mappedBy = "sender")
-//    @LazyCollection(LazyCollectionOption.FALSE)
-//    @SortNatural
-//    public SortedSet<ChatMessage> getSendentChatMessages() {
-//        return sendentChatMessages;
-//    }
-//
-//    public void setSendentChatMessages(SortedSet<ChatMessage> sendentChatMessages) {
-//        this.sendentChatMessages = sendentChatMessages;
-//    }
 
 	@Override
 	public String toString() {
@@ -259,19 +163,6 @@ public class UserEntity implements Serializable,Comparable<UserEntity>{
 			this.authorities = null;
 		}
 
-//		if(this.mailMessages != null && this.mailMessages.isEmpty()){
-//			this.mailMessages = null;
-//		}
-//		if(this.friends != null && this.friends.isEmpty()){
-//			this.friends = null;
-//		}
-//		if(this.log != null && this.log.isEmpty()){
-//			this.log = null;
-//		}
-//		if(this.receivedChatMessages != null && this.receivedChatMessages.isEmpty()){
-//			this.receivedChatMessages = null;
-//		}
-
 		String thisJsonString = GsonX.gson.toJson(this);
 
 		if(this.friendRequests == null){
@@ -281,19 +172,6 @@ public class UserEntity implements Serializable,Comparable<UserEntity>{
 		if(this.authorities == null){
 			this.authorities = new TreeSet<>();
 		}
-//		if(this.mailMessages == null){
-//			this.mailMessages = new TreeSet<>();
-//		}
-//		if(this.friends == null){
-//			this.friends = new TreeSet<>();
-
-//		}
-//		if(this.log == null){
-//			this.log = new TreeSet<>();
-//		}
-//		if(this.receivedChatMessages == null){
-//			this.receivedChatMessages = new TreeSet<>();
-//		}
 
 		return thisJsonString;
 	}

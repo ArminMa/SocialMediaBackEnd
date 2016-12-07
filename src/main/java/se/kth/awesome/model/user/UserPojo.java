@@ -5,17 +5,16 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.TreeSet;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
-
+import se.kth.awesome.model.UserFriends.UserFriend;
 import se.kth.awesome.model.chatMessage.ChatMessagePojo;
+import se.kth.awesome.model.friendRequest.FriendRequest;
 import se.kth.awesome.model.friendRequest.FriendRequestPojo;
 import se.kth.awesome.model.mailMessage.MailMessagePojo;
 import se.kth.awesome.model.post.PostPojo;
-
-
 import se.kth.awesome.model.role.rolePojo.UserRolePojo;
 import se.kth.awesome.security.auth.JwtAuthenticationToken;
 import se.kth.awesome.util.gsonX.GsonX;
@@ -23,7 +22,7 @@ import se.kth.awesome.util.gsonX.GsonX;
 
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.PUBLIC_MEMBER)
-@JsonInclude(JsonInclude.Include.NON_NULL )
+@JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.NON_EMPTY)
 
 public class UserPojo  implements Serializable,Comparable<UserPojo>{
     private Long id;
@@ -32,18 +31,26 @@ public class UserPojo  implements Serializable,Comparable<UserPojo>{
     private String password;
     private JwtAuthenticationToken token;
     private Byte[] picture; // Todo implement this Armin. low prio
-    @JsonInclude(JsonInclude.Include.NON_EMPTY )
+
     private Collection<FriendRequestPojo> friendRequests = new ArrayList<>();
-    @JsonInclude(JsonInclude.Include.NON_EMPTY )
+
     private Collection<MailMessagePojo> mailMessages = new ArrayList<>();
-    @JsonInclude(JsonInclude.Include.NON_EMPTY )
+
     private Collection<UserPojo> friends = new ArrayList<>();
-    @JsonInclude(JsonInclude.Include.NON_EMPTY )
+
     private Collection<PostPojo> log = new ArrayList<>();
-    @JsonInclude(JsonInclude.Include.NON_EMPTY )
+
     private Collection<ChatMessagePojo> chatMessages = new ArrayList<>();
-    @JsonInclude(JsonInclude.Include.NON_EMPTY )
-    private Collection<UserRolePojo> authorities = new TreeSet<>();
+
+    private Collection<UserRolePojo> authorities = new ArrayList<>();
+
+    private Collection<FriendRequest> sentFriendRequests = new ArrayList<>();
+
+    private Collection<FriendRequest> receivedFriendRequests = new ArrayList<>();
+
+    private Collection<UserFriend> acceptedFriends = new ArrayList<>();
+
+    private Collection<UserFriend> requestedFriends = new ArrayList<>();
 
 
 
@@ -150,6 +157,42 @@ public class UserPojo  implements Serializable,Comparable<UserPojo>{
 		this.authorities = authorities;
 	}
 
+    //---------------- Friend Request to and from user --------------------------
+
+
+    public Collection<FriendRequest> getSentFriendRequests() {
+        return sentFriendRequests;
+    }
+    public void setSentFriendRequests(Collection<FriendRequest> sentFriendRequests) {
+        this.sentFriendRequests = sentFriendRequests;
+    }
+
+
+    public Collection<FriendRequest> getReceivedFriendRequests() {
+        return receivedFriendRequests;
+    }
+    public void setReceivedFriendRequests(Collection<FriendRequest> receivedFriendRequests) {
+        this.receivedFriendRequests = receivedFriendRequests;
+    }
+
+    //--------------------------------Friends---------------------------------------------
+
+
+    public Collection<UserFriend> getAcceptedFriends() {
+        return acceptedFriends;
+    }
+    public void setAcceptedFriends(Collection<UserFriend> acceptedFriends) {
+        this.acceptedFriends = acceptedFriends;
+    }
+
+
+    public Collection<UserFriend> getRequestedFriends() {
+        return requestedFriends;
+    }
+    public void setRequestedFriends(Collection<UserFriend> requestedFriends) {
+        this.requestedFriends = requestedFriends;
+    }
+
 	@Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -204,6 +247,22 @@ public class UserPojo  implements Serializable,Comparable<UserPojo>{
             this.authorities = null;
         }
 
+	    if(this.sentFriendRequests != null && this.sentFriendRequests.isEmpty()){
+		    this.sentFriendRequests = null;
+	    }
+
+	    if(this.receivedFriendRequests != null && this.receivedFriendRequests.isEmpty()){
+		    this.receivedFriendRequests = null;
+	    }
+
+	    if(this.acceptedFriends != null && this.acceptedFriends.isEmpty()){
+		    this.acceptedFriends = null;
+	    }
+
+	    if(this.requestedFriends != null && this.requestedFriends.isEmpty()){
+		    this.requestedFriends = null;
+	    }
+
         String thisJsonString = GsonX.gson.toJson(this);
 
         //reconstruct empty arrays
@@ -226,6 +285,22 @@ public class UserPojo  implements Serializable,Comparable<UserPojo>{
         if(this.authorities == null){
             this.authorities = new ArrayList<>();
         }
+
+	    if(this.sentFriendRequests == null){
+		    this.sentFriendRequests = new ArrayList<>();
+	    }
+
+	    if(this.receivedFriendRequests == null){
+		    this.receivedFriendRequests = new ArrayList<>();
+	    }
+
+	    if(this.acceptedFriends == null){
+		    this.acceptedFriends = new ArrayList<>();
+	    }
+
+	    if(this.requestedFriends == null){
+		    this.requestedFriends = new ArrayList<>();
+	    }
 
         return thisJsonString;
     }
