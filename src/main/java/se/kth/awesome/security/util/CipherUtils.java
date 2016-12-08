@@ -19,6 +19,10 @@ import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;
 import org.apache.commons.codec.binary.Base64;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import static se.kth.awesome.util.Util.nLin;
 
 /**
  * <p>Title: CipherUtils</p>
@@ -28,7 +32,7 @@ import org.bouncycastle.jce.provider.BouncyCastleProvider;
  * @version 1.0
  */
 public class CipherUtils {
-
+	private static final Logger logger1 = LoggerFactory.getLogger( CipherUtils.class );
 
 	public static final KeyUtil keyUtil = new KeyUtil();
 
@@ -111,6 +115,9 @@ public class CipherUtils {
 	 * @throws Exception
 	 */
 	private static byte[] decryptWithPrivateKey(byte[] text, PrivateKey key) throws Exception {
+
+
+
 		byte[] dectyptedText = null;
 		// decryptWithPrivateKey the text using the private key
 		Cipher cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
@@ -269,6 +276,14 @@ public class CipherUtils {
 		byte[] iv = Base64.decodeBase64(parts[0]);
 		byte[] encrypted = Base64.decodeBase64(parts[1]);
 		byte[] decrypted = decryptWithSymmetricKey(iv, encrypted, symmetricKey);
+
+		logger1.error(nLin+nLin+"---------- CipherUtils.decryptWithPrivateKey debug start ----------\n" +
+				"\nciphertext = "+ ciphertext +"\n" +
+				"\nparts[0] = "+ parts[0] +"\n" +
+				"\nparts[1] = "+ parts[1] +"\n" +
+				"\nnew String(iv) = "+ new String(iv) +"\n" +
+				"\n ---------- AjaxAuthenticationProvider.authenticate debug end ----------\n");
+
 		return new String(decrypted);
 	}
 

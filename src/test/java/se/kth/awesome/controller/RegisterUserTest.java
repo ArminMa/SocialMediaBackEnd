@@ -17,7 +17,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
-import se.kth.awesome.model.mailMessage.MailMessage;
 import se.kth.awesome.model.user.UserEntity;
 import se.kth.awesome.model.user.UserRepository;
 import se.kth.awesome.model.user.UserPojo;

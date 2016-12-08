@@ -5,10 +5,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 import se.kth.awesome.model.user.UserEntity;
 import se.kth.awesome.model.user.UserRepository;
 import se.kth.awesome.model.ModelConverter;
@@ -22,6 +25,7 @@ import se.kth.awesome.security.AwesomeServerKeys;
 import se.kth.awesome.security.util.PasswordSaltUtil;
 import se.kth.awesome.service.RegisterService;
 import se.kth.awesome.util.MediaTypes;
+import se.kth.awesome.util.gsonX.GsonX;
 
 
 @Service
@@ -91,15 +95,32 @@ public class RegisterServiceImpl implements RegisterService {
 		userRepository.flush();
 
         if(userEntity == null){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+		}
         else{
             userPojo = ModelConverter.convert(userEntity);
-            return ResponseEntity.status(HttpStatus.CREATED)
-                    .contentType(MediaType.APPLICATION_JSON_UTF8)
-                    .body(userPojo);
+
+	        String url =  "http://localhost:7082/save";
+	        RestTemplate restTemplate = new RestTemplate();
+	        HttpHeaders headers = new HttpHeaders();
+	        headers.set("Content-Type", "application/json");
+
+	        HttpEntity<UserPojo> entity = new HttpEntity<UserPojo>(userPojo, headers);
+
+	        ResponseEntity<UserPojo> response = restTemplate.postForEntity(url, entity, UserPojo.class);
+
+	        if (response.getStatusCode().equals(HttpStatus.OK)) {
+
+		        UserPojo userPojo1 = (UserPojo) GsonX.gson.fromJson(response.getBody().toString(), UserPojo.class);
+
+		        return ResponseEntity.status(HttpStatus.CREATED)
+				        .contentType(MediaType.APPLICATION_JSON_UTF8)
+				        .body(userPojo);
+	        }
+
         }
 
+		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
 	}
 
 
