@@ -10,6 +10,7 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 import se.kth.awesome.model.UserFriends.UserFriend;
+import se.kth.awesome.model.UserFriends.UserFriendPojo;
 import se.kth.awesome.model.chatMessage.ChatMessagePojo;
 import se.kth.awesome.model.friendRequest.FriendRequest;
 import se.kth.awesome.model.friendRequest.FriendRequestPojo;
@@ -44,13 +45,13 @@ public class UserPojo  implements Serializable,Comparable<UserPojo>{
 
     private Collection<UserRolePojo> authorities = new ArrayList<>();
 
-    private Collection<FriendRequest> sentFriendRequests = new ArrayList<>();
+    private Collection<FriendRequestPojo> sentFriendRequests = new ArrayList<>();
 
-    private Collection<FriendRequest> receivedFriendRequests = new ArrayList<>();
+    private Collection<FriendRequestPojo> receivedFriendRequests = new ArrayList<>();
 
-    private Collection<UserFriend> acceptedFriends = new ArrayList<>();
+    private Collection<UserFriendPojo> acceptedFriends = new ArrayList<>();
 
-    private Collection<UserFriend> requestedFriends = new ArrayList<>();
+    private Collection<UserFriendPojo> requestedFriends = new ArrayList<>();
 
 
 
@@ -160,36 +161,36 @@ public class UserPojo  implements Serializable,Comparable<UserPojo>{
     //---------------- Friend Request to and from user --------------------------
 
 
-    public Collection<FriendRequest> getSentFriendRequests() {
+    public Collection<FriendRequestPojo> getSentFriendRequests() {
         return sentFriendRequests;
     }
-    public void setSentFriendRequests(Collection<FriendRequest> sentFriendRequests) {
+    public void setSentFriendRequests(Collection<FriendRequestPojo> sentFriendRequests) {
         this.sentFriendRequests = sentFriendRequests;
     }
 
 
-    public Collection<FriendRequest> getReceivedFriendRequests() {
+    public Collection<FriendRequestPojo> getReceivedFriendRequests() {
         return receivedFriendRequests;
     }
-    public void setReceivedFriendRequests(Collection<FriendRequest> receivedFriendRequests) {
+    public void setReceivedFriendRequests(Collection<FriendRequestPojo> receivedFriendRequests) {
         this.receivedFriendRequests = receivedFriendRequests;
     }
 
     //--------------------------------Friends---------------------------------------------
 
 
-    public Collection<UserFriend> getAcceptedFriends() {
+    public Collection<UserFriendPojo> getAcceptedFriends() {
         return acceptedFriends;
     }
-    public void setAcceptedFriends(Collection<UserFriend> acceptedFriends) {
+    public void setAcceptedFriends(Collection<UserFriendPojo> acceptedFriends) {
         this.acceptedFriends = acceptedFriends;
     }
 
 
-    public Collection<UserFriend> getRequestedFriends() {
+    public Collection<UserFriendPojo> getRequestedFriends() {
         return requestedFriends;
     }
-    public void setRequestedFriends(Collection<UserFriend> requestedFriends) {
+    public void setRequestedFriends(Collection<UserFriendPojo> requestedFriends) {
         this.requestedFriends = requestedFriends;
     }
 

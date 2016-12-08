@@ -43,7 +43,7 @@ public class UserFriendIdPojo implements Serializable, Comparable<UserFriendIdPo
 		if (this == o) return true;
 		if (o == null || getClass() != o.getClass()) return false;
 
-		UserFriendID that = (UserFriendID) o;
+		UserFriendIdPojo that = (UserFriendIdPojo) o;
 
 		if (accepter != null ? !accepter.equals(that.accepter) : that.accepter != null) return false;
 		return requester != null ? requester.equals(that.requester) : that.requester == null;
