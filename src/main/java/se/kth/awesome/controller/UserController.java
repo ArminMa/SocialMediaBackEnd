@@ -30,6 +30,16 @@ public class UserController {
     private RegisterService registerService;
 
     @RequestMapping(
+            value = "/getAllUsers",
+            method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public  @ResponseBody ResponseEntity<?> getAllUsers() {
+
+        return userService.getAllUsers();
+
+    }
+
+    @RequestMapping(
             value = "/getUserByEmail/{email:.+}",
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE)

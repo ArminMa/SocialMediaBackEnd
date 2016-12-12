@@ -5,6 +5,7 @@ import java.nio.charset.Charset;
 import java.util.Collection;
 import java.util.Date;
 
+import javax.crypto.SecretKey;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,8 +23,13 @@ import se.kth.awesome.model.user.UserPojo;
 import se.kth.awesome.model.post.Post;
 import se.kth.awesome.model.post.PostPojo;
 import se.kth.awesome.model.post.PostRepository;
+import se.kth.awesome.security.AwesomeServerKeys;
+import se.kth.awesome.security.auth.jwt.model.token.JwtTokenFactory;
+import se.kth.awesome.security.util.CipherUtils;
+import se.kth.awesome.security.util.KeyUtil;
 import se.kth.awesome.service.UserEntityService;
 import se.kth.awesome.util.MediaTypes;
+import se.kth.awesome.util.gsonX.GsonX;
 
 import static se.kth.awesome.util.Util.nLin;
 
@@ -31,14 +37,11 @@ import static se.kth.awesome.util.Util.nLin;
 @Service
 public class UserEntityServiceImp implements UserEntityService {
 
-	@Autowired
-	private UserRepository userRepository;
-
-	@Autowired
-	private PostRepository postRepository;
-
-	@Autowired
-	private MailMessageRepository mailMessageRepository;
+	@Autowired private UserRepository userRepository;
+	@Autowired private PostRepository postRepository;
+	@Autowired private MailMessageRepository mailMessageRepository;
+	@Autowired private AwesomeServerKeys awesomeServerKeys;
+	@Autowired private JwtTokenFactory tokenFactory;
 
 	private final Logger logger1 = LoggerFactory.getLogger(getClass());
 
@@ -65,6 +68,37 @@ public class UserEntityServiceImp implements UserEntityService {
 		return ResponseEntity.status(HttpStatus.OK)
 				.contentType(MediaTypes.JsonUtf8)
 				.body(appUser);
+	}
+
+	@Override
+	public ResponseEntity<?> getUserFromToken(String jwt) {
+		UserEntity appUser = null;
+		UserPojo userPojo = getUserPojoFromToken(jwt);
+		if(userPojo == null) ResponseEntity.status(HttpStatus.BAD_REQUEST).body("UserPojo is null");
+		if(userPojo.getId() != null){
+			appUser = userRepository.findByUserID(userPojo.getId());
+		}else if(userPojo.getUsername() != null){
+			appUser = userRepository.findByUsername(userPojo.getUsername());
+		}else if(userPojo.getEmail() != null){
+			appUser = userRepository.findByEmail(userPojo.getEmail());
+		}
+
+		if(appUser != null){
+			return ResponseEntity.status(HttpStatus.OK).header("X-Authorization", "Bearer " + jwt)
+					.contentType(MediaTypes.JsonUtf8)
+					.body(ModelConverter.convert(appUser));
+		}
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("UserPojo id, mail, and username is null");
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public ResponseEntity<?> getAllUsers() {
+		Collection<UserEntity> matchingUsers = userRepository.findAll();
+		Collection<UserPojo> users = (Collection<UserPojo>)ModelConverter.convert(matchingUsers);
+		return ResponseEntity.status(HttpStatus.OK)
+				.contentType(MediaTypes.JsonUtf8)
+				.body(users);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -115,6 +149,7 @@ public class UserEntityServiceImp implements UserEntityService {
                 .body(messagePojos);
     }
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public ResponseEntity<?> getPosts(String username) {
 		if(username == null) ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
@@ -133,16 +168,13 @@ public class UserEntityServiceImp implements UserEntityService {
 	@Override
 	public ResponseEntity<?> senPostMessage(PostPojo postPojo) {
 		if(postPojo == null) {
-			logger1.error("postpojo = null");
-			ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+			ResponseEntity.status(HttpStatus.BAD_REQUEST).body("postPojo is null");
 		}
 		if(postPojo.getPk() == null) {
-			logger1.error("pk = null");
-			ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+			ResponseEntity.status(HttpStatus.BAD_REQUEST).body("postPojo.getPk() is null");
 		}
 		if(postPojo.getSender() == null) {
-			logger1.error("sender = null");
-			ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+			ResponseEntity.status(HttpStatus.BAD_REQUEST).body("postPojo.getSender() is null");
 		}
 		if(postPojo.getReceiver() == null){
 			postPojo.setReceiver(postPojo.getSender());
@@ -182,6 +214,29 @@ public class UserEntityServiceImp implements UserEntityService {
 		}
 		logger1.error("UserEntityServiceImp.deletePost.deletePost != null");
 		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+	}
+
+	private UserPojo getUserPojoFromToken(String jwt) {
+		String token1 = jwt.substring("Bearer ".length(), jwt.length());
+//	    String token2 = tokenExtractor.extract(jwt);
+
+		SecretKey encryptDecryptTokenPayloadKey = KeyUtil.SymmetricKey.getSecretKeyFromString(awesomeServerKeys.getEncryptPayloadKey());
+		String decryptedPayload = null;
+		try {
+			decryptedPayload = CipherUtils.decryptWithSymmetricKey(tokenFactory.getPayloadFromJwt(token1), encryptDecryptTokenPayloadKey);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		UserPojo userPojo0 = GsonX.gson.fromJson( decryptedPayload, UserPojo.class);
+		String userName = tokenFactory.getSubject(token1); // username
+
+		if(userName.equals(userPojo0.getUsername())){
+			return userPojo0;
+		}
+
+		return null;
+
 	}
 
 

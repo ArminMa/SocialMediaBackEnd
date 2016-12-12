@@ -118,10 +118,16 @@ public class AuthEndpoint {
 		return userService.deletePost(post);
 	}
 
+	@RequestMapping(
+			value = "/api/getUserFromToken",
+			method = RequestMethod.GET,
+			produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	public ResponseEntity<?> getUserFromToken( @RequestHeader(name = "X-Authorization", defaultValue = "") String jwt) {
+		return userService.getUserFromToken(jwt);
+	}
+
 	private UserPojo getUserPojoFromToken(String jwt) {
 		String token1 = jwt.substring("Bearer ".length(), jwt.length());
-//	    String token2 = tokenExtractor.extract(jwt);
-
 		SecretKey encryptDecryptTokenPayloadKey = KeyUtil.SymmetricKey.getSecretKeyFromString(awesomeServerKeys.getEncryptPayloadKey());
 		String decryptedPayload = null;
 		try {
@@ -140,5 +146,8 @@ public class AuthEndpoint {
 		}
 		return userPojo0;
 	}
+
+
+
 
 }
