@@ -76,8 +76,6 @@ public class UserController {
             @RequestBody UserPojo userPojo,
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
-
-
         return registerService.registerNewUser(userPojo);
     }
 

@@ -1,5 +1,7 @@
 # SocialMediaBackEnd
 
+    dont forget to run MySql server and, the database testdb must exist
+
 ####Run project as war in a tomcat
 
 #to run this project from terminal/ console with h2 database

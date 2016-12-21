@@ -44,15 +44,17 @@ public class RegisterServiceImpl implements RegisterService {
 	@Override
 	public ResponseEntity<?> registerNewUser(UserPojo userPojo)  {
 
-
+		logger2.info("in register user");
+		logger2.info("UserName = " + userPojo.getUsername() + ", password = "+ userPojo.getPassword() + ", email = " + userPojo.getEmail());
 		if(!startRegistration(userPojo)) {
+			logger2.info("failed start registration");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
 		}
 
-
+		logger2.info("before faceUserAvaiability");
         UserEntity faceUserAvailability = userRepository.findOneUserByEmailOrUsername(userPojo.getEmail(), userPojo.getUsername());
-
         if( faceUserAvailability!= null){
+	        logger2.info("username taken");
             if(faceUserAvailability.getEmail().equals(userPojo.getEmail()) && faceUserAvailability.getUsername().equals(userPojo.getUsername()) ){
                 return ResponseEntity.status(HttpStatus.IM_USED)
                         .contentType(MediaTypes.JsonUtf8)
@@ -74,30 +76,33 @@ public class RegisterServiceImpl implements RegisterService {
                         .body(userPojo); // this should never be returned
         }
 
-
-
+		logger2.info("username is ok");
 
 		String password = passwordSaltUtil.encodePassword(userPojo.getPassword(), awesomeServerKeys.getSharedSecretKey());
 		userPojo.setPassword(password);
 		UserEntity userEntity =  ModelConverter.convert(userPojo);
-
+		logger2.info("converted userpojo into entity");
 		userEntity = userRepository.save(userEntity );
+		logger2.info("inserted user in database");
 		userRepository.flush();
 
+		//???? borde inte detta redan ligga inne i databasen??
 		UserRoleEntity userRoleEntity = new UserRoleEntity( Role.MEMBER );
-
+		logger2.info("add user role");
 		userRoleEntity = roleRepo.save(userRoleEntity);
 		roleRepo.flush();
 
 		userEntity.getAuthorities().add(userRoleEntity);
-
+		logger2.info("adds role to member");
 		userEntity = userRepository.save(userEntity );
 		userRepository.flush();
 
         if(userEntity == null){
+	        logger2.info("something went very wrong. user not created");
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
 		}
         else{
+	        logger2.info("attempting to save in nodejs");
             userPojo = ModelConverter.convert(userEntity);
 
 	        String url =  "http://localhost:7082/save";
@@ -106,13 +111,13 @@ public class RegisterServiceImpl implements RegisterService {
 	        headers.set("Content-Type", "application/json");
 
 	        HttpEntity<UserPojo> entity = new HttpEntity<UserPojo>(userPojo, headers);
-
+	        logger2.info("before post");
 	        ResponseEntity<UserPojo> response = restTemplate.postForEntity(url, entity, UserPojo.class);
-
+	        logger2.info("after post");
 	        if (response.getStatusCode().equals(HttpStatus.OK)) {
-
+		        logger2.info("successfully added user to mongodb server");
 		        UserPojo userPojo1 = (UserPojo) GsonX.gson.fromJson(response.getBody().toString(), UserPojo.class);
-
+		        logger2.info("converted user into pojo");
 		        return ResponseEntity.status(HttpStatus.CREATED)
 				        .contentType(MediaType.APPLICATION_JSON_UTF8)
 				        .body(userPojo);

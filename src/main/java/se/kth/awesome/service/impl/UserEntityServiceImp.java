@@ -133,7 +133,7 @@ public class UserEntityServiceImp implements UserEntityService {
         if(userPojo == null) ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         if(userPojo.getUsername() == null) ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
 
-        Collection<MailMessage> mailMessages = mailMessageRepository.getAllSentAndReceivedMailByUserName(userPojo.getUsername());
+        Collection<MailMessage> mailMessages = mailMessageRepository.getAllReceivedMails(userPojo.getId());
 
         if(mailMessages == null ||  mailMessages.isEmpty()) return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         System.out.println(nLin+"3.UserEntityServiceImp.getMyMails");
