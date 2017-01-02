@@ -102,30 +102,35 @@ public class RegisterServiceImpl implements RegisterService {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
 		}
         else{
-	        logger2.info("attempting to save in nodejs");
-            userPojo = ModelConverter.convert(userEntity);
 
-	        String url =  "http://localhost:7082/save";
-	        RestTemplate restTemplate = new RestTemplate();
-	        HttpHeaders headers = new HttpHeaders();
-	        headers.set("Content-Type", "application/json");
+	        return ResponseEntity.status(HttpStatus.CREATED)
+			        .contentType(MediaType.APPLICATION_JSON_UTF8)
+			        .body(userPojo);
 
-	        HttpEntity<UserPojo> entity = new HttpEntity<UserPojo>(userPojo, headers);
-	        logger2.info("before post");
-	        ResponseEntity<UserPojo> response = restTemplate.postForEntity(url, entity, UserPojo.class);
-	        logger2.info("after post");
-	        if (response.getStatusCode().equals(HttpStatus.OK)) {
-		        logger2.info("successfully added user to mongodb server");
-		        UserPojo userPojo1 = (UserPojo) GsonX.gson.fromJson(response.getBody().toString(), UserPojo.class);
-		        logger2.info("converted user into pojo");
-		        return ResponseEntity.status(HttpStatus.CREATED)
-				        .contentType(MediaType.APPLICATION_JSON_UTF8)
-				        .body(userPojo);
-	        }
+//	        logger2.info("attempting to save in nodejs");
+//            userPojo = ModelConverter.convert(userEntity);
+//
+//	        String url =  "http://localhost:7082/save";
+//	        RestTemplate restTemplate = new RestTemplate();
+//	        HttpHeaders headers = new HttpHeaders();
+//	        headers.set("Content-Type", "application/json");
+//
+//	        HttpEntity<UserPojo> entity = new HttpEntity<UserPojo>(userPojo, headers);
+//	        logger2.info("before post");
+//	        ResponseEntity<UserPojo> response = restTemplate.postForEntity(url, entity, UserPojo.class);
+//	        logger2.info("after post");
+//	        if (response.getStatusCode().equals(HttpStatus.OK)) {
+//		        logger2.info("successfully added user to mongodb server");
+//		        UserPojo userPojo1 = (UserPojo) GsonX.gson.fromJson(response.getBody().toString(), UserPojo.class);
+//		        logger2.info("converted user into pojo");
+//		        return ResponseEntity.status(HttpStatus.CREATED)
+//				        .contentType(MediaType.APPLICATION_JSON_UTF8)
+//				        .body(userPojo);
+//	        }
 
         }
 
-		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+//		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
 	}
 
 
