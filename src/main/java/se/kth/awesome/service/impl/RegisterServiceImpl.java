@@ -105,7 +105,7 @@ public class RegisterServiceImpl implements RegisterService {
 	        logger2.info("attempting to save in nodejs");
             userPojo = ModelConverter.convert(userEntity);
 
-	        String url =  "http://localhost:7082/save";
+	        String url =  "http://localhost:5500/register/user";
 	        RestTemplate restTemplate = new RestTemplate();
 	        HttpHeaders headers = new HttpHeaders();
 	        headers.set("Content-Type", "application/json");
@@ -114,9 +114,8 @@ public class RegisterServiceImpl implements RegisterService {
 	        logger2.info("before post");
 	        ResponseEntity<UserPojo> response = restTemplate.postForEntity(url, entity, UserPojo.class);
 	        logger2.info("after post");
-	        if (response.getStatusCode().equals(HttpStatus.OK)) {
+	        if (response.getStatusCode().equals(HttpStatus.CREATED)) {
 		        logger2.info("successfully added user to mongodb server");
-		        UserPojo userPojo1 = (UserPojo) GsonX.gson.fromJson(response.getBody().toString(), UserPojo.class);
 		        logger2.info("converted user into pojo");
 		        return ResponseEntity.status(HttpStatus.CREATED)
 				        .contentType(MediaType.APPLICATION_JSON_UTF8)
