@@ -77,6 +77,7 @@ public class RegisterServiceImpl implements RegisterService {
         }
 
 		logger2.info("username is ok");
+        String unHachedPassword = userPojo.getPassword();
 
 		String password = passwordSaltUtil.encodePassword(userPojo.getPassword(), awesomeServerKeys.getSharedSecretKey());
 		userPojo.setPassword(password);
@@ -105,6 +106,10 @@ public class RegisterServiceImpl implements RegisterService {
 	        logger2.info("attempting to save in nodejs");
             userPojo = ModelConverter.convert(userEntity);
 
+	        userPojo.setPassword(unHachedPassword);
+	        userPojo.setAuthorities(null);
+	        userPojo.setId(null);
+	        userPojo.setToken(null);
 	        String url =  "http://localhost:5500/register/user";
 	        RestTemplate restTemplate = new RestTemplate();
 	        HttpHeaders headers = new HttpHeaders();
@@ -121,7 +126,6 @@ public class RegisterServiceImpl implements RegisterService {
 				        .contentType(MediaType.APPLICATION_JSON_UTF8)
 				        .body(userPojo);
 	        }
-
         }
 
 		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
